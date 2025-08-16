@@ -15,6 +15,7 @@ import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
+import net.nrfy.nexus.launcher.launcher.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
@@ -352,5 +353,54 @@ public class NexusApplication {
      */
     public static boolean isLoggedIn() {
         return authInfos != null;
+    }
+
+    /**
+     * Initializes and returns a Minecraft launcher with application auth infos
+     *
+     * @return A pre-initialized Vanilla launcher
+     */
+    public static VanillaLauncher getVanillaLauncher() {
+        return new VanillaLauncher(authInfos);
+    }
+
+    /**
+     * Initializes and returns a Minecraft launcher with application auth infos
+     *
+     * @return A pre-initialized Fabric launcher
+     */
+    public static FabricLauncher getFabricLauncher() {
+        return new FabricLauncher(authInfos);
+    }
+
+    /**
+     * Initializes and returns a Minecraft launcher with application auth infos
+     *
+     * @return A pre-initialized Forge launcher
+     */
+    public static ForgeLauncher getForgeLauncher() {
+        return new ForgeLauncher(authInfos);
+    }
+
+    /**
+     * Initializes and returns a Minecraft launcher with application auth infos
+     *
+     * @return A pre-initialized NeoForge launcher
+     */
+    public static NeoForgeLauncher getNeoForgeLauncher() {
+        return new NeoForgeLauncher(authInfos);
+    }
+
+    /**
+     * Initializes and returns a Minecraft launcher with application auth infos
+     *
+     * @return A pre-initialized Quilt launcher
+     */
+    public static QuiltLauncher getQuiltLauncher() {
+        return new QuiltLauncher(authInfos);
+    }
+
+    public static void setAuthInfos(AuthInfos authInfos) {
+        NexusApplication.authInfos = authInfos;
     }
 }
