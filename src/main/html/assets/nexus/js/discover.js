@@ -1,0 +1,1 @@
+document.getElementById('discover').querySelector('li.nav-item').innerHTML = version;
