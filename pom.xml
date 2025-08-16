@@ -40,7 +40,7 @@
         <dependency>
             <groupId>net.nrfy.nexus</groupId>
             <artifactId>a-minecraft-launcher-libs</artifactId>
-            <version>2025.8-beta.2</version>
+            <version>2025.8-beta.4</version>
         </dependency>
 
         <dependency>

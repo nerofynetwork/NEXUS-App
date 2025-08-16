@@ -69,5 +69,5 @@ function loadFolderButtonHoverEvent() {
 }
 
 function initLibraryPanel() {
-    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "Library v3.0.0-alpha.594";
+    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "Library v2025.8-???";
 }
