@@ -18,12 +18,10 @@
     <repositories>
         <repository>
             <id>nerofy-releases</id>
-            <name>Nerofy repository</name>
             <url>https://maven.nrfy.net/releases</url>
         </repository>
         <repository>
             <id>nerofy-snapshots</id>
-            <name>Nerofy repository</name>
             <url>https://maven.nrfy.net/snapshots</url>
         </repository>
     </repositories>
@@ -42,7 +40,13 @@
         <dependency>
             <groupId>net.nrfy.nexus</groupId>
             <artifactId>a-minecraft-launcher-libs</artifactId>
-            <version>2025.8-beta.1</version>
+            <version>2025.8-beta.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.raphimc</groupId>
+            <artifactId>MinecraftAuth</artifactId>
+            <version>4.1.1</version>
         </dependency>
     </dependencies>
 
