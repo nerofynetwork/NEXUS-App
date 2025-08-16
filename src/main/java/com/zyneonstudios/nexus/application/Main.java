@@ -3,13 +3,8 @@ package com.zyneonstudios.nexus.application;
 import com.zyneonstudios.nexus.application.frame.ZyneonSplash;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.desktop.NexusDesktop;
-import com.zyneonstudios.nexus.desktop.frame.web.NWebFrame;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
-import net.lenni0451.commons.httpclient.HttpClient;
-import net.raphimc.minecraftauth.MinecraftAuth;
-import net.raphimc.minecraftauth.step.java.session.StepFullJavaSession;
-import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -68,27 +63,6 @@ public class Main {
         } else {
             // Stop the application if launching fails.
             NexusApplication.stop(1);
-        }
-
-        try {
-            HttpClient httpClient = MinecraftAuth.createHttpClient();
-            StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                // Method to generate a verification URL and a code for the user to enter on that page
-                System.out.println("Go to " + msaDeviceCode.getVerificationUri());
-                System.out.println("Enter code " + msaDeviceCode.getUserCode());
-
-                // There is also a method to generate a direct URL without needing the user to enter a code
-                System.out.println("Go to " + msaDeviceCode.getDirectVerificationUri());
-
-                new NWebFrame(application.getWebSetup().getWebClient(),msaDeviceCode.getDirectVerificationUri(),true).setVisible(true);
-            }));
-            System.out.println("Username: " + javaSession.getMcProfile().getName());
-            System.out.println("Access token: " + javaSession.getMcProfile().getMcToken().getAccessToken());
-            System.out.println("Player certificates: " + javaSession.getPlayerCertificates());
-
-            token = javaSession.getMcProfile().getMcToken().getAccessToken();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 
