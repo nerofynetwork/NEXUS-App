@@ -638,6 +638,11 @@ body {
                 overflow-y: scroll;
                 gap: 0.4rem;
                 box-shadow: 0 0 0.5rem #00000075;
+                background: var(--nex-brighter) !important;
+
+                .card-header:hover {
+                    background: var(--nex-brighter) !important;
+                }
 
                 button, select {
                     text-align: left;
@@ -648,17 +653,14 @@ body {
                     width: calc(100% - 1rem);
                     box-shadow: 0 0 0.5rem #00000075;
                     border: 1px solid var(--bs-border-color-translucent);
-                    background: #ffffff05 !important;
                     padding: 0.25rem 0.5rem;
-
+                    background: var(--nex-brighter);
                     white-space: nowrap;
                     text-overflow: ellipsis;
                 }
 
                 button:hover, select:hover {
-                    cursor: pointer;
-                    background: var(--nex-brighter-100) !important;
-                    border: 1px solid var(--bs-border-color-translucent);
+                    background: var(--nex-brighter-100);
                 }
 
                 .d-flex {
@@ -750,22 +752,6 @@ body {
                     li {
                         background: var(--bs-dark-bg-subtle);
                     }
-                }
-            }
-
-            .submenu.glass {
-                background: var(--nex-brighter) !important;
-
-                .card-header {
-                    background: var(--nex-brighter) !important;
-                }
-
-                button, select {
-                    background: none;
-                }
-
-                button:hover, select:hover {
-                    background: var(--nex-darker);
                 }
             }
         }
