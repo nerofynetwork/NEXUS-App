@@ -14,6 +14,7 @@ import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
+import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
@@ -29,6 +30,9 @@ import java.util.Objects;
  * It also provides access to various application components and resources.
  */
 public class NexusApplication {
+
+    //Authentication
+    private static AuthInfos authInfos = null;
 
     // Static Instance and Directories
     private static NexusApplication instance = null;
@@ -339,5 +343,14 @@ public class NexusApplication {
      */
     public NexusEventHandler getEventHandler() {
         return eventHandler;
+    }
+
+    /**
+     * Checks if the user is logged in with Microsoft.
+     *
+     * @return The login state boolean
+     */
+    public static boolean isLoggedIn() {
+        return authInfos != null;
     }
 }

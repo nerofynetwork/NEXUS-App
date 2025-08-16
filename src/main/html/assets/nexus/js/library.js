@@ -69,5 +69,5 @@ function loadFolderButtonHoverEvent() {
 }
 
 function initLibraryPanel() {
-    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "Library v2025.8-???";
+    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<a onclick=\"console.log('[CONNECTOR] login');\">Login with Microsoft</a>";
 }

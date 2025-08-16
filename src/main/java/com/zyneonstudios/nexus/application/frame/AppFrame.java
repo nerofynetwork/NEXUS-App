@@ -11,7 +11,6 @@ import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
-import net.nrfy.nexus.launcher.launcher.FabricLauncher;
 import net.nrfy.nexus.launcher.launcher.VanillaLauncher;
 
 import javax.imageio.ImageIO;
@@ -26,7 +25,6 @@ import java.awt.event.WindowEvent;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -202,6 +200,8 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
                     // Handle exit event.
                 } else if (s.equals("exit")) {
                     NexusApplication.stop(0);
+                } else if(s.equals("login")) {
+
                 } else if(s.equals("run.test")) {
 
 
