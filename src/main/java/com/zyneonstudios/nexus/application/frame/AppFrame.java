@@ -10,8 +10,6 @@ import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
-import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
-import net.nrfy.nexus.launcher.launcher.VanillaLauncher;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,7 +21,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URI;
-import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -204,10 +201,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
                 } else if(s.equals("run.test")) {
 
-
-
-                    VanillaLauncher launcher = new VanillaLauncher();
-                    launcher.launch("25w33a",4096, Path.of("target/run/game/"),"test",new AuthInfos("nerotvlive",Main.token, "6447757f-59fe-4206-ae3f-dc68ff2bb6f0"));
                 }
             }
         };
