@@ -21,6 +21,11 @@
             <name>Nerofy repository</name>
             <url>https://maven.nrfy.net/releases</url>
         </repository>
+        <repository>
+            <id>nerofy-snapshots</id>
+            <name>Nerofy repository</name>
+            <url>https://maven.nrfy.net/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
