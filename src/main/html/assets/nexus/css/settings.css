@@ -217,7 +217,8 @@ table.table {
 
         tr:hover {
             td {
-                background: var(--nex-darker);
+                background: var(--nex-brighter);
+                transition: all var(--nex-animation-speed) ease;
             }
         }
 
