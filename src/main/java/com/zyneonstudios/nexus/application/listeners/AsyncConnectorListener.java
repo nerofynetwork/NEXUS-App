@@ -6,8 +6,11 @@ import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
+import com.zyneonstudios.verget.minecraft.MinecraftVerget;
+import net.nrfy.nexus.launcher.launcher.VanillaLauncher;
 
 import java.awt.*;
+import java.nio.file.Path;
 
 public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
 
@@ -45,7 +48,9 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
         } else if(s.equals("login")) {
             MicrosoftAuthenticator.startLogin(true);
         } else if(s.equals("run.test")) {
-
+            VanillaLauncher launcher = NexusApplication.getVanillaLauncher();
+            String version = MinecraftVerget.getVersions(MinecraftVerget.Filter.RELEASES).getFirst();
+            launcher.launch(version,4096, Path.of("target/run/game/"+version+"/"),"test");
         }
     }
 }
