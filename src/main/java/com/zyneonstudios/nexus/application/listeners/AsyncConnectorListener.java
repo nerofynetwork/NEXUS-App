@@ -3,11 +3,12 @@ package com.zyneonstudios.nexus.application.listeners;
 import com.zyneonstudios.nexus.application.authentication.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
+import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
-import com.zyneonstudios.verget.minecraft.MinecraftVerget;
-import net.nrfy.nexus.launcher.launcher.VanillaLauncher;
+import com.zyneonstudios.verget.fabric.FabricVerget;
+import net.nrfy.nexus.launcher.launcher.FabricLauncher;
 
 import java.awt.*;
 import java.nio.file.Path;
@@ -48,9 +49,12 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
         } else if(s.equals("login")) {
             MicrosoftAuthenticator.startLogin(true);
         } else if(s.equals("run.test")) {
-            VanillaLauncher launcher = NexusApplication.getVanillaLauncher();
-            String version = MinecraftVerget.getVersions(MinecraftVerget.Filter.RELEASES).getFirst();
-            launcher.launch(version,4096, Path.of("target/run/game/"+version+"/"),"test");
+            FabricLauncher launcher = NexusApplication.getFabricLauncher();
+            launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
+            launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
+            launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
+            String version = FabricVerget.getSupportedMinecraftVersions(false).getFirst();
+            launcher.launch(version, FabricVerget.getVersions(true).getFirst(),4096, Path.of("target/run/game/"+version+"/"),"test");
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.zyneonstudios.nexus.application.launchprocess;
 
+import com.zyneonstudios.nexus.application.main.NexusApplication;
 import net.nrfy.nexus.launcher.launcher.LauncherHook;
 import net.nrfy.nexus.launcher.launcher.MinecraftLauncher;
+
+import java.awt.*;
 
 public class GameHooks {
 
@@ -18,7 +21,7 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
-
+                NexusApplication.getInstance().getApplicationFrame().setState(Frame.ICONIFIED);
             }
         };
     }
@@ -27,7 +30,7 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
-
+                NexusApplication.getInstance().getApplicationFrame().setState(Frame.NORMAL);
             }
         };
     }
