@@ -114,6 +114,10 @@ button {
     overflow-y: scroll;
 }
 
+menu .popover {
+    display: none;
+}
+
 .dropdown-item:hover, .progress-bar  {
     background: var(--nex-primary);
     color: white;

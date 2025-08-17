@@ -439,6 +439,11 @@ addEventListener("DOMContentLoaded", () => {
         enableMenu(false);
     }
 
+    try {
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    } catch (ignore) {}
+
     if (renderEffects) {
         const panel = document.querySelector(".menu-panel");
         if (panel) {
@@ -690,3 +695,4 @@ function toggleSubMenuGroup(id) {
         enableSubMenuGroup(id);
     }
 }
+
