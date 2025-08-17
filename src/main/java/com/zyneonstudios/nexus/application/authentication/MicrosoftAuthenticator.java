@@ -4,7 +4,9 @@ import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.zyneon.auth.ZyneonAuth;
+import net.nrfy.nexus.launcher.integrations.curseforge.ZCurseForgeIntegration;
 
+import java.util.Base64;
 import java.util.HashMap;
 
 public class MicrosoftAuthenticator {
@@ -45,9 +47,10 @@ public class MicrosoftAuthenticator {
 
     private static void save(HashMap<ZyneonAuth.AuthInfo, String> authData) {
         try {
-            Keytar.getInstance().setPassword("nexus-application","active",authData.get(ZyneonAuth.AuthInfo.UUID));
-            Keytar.getInstance().setPassword("nexus-application",authData.get(ZyneonAuth.AuthInfo.UUID)+"_access",authData.get(ZyneonAuth.AuthInfo.ACCESS_TOKEN));
-            Keytar.getInstance().setPassword("nexus-application",authData.get(ZyneonAuth.AuthInfo.UUID)+"_refresh",authData.get(ZyneonAuth.AuthInfo.REFRESH_TOKEN));
+            String UUID = Base64.getEncoder().encodeToString(authData.get(ZyneonAuth.AuthInfo.UUID).getBytes());
+            String token = Base64.getEncoder().encodeToString(authData.get(ZyneonAuth.AuthInfo.REFRESH_TOKEN).getBytes());
+            Keytar.getInstance().setPassword("ZNA||00||00","0",UUID);
+            Keytar.getInstance().setPassword("ZNA||01||00",UUID+"_0",token);
         } catch (Exception e) {
             NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't save credentials.",e.getMessage(), e.getStackTrace());
         }
@@ -55,9 +58,9 @@ public class MicrosoftAuthenticator {
 
     public static void logout() {
         try {
-            Keytar.getInstance().deletePassword("nexus-application","active");
-            Keytar.getInstance().deletePassword("nexus-application",authInfos.getUuid()+"_access");
-            Keytar.getInstance().deletePassword("nexus-application",authInfos.getUuid()+"_refresh");
+            String UUID = Base64.getEncoder().encodeToString(authInfos.getUuid().getBytes());
+            Keytar.getInstance().deletePassword("ZNA||00||00","0");
+            Keytar.getInstance().deletePassword("ZNA||01||00",UUID+"_0");
         } catch (Exception e) {
             NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't delete credentials.",e.getMessage(), e.getStackTrace());
         }

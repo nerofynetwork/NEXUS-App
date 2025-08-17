@@ -17,6 +17,8 @@ import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
+import net.nrfy.nexus.launcher.integrations.curseforge.ZCurseForgeIntegration;
+import net.nrfy.nexus.launcher.integrations.modrinth.flowarg.ModrinthIntegration;
 import net.nrfy.nexus.launcher.launcher.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
@@ -25,6 +27,7 @@ import org.cef.handler.CefLoadHandlerAdapter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -84,8 +87,8 @@ public class NexusApplication {
         CompletableFuture.runAsync(()->{
             getLogger().log("Checking if user is logged in...");
             try {
-                if(Keytar.getInstance().getPassword("nexus-application","active")!=null) {
-                    MicrosoftAuthenticator.refresh(Keytar.getInstance().getPassword("nexus-application",Keytar.getInstance().getPassword("nexus-application","active")+"_refresh"),true);
+                if(Keytar.getInstance().getPassword("ZNA||00||00","0")!=null) {
+                    MicrosoftAuthenticator.refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00",Keytar.getInstance().getPassword("ZNA||00||00","0")+"_0"))),true);
                 }
             } catch (Exception e) {
                 NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't initialize key management. Account credentials won't be saved. You'll have to login everytime you restart the application.",e.getMessage(), e.getStackTrace(), "If you're on Linux try to install libsecret.");
