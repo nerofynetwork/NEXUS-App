@@ -17,7 +17,7 @@
         width: 100%;
     }
 
-    #launch-button {
+    #launch-button, #microsoft-button {
         position: absolute;
         bottom: 0.6rem;
         right: 0.6rem;
@@ -28,5 +28,42 @@
         box-shadow: 0 0 0.5rem black;
         border: 2px solid var(--bs-border-color-translucent);
         letter-spacing: 0.5rem;
+    }
+
+    #microsoft-button {
+        background: yellow;
+        color: black;
+        opacity: 0.80;
+
+        text-shadow: none !important;
+        letter-spacing: unset !important;
+        * {
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+    }
+
+    #microsoft-button:hover {
+        opacity: 1;
+    }
+
+    #microsoft-button.clicked {
+        opacity: 0.25;
+        cursor: unset;
+    }
+
+    .login-view {
+        div {
+            flex: 1 !important;
+        }
+
+        div.glass {
+            width: fit-content !important;
+            max-width: fit-content !important;
+        }
+
+        .card.glass {
+            width: 100% !important;
+        }
     }
 }

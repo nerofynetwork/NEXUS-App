@@ -33,6 +33,11 @@
             <version>2025.5.4</version>
         </dependency>
         <dependency>
+            <groupId>com.zyneonstudios.nexus</groupId>
+            <artifactId>mojang-auth</artifactId>
+            <version>2025.8.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>3.4.4</version>
@@ -42,11 +47,10 @@
             <artifactId>a-minecraft-launcher-libs</artifactId>
             <version>2025.8-beta.6</version>
         </dependency>
-
         <dependency>
-            <groupId>net.raphimc</groupId>
-            <artifactId>MinecraftAuth</artifactId>
-            <version>4.1.1</version>
+            <groupId>com.starxg</groupId>
+            <artifactId>java-keytar</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

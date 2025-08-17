@@ -661,6 +661,12 @@ body {
 
                 button:hover, select:hover {
                     background: var(--nex-brighter-100);
+                    cursor: pointer;
+                }
+
+                select:disabled {
+                    background: var(--nex-brighter);
+                    cursor: unset;
                 }
 
                 .d-flex {

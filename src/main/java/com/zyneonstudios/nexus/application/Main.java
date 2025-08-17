@@ -25,8 +25,6 @@ public class Main {
     private static String ui = null;
     private static int port = 8094;
 
-    public static String token = "";
-
     /**
      * The main method, the entry point of the Nexus application.
      *

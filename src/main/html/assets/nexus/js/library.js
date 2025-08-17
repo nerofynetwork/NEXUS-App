@@ -67,7 +67,3 @@ function loadFolderButtonHoverEvent() {
         icon.className = "bi bi-folder2";
     });
 }
-
-function initLibraryPanel() {
-    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<button type='button' class='btn btn-warning' onclick=\"console.log('[CONNECTOR] login');\"> Login with Microsoft</button>";
-}

@@ -198,6 +198,7 @@ let panelMode = "click";
  * Initializes the panel based on stored preferences or default values.
  */
 function initPanel() {
+    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<i onclick='window.open(`https://discord.gg/Awwh6JrJBS`,`_blank`);' class='bi bi-discord'></i><i onclick='window.open(`https://github.com/zyneonstudios/nexus-app`,`_blank`);' class='bi bi-github'></i><i onclick='window.open(`https://nexus.zyneonstudios.org/app`,`_blank`);' class='bi bi-globe'></i><i onclick='console.log(`[CONNECTOR] exit`)' class='bi bi-door-open'></i>";
     const panel = document.querySelector(".menu-panel");
     if (!panel) return; // Exit if panel doesn't exist
 
@@ -574,9 +575,6 @@ function loadPage(page, menu) {
             contentDiv.innerHTML = html;
         })
         .then(() => {
-            try {
-                document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<i onclick='window.open(`https://discord.gg/Awwh6JrJBS`,`_blank`);' class='bi bi-discord'></i><i onclick='window.open(`https://github.com/zyneonstudios/nexus-app`,`_blank`);' class='bi bi-github'></i><i onclick='window.open(`https://nexus.zyneonstudios.org/app`,`_blank`);' class='bi bi-globe'></i><i onclick='console.log(`[CONNECTOR] exit`)' class='bi bi-door-open'></i>";
-            } catch (ignore) {}
             if (page === "settings.html") {
                 if (urlParams.has("bottom-border") && urlParams.get("bottom-border") === "true") {
                     const floatingSwitch = document.querySelector(".floating-switch");

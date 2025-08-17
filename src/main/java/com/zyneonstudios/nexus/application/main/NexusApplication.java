@@ -2,7 +2,9 @@ package com.zyneonstudios.nexus.application.main;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.Main;
+import com.zyneonstudios.nexus.application.authentication.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
@@ -24,6 +26,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The {@code NexusApplication} class is the main object and core component of the Nexus application.
@@ -77,6 +80,17 @@ public class NexusApplication {
         if (!onlineUI) {
             NexusApplication.uiPath = (uiPath != null) ? uiPath : NexusApplication.getWorkingDir().getAbsolutePath() + "/temp/ui";
         }
+
+        CompletableFuture.runAsync(()->{
+            getLogger().log("Checking if user is logged in...");
+            try {
+                if(Keytar.getInstance().getPassword("nexus-application","active")!=null) {
+                    MicrosoftAuthenticator.refresh(Keytar.getInstance().getPassword("nexus-application",Keytar.getInstance().getPassword("nexus-application","active")+"_refresh"),true);
+                }
+            } catch (Exception e) {
+                NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't initialize key management. Account credentials won't be saved. You'll have to login everytime you restart the application.",e.getMessage(), e.getStackTrace(), "If you're on Linux try to install libsecret.");
+            }
+        });
 
         loadVersion();
         setupTempDirectory();
@@ -347,15 +361,6 @@ public class NexusApplication {
     }
 
     /**
-     * Checks if the user is logged in with Microsoft.
-     *
-     * @return The login state boolean
-     */
-    public static boolean isLoggedIn() {
-        return authInfos != null;
-    }
-
-    /**
      * Initializes and returns a Minecraft launcher with application auth infos
      *
      * @return A pre-initialized Vanilla launcher
@@ -400,6 +405,11 @@ public class NexusApplication {
         return new QuiltLauncher(authInfos);
     }
 
+    /**
+     * Sets the authentication information for the used Microsoft account
+     *
+     * @param authInfos Map of authentication information
+     */
     public static void setAuthInfos(AuthInfos authInfos) {
         NexusApplication.authInfos = authInfos;
     }

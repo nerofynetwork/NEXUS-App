@@ -1,20 +1,14 @@
 package com.zyneonstudios.nexus.application.frame;
 
 import com.zyneonstudios.nexus.application.Main;
-import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
+import com.zyneonstudios.nexus.application.listeners.AsyncConnectorListener;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
-import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.nexus.NexusWebFrame;
 import com.zyneonstudios.nexus.desktop.frame.web.NWebFrame;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
-import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
-import net.lenni0451.commons.httpclient.HttpClient;
-import net.raphimc.minecraftauth.MinecraftAuth;
-import net.raphimc.minecraftauth.step.java.session.StepFullJavaSession;
-import net.raphimc.minecraftauth.step.msa.StepMsaDeviceCode;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -180,54 +174,8 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             }
         });
 
-        // Create an AsyncWebFrameConnectorEvent to handle communication with the web content.
-        AsyncWebFrameConnectorEvent connectorEvent = new AsyncWebFrameConnectorEvent(this, null) {
-            @Override
-            protected void resolveMessage(String s) {
-                // Handle theme change events.
-                if (s.startsWith("event.theme.changed.")) {
-                    if (s.endsWith("dark")) {
-                        setTitleBackground(Color.black);
-                        setTitleForeground(Color.white);
-                    } else {
-                        setTitleBackground(Color.white);
-                        setTitleForeground(Color.black);
-                    }
-                    // Handle page loaded events.
-                } else if (s.startsWith("event.page.loaded")) {
-                    for (PageLoadedEvent event : NexusApplication.getInstance().getEventHandler().getPageLoadedEvents()) {
-                        event.setUrl(getBrowser().getURL());
-                        event.execute();
-                    }
-                    // Handle exit event.
-                } else if (s.equals("exit")) {
-                    NexusApplication.stop(0);
-                } else if(s.equals("login")) {
-
-                    try {
-                        HttpClient httpClient = MinecraftAuth.createHttpClient();
-                        StepFullJavaSession.FullJavaSession javaSession = MinecraftAuth.JAVA_DEVICE_CODE_LOGIN.getFromInput(httpClient, new StepMsaDeviceCode.MsaDeviceCodeCallback(msaDeviceCode -> {
-                            try {
-                                Desktop.getDesktop().browse(new URI(msaDeviceCode.getDirectVerificationUri()));
-                            } catch (Exception ignore) {}
-                        }));
-
-                        String username = javaSession.getMcProfile().getName();
-                        String uuid = javaSession.getMcProfile().getId().toString();
-                        String accessToken = javaSession.getMcProfile().getMcToken().getAccessToken();
-
-                        NexusApplication.setAuthInfos(new AuthInfos(username,accessToken,uuid));
-                    } catch (Exception e) {
-                        NexusApplication.getLogger().err(e.getMessage());
-                    }
-
-                } else if(s.equals("run.test")) {
-
-                }
-            }
-        };
         // Set the AsyncWebFrameConnectorEvent for the frame.
-        setAsyncWebFrameConnectorEvent(connectorEvent);
+        setAsyncWebFrameConnectorEvent(new AsyncConnectorListener(this,null));
     }
 
     /**
