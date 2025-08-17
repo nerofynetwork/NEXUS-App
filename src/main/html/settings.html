@@ -8,12 +8,12 @@
         </div>
         <div class="submenu-group">
             <!-- Button for General Settings -->
-            <button id="general-settings-button" type="button" class="btn btn-nex-secondary active">
+            <button id="general-settings-button" type="button" class="btn btn-nex-secondary">
                 <i class="bi bi-compass"></i>
                 <span>General settings</span>
             </button>
             <!-- Button for Appearance Settings -->
-            <button id="appearance-settings-button" type="button" class="btn btn-nex-secondary">
+            <button id="appearance-settings-button" type="button" class="btn btn-nex-secondary active">
                 <i class="bi bi-brush"></i>
                 <span>Appearance settings</span>
             </button>
@@ -43,11 +43,11 @@
                 <table class="table m-0">
                     <tbody>
                     <!-- Theme Selection Row -->
-                    <tr>
+                    <tr class="disabled">
                         <td class="left" colspan="2">Theme <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose the color scheme in which the NEXUS App should be displayed."></i></td>
                         <td class="right">
                             <label>
-                                <select class="form-select appearance-theme" onchange="theme = this.value; updateTheme();">
+                                <select disabled class="form-select appearance-theme" onchange="theme = this.value; updateTheme();">
                                     <option value="auto">Automatic</option>
                                     <option value="dark">Dark</option>
                                     <option value="light">Light</option>
@@ -67,12 +67,12 @@
                         </td>
                     </tr>
                     <!-- Render Effects Toggle Row -->
-                    <tr>
+                    <tr class="disabled">
                         <td class="left" colspan="2">Render effects <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose whether you want to render the effects of the NEXUS App interface, such as glow effects, shadows or glass backgrounds."></i></td>
                         <td class="right">
                             <div class="form-switch">
                                 <label>
-                                    <input class="form-check-input appearance-renderEffects switch" type="checkbox" role="switch" onchange="setRenderEffects(this.checked);">
+                                    <input disabled class="form-check-input appearance-renderEffects switch" type="checkbox" role="switch" onchange="setRenderEffects(this.checked);">
                                 </label>
                             </div>
                         </td>

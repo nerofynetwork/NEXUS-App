@@ -151,7 +151,7 @@ function initAppearanceSettings() {
         renderEffects = getStorageItem("settings.appearance.renderEffects") === "true";
     }
     if (!renderEffects) {
-        document.head.innerHTML += "<style>:root,[data-bs-theme='light'],[data-bs-theme='dark'] * { box-shadow: none !important; text-shadow: none !important; --bs-box-shadow: none !important; }</style>";
+        /*TODO RENDER EFFECTS*/
     }
 
     // Load custom accent color setting from storage or use default
