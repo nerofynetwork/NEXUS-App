@@ -2,6 +2,10 @@
     background-size: cover !important;
 }
 
+#settings {
+    background: linear-gradient(-45deg, #00000090, #00000085);
+}
+
 .settings-card {
     display: none;
 }

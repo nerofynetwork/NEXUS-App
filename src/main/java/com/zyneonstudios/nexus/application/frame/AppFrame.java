@@ -142,6 +142,16 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             });
             actions.add(cloneWindow);
 
+            JMenuItem disableDevtools = new JMenuItem("Disable dev mode");
+            disableDevtools.addActionListener(e -> {
+                NexusApplication.getLogger().disableDebug();
+                devBar.removeAll();
+                executeJavaScript("enableDevTools(false);");
+                setVisible(false);
+                setVisible(true);
+            });
+            actions.add(disableDevtools);
+
             JMenuItem exit = new JMenuItem("Exit");
             exit.addActionListener(e -> NexusApplication.stop(0));
             actions.add(exit);
