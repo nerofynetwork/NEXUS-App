@@ -5,11 +5,8 @@ import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.desktop.NexusDesktop;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
-import jnafilechooser.api.JnaFileChooser;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-
-import java.io.File;
 
 /**
  * The {@code Main} class is the primary entry point for the Nexus application.

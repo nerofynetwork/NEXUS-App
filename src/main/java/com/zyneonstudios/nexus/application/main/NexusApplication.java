@@ -17,13 +17,10 @@ import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
-import net.nrfy.nexus.launcher.integrations.curseforge.ZCurseForgeIntegration;
-import net.nrfy.nexus.launcher.integrations.modrinth.flowarg.ModrinthIntegration;
 import net.nrfy.nexus.launcher.launcher.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;

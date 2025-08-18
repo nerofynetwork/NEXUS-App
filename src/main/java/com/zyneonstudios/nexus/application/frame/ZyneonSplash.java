@@ -30,7 +30,7 @@ public class ZyneonSplash extends JWindow {
 
             // Load and scale the logo image.
             JLabel image;
-            Image logo = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/logo.png")));
+            Image logo = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/app.png")));
             Image scaledLogo = logo.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
             image = new JLabel(new ImageIcon(scaledLogo));
 

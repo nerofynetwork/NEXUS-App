@@ -2,7 +2,6 @@ package com.zyneonstudios.nexus.application.main;
 
 import com.zyneonstudios.nexus.application.events.DownloadFinishEvent;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -9,7 +9,6 @@ import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.verget.fabric.FabricVerget;
 import net.nrfy.nexus.launcher.launcher.FabricLauncher;
-
 import java.awt.*;
 import java.nio.file.Path;
 
