@@ -23,7 +23,7 @@ public class ZyneonSplash extends JWindow {
             setBackground(new Color(0, 0, 0, 0));
 
             // Set the size of the splash screen window.
-            setSize(750, 180);
+            setSize(180, 180);
 
             // Center the splash screen on the screen.
             setLocationRelativeTo(null);
