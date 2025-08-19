@@ -383,7 +383,47 @@
 
         <!-- Default Instance Settings Section -->
         <div id="default-instance-settings" class="settings-card overflow-auto flex-column gap-3">
-
+            <div class="p-3">
+                <div>
+                    <strong>Game window settings</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <tr class="fullscreen-switch last">
+                        <td class="left" colspan="2">Launch game in fullscreen <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose whether you want to use Discord Rich Presence to show your friends that you are using the NEXUS App."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="form-check-input instance-useFullscreen switch" type="checkbox" onchange="" role="switch">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3">
+                <div>
+                    <strong>Java settings</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <tr class="memory-range last">
+                        <td class="left">Allocated memory (in MB) <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you set the radius of the rounded edges. This determines how rounded the corners of the NEXUS App interface should be, with a value between 0 and 2 (1 by default)."></i></td>
+                        <td>
+                            <label>
+                                <input class="number-display instance-JavaMemoryDisplay" type="number" min="512" max="16384" step="1" value="1024" oninput="document.body.querySelector('.instance-JavaMemory').value = this.value;" onchange="document.body.querySelector('.instance-JavaMemory').value = this.value;">
+                            </label>
+                        </td>
+                        <td class="right">
+                            <label>
+                                <input type="range" class="range instance-JavaMemory form-range" min="512" value="1024" max="16384" step="1" oninput="document.body.querySelector('.instance-JavaMemoryDisplay').value = this.value;">
+                            </label>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>

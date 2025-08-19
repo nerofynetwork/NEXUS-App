@@ -1,10 +1,9 @@
-package utilities;
+package com.zyneonstudios.nexus.application.utilities;
 
 import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.zyneon.auth.ZyneonAuth;
-import net.nrfy.nexus.launcher.integrations.curseforge.ZCurseForgeIntegration;
 
 import java.util.Base64;
 import java.util.HashMap;

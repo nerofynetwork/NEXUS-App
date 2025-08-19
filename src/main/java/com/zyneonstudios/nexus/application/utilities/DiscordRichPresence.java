@@ -1,4 +1,4 @@
-package utilities;
+package com.zyneonstudios.nexus.application.utilities;
 
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;

@@ -20,8 +20,8 @@ import net.nrfy.nexus.launcher.launcher.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
-import utilities.DiscordRichPresence;
-import utilities.MicrosoftAuthenticator;
+import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
+import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 
 import javax.swing.*;
 import java.awt.*;

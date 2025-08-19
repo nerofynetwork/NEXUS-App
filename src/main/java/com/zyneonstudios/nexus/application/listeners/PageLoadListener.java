@@ -1,7 +1,7 @@
 package com.zyneonstudios.nexus.application.listeners;
 
-import utilities.DiscordRichPresence;
-import utilities.MicrosoftAuthenticator;
+import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
+import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 

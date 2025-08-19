@@ -1,7 +1,7 @@
 package com.zyneonstudios.nexus.application.listeners;
 
-import utilities.DiscordRichPresence;
-import utilities.MicrosoftAuthenticator;
+import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
+import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
@@ -57,7 +57,6 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                     rpc = NexusApplication.getInstance().getSettings().getBool("settings.discord.rpc");
                 } catch (Exception ignore) {}
             }
-            System.out.println("document.querySelector('.privacy-enableDiscordRPC').checked = "+rpc+";");
             NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.querySelector('.privacy-enableDiscordRPC').checked = "+rpc+";");
         } else if(s.startsWith("discordrpc.")) {
             if(s.replace("discordrpc.", "").equals("true")) {
