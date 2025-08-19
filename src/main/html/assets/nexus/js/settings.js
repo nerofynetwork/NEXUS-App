@@ -4,6 +4,9 @@ document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<
  * Initializes the appearance settings values based on stored preferences.
  */
 function initAppearanceValues() {
+    // Set the landing page dropdown value
+    document.querySelector(".appearance-landing").value = landing;
+
     // Set the theme dropdown value
     document.querySelector(".appearance-theme").value = theme;
 
@@ -48,6 +51,15 @@ function initAppearanceValues() {
         resetAccentColorButton.style.display = "none";
     }
 } initAppearanceValues();
+
+/**
+ * Selects the default landing page for the application.
+ * @param {string} landingPage - The file path of the default landing page.
+ */
+function setLanding(landingPage) {
+    landing = landingPage;
+    setStorageItem("settings.appearance.landingPage", landing);
+}
 
 /**
  * Toggles animations on/off and updates the stored preference.

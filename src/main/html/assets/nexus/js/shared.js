@@ -11,6 +11,12 @@
 let version = "Web app";
 
 /**
+ * The current application default landing page.
+ * @type {string}
+ */
+let landing = "discover.html";
+
+/**
  * URL parameters from the current document's location.
  * @type {URLSearchParams}
  */
@@ -137,6 +143,11 @@ if (localStorage.getItem("enabled") || app) {
 function initAppearanceSettings() {
     // Load theme from storage or use default
     theme = getStorageItem("settings.appearance.theme") || theme;
+
+    //Load landing page
+    if(getStorageItem("settings.appearance.landingPage")) {
+        landing = getStorageItem("settings.appearance.landingPage");
+    }
 
     // Load animations setting from storage or use default
     if(getStorageItem("settings.appearance.animations")) {
@@ -469,7 +480,12 @@ addEventListener("DOMContentLoaded", () => {
             highlight(document.getElementById(page.toLowerCase().replace(".html", "-button")));
         } catch (ignore) { }
     } else {
-        loadPage("loading.html", false);
+        const page = landing;
+        const menu = urlParams.has("menu") ? urlParams.get("menu") === "true" : false;
+        loadPage(page, menu);
+        try {
+            highlight(document.getElementById(page.toLowerCase().replace(".html", "-button")));
+        } catch (ignore) { }
     }
 
     // Apply bottom border if specified in the URL

@@ -191,7 +191,7 @@ public class NexusApplication {
         if (!launched) {
             try {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                String url = onlineUI ? "https://zyneonstudios.github.io/nexus-app/src/main/html?app=true&page=discover.html" : "localhost:" + Main.getPort() + "/index.html?app=true&page=discover.html";
+                String url = onlineUI ? "https://zyneonstudios.github.io/nexus-app/src/main/html?app=true" : "localhost:" + Main.getPort() + "/index.html?app=true";
                 applicationFrame = new AppFrame(webSetup, url, true);
                 applicationFrame.setTitlebar(version, Color.black, Color.white);
                 applicationFrame.setSize((int)(screenSize.getWidth()/1.5), (int)(screenSize.getHeight()/1.5));

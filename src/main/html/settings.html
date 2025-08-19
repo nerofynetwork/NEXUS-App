@@ -29,12 +29,12 @@
         </div>
 
         <!-- General Settings Section (Currently Empty) -->
-        <div id="general-settings" class="settings-card flex-column gap-3">
+        <div id="general-settings" class="settings-card overflow-auto flex-column gap-3 active">
             <!-- Content for general settings will be added here -->
         </div>
 
         <!-- Appearance Settings Section -->
-        <div id="appearance-settings" class="settings-card flex-column gap-3 active">
+        <div id="appearance-settings" class="settings-card overflow-auto flex-column gap-3 active">
             <!-- General Appearance Settings Card -->
             <div class="p-3">
                 <div>
@@ -42,6 +42,18 @@
                 </div>
                 <table class="table m-0">
                     <tbody>
+                    <!-- Landing Page Selection Row -->
+                    <tr>
+                        <td class="left" colspan="2">Landing page <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose which page the NEXUS app displays when it starts."></i></td>
+                        <td class="right">
+                            <label>
+                                <select class="form-select appearance-landing" onchange="landing = this.value; setLanding(this.value);">
+                                    <option value="discover.html">Discover</option>
+                                    <option value="library.html">Library</option>
+                                </select>
+                            </label>
+                        </td>
+                    </tr>
                     <!-- Theme Selection Row -->
                     <tr class="disabled">
                         <td class="left" colspan="2">Theme <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose the color scheme in which the NEXUS App should be displayed."></i></td>
@@ -149,8 +161,30 @@
                         </td>
                     </tr>
                     <!-- Inline Panel Toggle Row -->
-                    <tr class="last">
+                    <tr>
                         <td class="left" colspan="2">Inline to menu  <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you integrate the dynamic NEXUS App panel into the menu so that it is only visible when the menu is expanded."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="form-check-input appearance-panelInlined switch" type="checkbox" role="switch" onchange="setPanelInlined(this.checked);">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Move Downloads To Panel Toggle Row -->
+                    <tr>
+                        <td class="left" colspan="2">Move downloads to panel  <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you decide whether the download button is in the dynamic panel or in the menu."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="form-check-input appearance-panelInlined switch" type="checkbox" role="switch" onchange="setPanelInlined(this.checked);">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Move Settings To Panel Toggle Row -->
+                    <tr class="last">
+                        <td class="left" colspan="2">Move settings to panel  <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you decide whether the settings button is in the dynamic panel or in the menu."></i></td>
                         <td class="right">
                             <div class="form-switch">
                                 <label>
