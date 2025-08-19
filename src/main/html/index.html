@@ -48,6 +48,16 @@
                         <i class="bi bi-grid-fill"></i>
                         <span>Library</span>
                     </li>
+                    <!-- Library page button -->
+                    <li id="downloads-button" onclick="loadPage('downloads.html',false); highlight(this);">
+                        <i class="bi bi-download"></i>
+                        <span>Downloads</span>
+                    </li>
+                    <!-- Library page button -->
+                    <li id="settings-button" onclick="loadPage('settings.html',false); highlight(this);">
+                        <i class="bi bi-gear-wide"></i>
+                        <span>Settings</span>
+                    </li>
                 </ul>
             </div>
             <!-- Menu panel -->
@@ -63,9 +73,9 @@
                     <!-- Panel buttons -->
                     <div class="buttons">
                         <!-- Downloads page button -->
-                        <i id="downloads-button" class="bi bi-download" onclick="loadPage('downloads.html',false); highlight(this);"></i>
+                        <i id="downloads-icon" class="bi bi-download" onclick="loadPage('downloads.html',false); highlight(this);"></i>
                         <!-- Settings page button -->
-                        <i id="settings-button" class="bi bi-gear-wide" onclick="loadPage('settings.html',false); highlight(this);"></i>
+                        <i id="settings-icon" class="bi bi-gear-wide" onclick="loadPage('settings.html',false); highlight(this);"></i>
                         <!-- Notifications button -->
                         <i class="bi bi-bell" data-bs-toggle="offcanvas" onclick="openNotifications();"></i>
                     </div>

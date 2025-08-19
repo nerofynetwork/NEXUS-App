@@ -1,6 +1,9 @@
-#content {
+#library-bg {
     background: url("https://www.wolkenspeicher.cloud/index.php/s/5KHwRFRHF7bGQeg/download") fixed !important;
     background-size: cover !important;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
 #library {

@@ -103,6 +103,18 @@ let panelFloating = true;
 let panelInlined = false;
 
 /**
+ * Indicates if the downloads button is in the panel.
+ * @type {boolean}
+ */
+let downloadsInMenu = false;
+
+/**
+ * Indicates if the settings button is in the panel.
+ * @type {boolean}
+ */
+let settingsInMenu = false;
+
+/**
  * Indicates if a custom accent color is enabled.
  * @type {boolean}
  */
@@ -189,6 +201,12 @@ function initAppearanceSettings() {
 
     // Load panel inlined setting from storage or use default
     panelInlined = getStorageItem("settings.appearance.panelInlined") === "true" || panelInlined;
+
+    // Load downloads in panel setting from storage or use default
+    downloadsInMenu = getStorageItem("settings.appearance.downloadsInPanel") === "true" || downloadsInMenu;
+
+    // Load settings in panel setting from storage or use default
+    settingsInMenu = getStorageItem("settings.appearance.settingsInPanel") === "true" || settingsInMenu;
 }
 initAppearanceSettings();
 
@@ -247,6 +265,26 @@ function initPanel() {
     } else if (panelMode === "hover") {
         panel.classList.add("hover");
         modeIcon.className = "mode bi bi-cursor-fill";
+    }
+
+    updateButtonVisibility();
+}
+
+function updateButtonVisibility() {
+    if(!settingsInMenu) {
+        document.getElementById("settings-button").style.display = "none";
+        document.getElementById("settings-icon").style.display = "unset";
+    } else {
+        document.getElementById("settings-button").style.display = "flex";
+        document.getElementById("settings-icon").style.display = "none";
+    }
+
+    if(!downloadsInMenu) {
+        document.getElementById("downloads-button").style.display = "none";
+        document.getElementById("downloads-icon").style.display = "unset";
+    } else {
+        document.getElementById("downloads-button").style.display = "flex";
+        document.getElementById("downloads-icon").style.display = "none";
     }
 }
 

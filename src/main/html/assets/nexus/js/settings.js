@@ -32,6 +32,10 @@ function initAppearanceValues() {
     // Set the panel inlined checkbox state
     document.querySelector(".appearance-panelInlined").checked = panelInlined;
 
+    // Set the checkbox states for button positions
+    document.querySelector(".appearance-downloadsToPanel").checked = !downloadsInMenu;
+    document.querySelector(".appearance-settingsToPanel").checked = !settingsInMenu;
+
     // Show/hide custom color input and predefined color buttons based on custom accent color setting
     const colorInput = document.querySelector(".color-input");
     const colors = document.querySelector(".colors");
@@ -242,6 +246,26 @@ function setPanelInlined(bool) {
             }
         }
     }
+}
+
+/**
+ * Toggles if the downloads button will be displayed in the side-menu or the panel.
+ * @param {boolean} bool - True to move the button to the panel.
+ */
+function setDownloadsToPanel(bool) {
+    downloadsInMenu = !bool;
+    setStorageItem("settings.appearance.downloadsInPanel", downloadsInMenu);
+    updateButtonVisibility();
+}
+
+/**
+ * Toggles if the settings button will be displayed in the side-menu or the panel.
+ * @param {boolean} bool - True to move the button to the panel.
+ */
+function setSettingsToPanel(bool) {
+    settingsInMenu = !bool;
+    setStorageItem("settings.appearance.settingsInPanel", settingsInMenu);
+    updateButtonVisibility();
 }
 
 try {

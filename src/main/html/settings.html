@@ -7,15 +7,25 @@
             <strong>Settings</strong>
         </div>
         <div class="submenu-group">
-            <!-- Button for General Settings -->
-            <button id="general-settings-button" type="button" class="btn btn-nex-secondary">
-                <i class="bi bi-compass"></i>
-                <span>General settings</span>
-            </button>
             <!-- Button for Appearance Settings -->
             <button id="appearance-settings-button" type="button" class="btn btn-nex-secondary active">
                 <i class="bi bi-brush"></i>
                 <span>Appearance settings</span>
+            </button>
+            <!-- Button for Java Settings -->
+            <button id="java-settings-button" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-cup-hot"></i>
+                <span>Java settings</span>
+            </button>
+            <!-- Button for User Settings -->
+            <button id="user-settings-button" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-person-circle"></i>
+                <span>User settings</span>
+            </button>
+            <!-- Button for Module Settings -->
+            <button id="module-settings-button" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-puzzle-fill"></i>
+                <span>Module settings</span>
             </button>
         </div>
     </div>
@@ -26,11 +36,6 @@
             <h4 class="m-0 w-100" style="padding: 0.5rem 0.5rem 0.75rem 0.75rem">Settings</h4>
             <div class="buttons w-100 d-flex flex-row align-self-center justify-content-end">
             </div>
-        </div>
-
-        <!-- General Settings Section (Currently Empty) -->
-        <div id="general-settings" class="settings-card overflow-auto flex-column gap-3 active">
-            <!-- Content for general settings will be added here -->
         </div>
 
         <!-- Appearance Settings Section -->
@@ -177,7 +182,7 @@
                         <td class="right">
                             <div class="form-switch">
                                 <label>
-                                    <input class="form-check-input appearance-panelInlined switch" type="checkbox" role="switch" onchange="setPanelInlined(this.checked);">
+                                    <input class="form-check-input appearance-downloadsToPanel switch" type="checkbox" role="switch" onchange="setDownloadsToPanel(this.checked);">
                                 </label>
                             </div>
                         </td>
@@ -188,7 +193,7 @@
                         <td class="right">
                             <div class="form-switch">
                                 <label>
-                                    <input class="form-check-input appearance-panelInlined switch" type="checkbox" role="switch" onchange="setPanelInlined(this.checked);">
+                                    <input class="form-check-input appearance-settingsToPanel switch" type="checkbox" role="switch" onchange="setSettingsToPanel(this.checked);">
                                 </label>
                             </div>
                         </td>
@@ -196,6 +201,11 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- Module Settings Section (Currently Empty) -->
+        <div id="module-settings" class="settings-card overflow-auto flex-column gap-3 active">
+            <!-- Content for module settings will be added here -->
         </div>
     </div>
 </div>
