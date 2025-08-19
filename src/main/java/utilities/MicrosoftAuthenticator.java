@@ -1,4 +1,4 @@
-package com.zyneonstudios.nexus.application.authentication;
+package utilities;
 
 import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.main.NexusApplication;

@@ -5,11 +5,11 @@
 
 <details>
     <summary>Warning</summary>
-    For your security, please download the NEXUS app directly from our official websites https://nexus.zyneonstudios.org and https://github.com/zyneonstudios/nexus-app. Downloading from other sources may expose you to risks such as malware. We cannot guarantee the safety of downloads from third-party links.
+    For your security, please download the NEXUS App directly from our official websites https://nexus.zyneonstudios.org and https://github.com/zyneonstudios/nexus-app. Downloading from other sources may expose you to risks such as malware. We cannot guarantee the safety of downloads from third-party links.
 </details>
 
 ## Description
-The NEXUS app is a modular and easily extensible desktop application designed to cater to the diverse needs of end-users. Originating as an instance-based Minecraft launcher, it has evolved into a standalone platform. Our primary focus remains on the Minecraft module, serving as a showcase for the capabilities of our modular system and providing a reliable method for managing, sharing, discovering, and playing Minecraft instances in a modern, flexible, and instance-based manner. The Minecraft module supports the installation of mods, maps, resource packs, shaders, and more from platforms such as Zyndex, CurseForge, and Modrinth.
+The NEXUS App is a modular and easily extensible desktop application designed to cater to the diverse needs of end-users. Originating as an instance-based Minecraft launcher, it has evolved into a standalone platform. Our primary focus remains on the Minecraft module, serving as a showcase for the capabilities of our modular system and providing a reliable method for managing, sharing, discovering, and playing Minecraft instances in a modern, flexible, and instance-based manner. The Minecraft module supports the installation of mods, maps, resource packs, shaders, and more from platforms such as Zyndex, CurseForge, and Modrinth.
 
 ## Supported platforms
 [<img src="https://i.ibb.co/FK4LNHm/platforms.png">](https://nexus.zyneonstudios.org/app#download)

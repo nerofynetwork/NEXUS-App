@@ -1,8 +1,15 @@
 /**
- * @fileoverview This file contains shared JavaScript functions and variables used throughout the NEXUS app.
+ * @fileoverview This file contains shared JavaScript functions and variables used throughout the NEXUS App.
  */
 
 // --- Global Variables ---
+
+/**
+ * Defines the selected settings category
+ *
+ * @type string
+ */
+let settingsCategory = undefined;
 
 /**
  * The current application version/type (web, desktop, v3.x.x).
@@ -166,7 +173,7 @@ function initAppearanceSettings() {
         animations = getStorageItem("settings.appearance.animations") === "true";
     }
     if (!animations) {
-        document.head.innerHTML += "<style>* { transition: all 0s !important; }</style>";
+        document.head.innerHTML += "<style>* { transition: all 0s !important; animation: none !important; }</style>";
     }
 
     // Load render effects setting from storage or use default

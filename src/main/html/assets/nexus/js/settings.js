@@ -56,6 +56,34 @@ function initAppearanceValues() {
     }
 } initAppearanceValues();
 
+function initSettings() {
+    showSettingsCategory("appearance-settings")
+}
+
+function showSettingsCategory(category) {
+    const settings = document.getElementById(category);
+    const button = document.getElementById(category+"-button");
+    if(settings && button) {
+        if(settingsCategory) {
+            const oldSettings = document.getElementById(settingsCategory);
+            const oldButton = document.getElementById(settingsCategory+"-button");
+            if(oldSettings.classList.contains("active")) {
+                oldSettings.classList.remove("active");
+            }
+            if(oldButton.classList.contains("active")) {
+                oldButton.classList.remove("active");
+            }
+        }
+        if(!settings.classList.contains("active")) {
+            settings.classList.add("active");
+        }
+        if(!button.classList.contains("active")) {
+            button.classList.add("active");
+        }
+        settingsCategory = category;
+    }
+}
+
 /**
  * Selects the default landing page for the application.
  * @param {string} landingPage - The file path of the default landing page.
@@ -75,7 +103,7 @@ function setAnimations(bool) {
     document.querySelector(".appearance-animations").checked = animations;
 
     // Add or remove the CSS rule to disable transitions
-    const transitionDisableStyle = "<style>* { transition: all 0s !important; }</style>";
+    const transitionDisableStyle = "<style>* { transition: all 0s !important; animation: none !important; }</style>";
     if (!animations) {
         if (!document.head.innerHTML.includes(transitionDisableStyle)) {
             document.head.innerHTML += transitionDisableStyle;

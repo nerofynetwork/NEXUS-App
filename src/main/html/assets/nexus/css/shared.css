@@ -1,6 +1,6 @@
 :root,[data-bs-theme="light"],[data-bs-theme="dark"] {
     --nex-bg: black;
-    --nex-fg: #ededed;
+    --nex-fg: #d7d7d7;
     --nex-iv: white;
 
     --nex-darker: #00000010;
@@ -635,11 +635,11 @@ body {
                 position: relative;
                 display: flex;
                 flex: 0 0 auto;
-                padding: 0;
+                padding: 0 0 2.33rem 0;
                 margin: 0.5rem;
                 max-width: 16rem;
                 overflow: hidden;
-                overflow-y: scroll;
+                overflow-y: auto;
                 gap: 0.4rem;
                 box-shadow: 0 0 0.5rem #00000075;
                 background: var(--nex-brighter) !important;
@@ -706,8 +706,8 @@ body {
                     display: flex;
                     flex-direction: column;
                     flex: 0 0 auto;
-                    gap: 0.4rem;
-                    padding-bottom: 0.5rem;
+                    gap: 0.5rem;
+                    padding: 0.25rem 0;
 
                     a {
                         cursor: pointer;
@@ -716,7 +716,6 @@ body {
                         color: unset;
                         font-size: 1rem;
                         rotate: 90deg;
-                        padding: 0.1rem 0 0.1rem 0;
                     }
 
                     a.active {
@@ -810,7 +809,7 @@ body {
 [data-bs-theme="light"] {
     --nex-bg: white;
     --nex-iv: black;
-    --nex-fg: #0e0e0e;
+    --nex-fg: #272727;
     --bs-body-bg: #d2d2d2;
     --bs-body-bg-rgb: 210, 210, 210;
     --bs-dark-bg-subtle: #fff;

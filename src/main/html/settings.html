@@ -4,28 +4,74 @@
     <!-- Sidebar/Submenu for Settings Categories -->
     <div class="card bg-dark-subtle submenu glass">
         <div class="card-header">
-            <strong>Settings</strong>
+            <strong>Application settings</strong>
         </div>
         <div class="submenu-group">
             <!-- Button for Appearance Settings -->
-            <button id="appearance-settings-button" type="button" class="btn btn-nex-secondary active">
+            <button id="appearance-settings-button" onclick="showSettingsCategory('appearance-settings');" type="button" class="btn btn-nex-secondary">
                 <i class="bi bi-brush"></i>
                 <span>Appearance settings</span>
             </button>
+            <!-- Button for Download Settings -->
+            <button id="download-settings-button" onclick="showSettingsCategory('download-settings');" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-download"></i>
+                <span>Download settings</span>
+            </button>
             <!-- Button for Java Settings -->
-            <button id="java-settings-button" type="button" class="btn btn-nex-secondary">
+            <button id="java-settings-button" onclick="showSettingsCategory('java-settings');" type="button" class="btn btn-nex-secondary">
                 <i class="bi bi-cup-hot"></i>
                 <span>Java settings</span>
             </button>
-            <!-- Button for User Settings -->
-            <button id="user-settings-button" type="button" class="btn btn-nex-secondary">
-                <i class="bi bi-person-circle"></i>
-                <span>User settings</span>
-            </button>
             <!-- Button for Module Settings -->
-            <button id="module-settings-button" type="button" class="btn btn-nex-secondary">
+            <button id="module-settings-button" onclick="showSettingsCategory('module-settings');" type="button" class="btn btn-nex-secondary">
                 <i class="bi bi-puzzle-fill"></i>
                 <span>Module settings</span>
+            </button>
+        </div>
+        <div class="card-header" style="border-top: 1px solid var(--bs-border-color-translucent);">
+            <strong>User settings</strong>
+        </div>
+        <div class="submenu-group">
+            <!-- Button for Account Settings -->
+            <button id="account-settings-button" onclick="showSettingsCategory('account-settings');" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-person-circle"></i>
+                <span>Account settings</span>
+            </button>
+
+            <!-- Button for Privacy Settings -->
+            <button id="privacy-settings-button" onclick="showSettingsCategory('privacy-settings'); console.log('[CONNECTOR] discordrpc');" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-shield"></i>
+                <span>Privacy settings</span>
+            </button>
+        </div>
+        <div class="card-header" style="border-top: 1px solid var(--bs-border-color-translucent);">
+            <strong>Instance settings</strong>
+        </div>
+        <div class="submenu-group">
+            <!-- Button for Default Instance Settings -->
+            <button id="default-instance-settings-button" onclick="showSettingsCategory('default-instance-settings');" type="button" class="btn btn-nex-secondary">
+                <i class="bi bi-controller"></i>
+                <span>Default instance settings</span>
+            </button>
+        </div>
+        <div class="card-header" style="border-top: 1px solid var(--bs-border-color-translucent);">
+            <strong>Actions</strong>
+        </div>
+        <div class="submenu-group">
+            <!-- Reload action button -->
+            <button id="reload-button" type="button" class="btn btn-nex-secondary" onclick="location.reload();">
+                <i class="bi bi-arrow-clockwise"></i>
+                <span>Reload application</span>
+            </button>
+            <!-- Restart action button -->
+            <button id="restart-button" type="button" class="btn btn-nex-secondary" onclick="console.log('[CONNECTOR] restart')">
+                <i class="bi bi-arrow-repeat"></i>
+                <span>Restart application</span>
+            </button>
+            <!-- Exit action button -->
+            <button id="exit-button" type="button" class="btn btn-nex-secondary" onclick="console.log('[CONNECTOR] exit')">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Exit application</span>
             </button>
         </div>
     </div>
@@ -39,7 +85,7 @@
         </div>
 
         <!-- Appearance Settings Section -->
-        <div id="appearance-settings" class="settings-card overflow-auto flex-column gap-3 active">
+        <div id="appearance-settings" class="settings-card overflow-auto flex-column gap-3">
             <!-- General Appearance Settings Card -->
             <div class="p-3">
                 <div>
@@ -49,7 +95,7 @@
                     <tbody>
                     <!-- Landing Page Selection Row -->
                     <tr>
-                        <td class="left" colspan="2">Landing page <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose which page the NEXUS app displays when it starts."></i></td>
+                        <td class="left" colspan="2">Landing page <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose which page the NEXUS App displays when it starts."></i></td>
                         <td class="right">
                             <label>
                                 <select class="form-select appearance-landing" onchange="landing = this.value; setLanding(this.value);">
@@ -203,10 +249,143 @@
             </div>
         </div>
 
-        <!-- Module Settings Section (Currently Empty) -->
-        <div id="module-settings" class="settings-card overflow-auto flex-column gap-3 active">
-            <!-- Content for module settings will be added here -->
+        <!-- Download Settings Section -->
+        <div id="download-settings" class="settings-card overflow-auto flex-column gap-3">
+
         </div>
+
+        <!-- Java Settings Section -->
+        <div id="java-settings" class="settings-card overflow-auto flex-column gap-3">
+            <div class="p-3">
+                <div>
+                    <strong>Java installations</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <!-- Java 21 path selection row -->
+                    <tr class="java-21-path-value">
+                        <td class="left" colspan="2">Java 21 installation path <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you select an installed Java 21 version or the path where the NEXUS App should install Java 21."></i></td>
+                        <td>
+                            <span class="java-21-path-value">C:\Program Files\Java\jdk-21\</span>
+                        </td>
+                        <td class="right">
+                            <a>Select path</a>
+                        </td>
+                    </tr>
+                    <!-- Java 21 path selection row -->
+                    <tr class="java-11-path-value">
+                        <td class="left" colspan="2">Java 11 installation path <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you select an installed Java 11 version or the path where the NEXUS App should install Java 21."></i></td>
+                        <td>
+                            <span class="java-11-path-value">C:\Program Files\Java\jdk-11\</span>
+                        </td>
+                        <td class="right">
+                            <a>Select path</a>
+                        </td>
+                    </tr>
+                    <!-- Java 21 path selection row -->
+                    <tr class="java-8-path-value last">
+                        <td class="left" colspan="2">Java 8 installation path <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you select an installed Java 8 version or the path where the NEXUS App should install Java 21."></i></td>
+                        <td>
+                            <span class="java-8-path-value">C:\Program Files\Java\jdk-8\</span>
+                        </td>
+                        <td class="right">
+                            <a>Select path</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3">
+                <div>
+                    <strong>Actions</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <!-- Java 21 installation button -->
+                    <tr class="java-21-installer">
+                        <td class="left" colspan="2">Install Java 21 <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="This action lets you (re)install Java 21 in the specified path."></i></td>
+                        <td>
+                            <span class="java-8-path-value">No Java detected</span>
+                        </td>
+                        <td class="right">
+                            <a>Install</a>
+                        </td>
+                    </tr>
+                    <!-- Java 11 installation button -->
+                    <tr class="java-11-installer">
+                        <td class="left" colspan="2">Install Java 11 <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="This action lets you (re)install Java 11 in the specified path."></i></td>
+                        <td>
+                            <span class="java-8-path-value">No Java detected</span>
+                        </td>
+                        <td class="right">
+                            <a>Install</a>
+                        </td>
+                    </tr>
+                    <!-- Java 8 installation button -->
+                    <tr class="java-8-installer">
+                        <td class="left" colspan="2">Install Java 8 <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="This action lets you (re)install Java 8 in the specified path."></i></td>
+                        <td>
+                            <span class="java-8-path-value">No Java detected</span>
+                        </td>
+                        <td class="right">
+                            <a>Install</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Module Settings Section -->
+        <div id="module-settings" class="settings-card overflow-auto flex-column gap-3">
+
+        </div>
+
+        <!-- Account Settings Section -->
+        <div id="account-settings" class="settings-card overflow-auto flex-column gap-3">
+
+        </div>
+
+        <!-- Privacy Settings Section -->
+        <div id="privacy-settings" class="settings-card overflow-auto flex-column gap-3">
+            <div class="p-3">
+                <div>
+                    <strong>Telemetry settings</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <!-- Telemetry Toggle Row -->
+                    <tr class="telemetry-switch disabled">
+                        <td class="left" colspan="2">Enable telemetry <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="For now, telemetry is disabled by default and can't be enabled. Perhaps this option will be removed entirely after the beta anyway."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input disabled class="form-check-input privacy-enableTelemetry switch" type="checkbox" role="switch">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Discord RPC Toggle Row -->
+                    <tr class="discord-rpc-switch last">
+                        <td class="left" colspan="2">Enable Discord Rich Presence <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose whether you want to use Discord Rich Presence to show your friends that you are using the NEXUS App."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="form-check-input privacy-enableDiscordRPC switch" type="checkbox" onchange="console.log('[CONNECTOR] discordrpc.'+this.checked);" role="switch">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Default Instance Settings Section -->
+        <div id="default-instance-settings" class="settings-card overflow-auto flex-column gap-3">
+
+        </div>
+
     </div>
 </div>
-<button onclick="loadScript('assets/nexus/js/settings.js', null);" class="onload d-none">On page load</button>
+<button onclick="loadScript('assets/nexus/js/settings.js', null); setTimeout(()=>{ initSettings(); }, 100);" class="onload d-none">On page load</button>

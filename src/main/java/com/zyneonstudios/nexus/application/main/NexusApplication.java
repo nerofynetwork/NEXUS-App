@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.Main;
-import com.zyneonstudios.nexus.application.authentication.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
@@ -21,9 +20,13 @@ import net.nrfy.nexus.launcher.launcher.*;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
+import utilities.DiscordRichPresence;
+import utilities.MicrosoftAuthenticator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -74,6 +77,14 @@ public class NexusApplication {
 
         // Setup settings storage
         settings = new JsonStorage(workingDirFile.getAbsolutePath() + "/config/settings.json");
+
+        boolean rpc = true;
+        if(settings.has("settings.discord.rpc")) {
+            rpc = settings.getBool("settings.discord.rpc");
+        }
+        if(rpc) {
+            DiscordRichPresence.startRPC();
+        }
 
         // Determine UI mode (online or local)
         this.onlineUI = uiPath != null && uiPath.equals("online");
@@ -230,6 +241,35 @@ public class NexusApplication {
             }
             System.exit(exitCode);
         });
+    }
+
+    /**
+     * Restarts the application.
+     */
+    public static void restart() {
+        try {
+            String java = System.getProperty("java.home") + "/bin/java";
+            File currentJar = new File(NexusApplication.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            if (!currentJar.getName().endsWith(".jar")) {
+                throw new RuntimeException("You need to run the .jar file to restart.");
+            }
+            ArrayList<String> command = new ArrayList<>();
+            command.add(java);
+            command.add("-jar");
+            command.add(currentJar.getPath());
+            ProcessBuilder builder = new ProcessBuilder(command);
+            builder.start();
+            System.exit(0);
+        } catch (Exception e) {
+            getLogger().err("Couldn't restart application: " + e.getMessage());
+            if(getInstance()!=null) {
+                if(getInstance().getApplicationFrame()!=null) {
+                    getInstance().getApplicationFrame().setVisible(false);
+                    getInstance().getApplicationFrame().executeJavaScript("location.href = 'index.html?app=true'");
+                    getInstance().getApplicationFrame().setVisible(true);
+                }
+            }
+        }
     }
 
     // --- Getter Methods ---

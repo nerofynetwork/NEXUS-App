@@ -1,6 +1,7 @@
 package com.zyneonstudios.nexus.application.listeners;
 
-import com.zyneonstudios.nexus.application.authentication.MicrosoftAuthenticator;
+import utilities.DiscordRichPresence;
+import utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 
@@ -19,13 +20,23 @@ public class PageLoadListener extends PageLoadedEvent {
             } else {
                 NexusApplication.getInstance().getApplicationFrame().executeJavaScript("loadPage('login.html');");
             }
+            DiscordRichPresence.setDetails("Looking at their library...");
         }
         if(getUrl().toLowerCase().contains("page=login")) {
             if(MicrosoftAuthenticator.isLoggedIn()) {
                 NexusApplication.getInstance().getApplicationFrame().executeJavaScript("loadPage('library.html');");
             }
+            DiscordRichPresence.setDetails("Looking at their library...");
         }
-
+        if(getUrl().toLowerCase().contains("page=discover")) {
+            DiscordRichPresence.setDetails("Exploring resources...");
+        }
+        if(getUrl().toLowerCase().contains("page=settings")) {
+            DiscordRichPresence.setDetails("Customizing their settings...");
+        }
+        if(getUrl().toLowerCase().contains("page=downloads")) {
+            DiscordRichPresence.setDetails("Looking at downloads...");
+        }
         return true;
     }
 }

@@ -1,6 +1,7 @@
 package com.zyneonstudios.nexus.application.listeners;
 
-import com.zyneonstudios.nexus.application.authentication.MicrosoftAuthenticator;
+import utilities.DiscordRichPresence;
+import utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
@@ -43,10 +44,29 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             }
         } else if (s.equals("exit")) {
             NexusApplication.stop(0);
+        } else if (s.equals("restart")) {
+            NexusApplication.restart();
         } else if(s.equals("logout")) {
             MicrosoftAuthenticator.logout();
         } else if(s.equals("login")) {
             MicrosoftAuthenticator.startLogin(true);
+        } else if(s.equals("discordrpc")) {
+            boolean rpc = true;
+            if(NexusApplication.getInstance().getSettings().has("settings.discord.rpc")) {
+                try {
+                    rpc = NexusApplication.getInstance().getSettings().getBool("settings.discord.rpc");
+                } catch (Exception ignore) {}
+            }
+            System.out.println("document.querySelector('.privacy-enableDiscordRPC').checked = "+rpc+";");
+            NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.querySelector('.privacy-enableDiscordRPC').checked = "+rpc+";");
+        } else if(s.startsWith("discordrpc.")) {
+            if(s.replace("discordrpc.", "").equals("true")) {
+                DiscordRichPresence.startRPC();
+                NexusApplication.getInstance().getSettings().set("settings.discord.rpc", true);
+            } else {
+                DiscordRichPresence.stopRPC();
+                NexusApplication.getInstance().getSettings().set("settings.discord.rpc", false);
+            }
         } else if(s.equals("run.test")) {
             FabricLauncher launcher = NexusApplication.getFabricLauncher();
             launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));

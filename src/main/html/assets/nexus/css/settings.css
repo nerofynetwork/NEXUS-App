@@ -8,10 +8,6 @@
 
 .settings-card.active {
     display: flex;
-
-    .card {
-        box-shadow: none !important;
-    }
 }
 
 .submenu {
@@ -20,7 +16,6 @@
 
 table.table {
     border-radius: var(--bs-border-radius-sm);
-    overflow: hidden;
     margin-top: 0.25rem !important;
 
     tbody {
@@ -33,10 +28,14 @@ table.table {
         tr {
 
             td {
+                color: var(--nex-fg);
                 position: relative;
                 padding: 0.5rem 1rem;
                 background: transparent;
                 border-bottom: 1px solid var(--bs-border-color-translucent);
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                max-width: 33vw;
 
                 * {
                     transition: all var(--nex-animation-speed) ease;
@@ -49,6 +48,21 @@ table.table {
                 i:hover {
                     cursor: help;
                     opacity: 0.5;
+                }
+
+                a {
+                    margin: 0.1rem 0 0 0;
+                    padding: 0.2rem 0.5rem 0.3rem 0.5rem;
+                    border-radius: var(--bs-border-radius-lg);
+                    background: var(--nex-darker-300);
+                    border: 1px solid var(--bs-border-color-translucent);
+                }
+
+                a:hover {
+                    cursor: pointer;
+                    color: var(--nex-iv) !important;
+                    background: var(--nex-darker-200);
+                    border: 1px solid var(--bs-border-color-translucent);
                 }
 
                 select {
@@ -69,6 +83,10 @@ table.table {
                     .form-switch {
                         margin-left: 0.5rem;
                     }
+                }
+
+                p.value {
+
                 }
 
                 input.range {
@@ -240,5 +258,28 @@ table.table {
                 border-bottom: none;
             }
         }
+    }
+}
+
+#exit-button:hover {
+    background: var(--bs-danger) !important;
+    animation: wiggle 0.1s linear infinite;
+}
+
+@keyframes wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    33% {
+        transform: rotate(-1deg);
+    }
+
+    66% {
+        transform: rotate(1deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
     }
 }
