@@ -238,6 +238,7 @@ public class NexusApplication {
      */
     public static void stop(int exitCode) {
         SwingUtilities.invokeLater(() -> {
+            getInstance().getWebSetup().getWebApp().dispose();
             try {
                 if (getInstance().getWebSetup() != null && getInstance().getWebSetup().getWebApp() != null) {
                     getInstance().getWebSetup().getWebApp().dispose();
@@ -259,6 +260,7 @@ public class NexusApplication {
      */
     public static void restart() {
         try {
+            getInstance().getWebSetup().getWebApp().dispose();
             String java = System.getProperty("java.home") + "/bin/java";
             File currentJar = new File(NexusApplication.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             if (!currentJar.getName().endsWith(".jar")) {
