@@ -313,6 +313,15 @@ function addAccountToAccountList(name, uuid) {
     }
 }
 
+function copyUUID(element) {
+    navigator.clipboard.writeText(element.innerText);
+    const popover = bootstrap.Popover.getOrCreateInstance(element);
+    popover.show();
+    setTimeout(() => {
+        popover.hide();
+    }, 2000);
+}
+
 try {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));

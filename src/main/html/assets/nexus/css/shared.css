@@ -395,6 +395,8 @@ body {
                 justify-content: center;
                 align-items: center;
                 color: var(--nex-fg);
+                white-space: nowrap;
+                text-overflow: ellipsis;
 
                 * {
                     transition: all var(--nex-animation-speed) ease;
@@ -448,6 +450,16 @@ body {
                 a:hover {
                     color: var(--nex-primary);
                     cursor: pointer;
+                }
+
+                select#authenticatedAccounts {
+                    border: none;
+                    background: var(--nex-brighter-100);
+                    border-radius: var(--bs-border-radius-sm);
+
+                    option {
+                        background: var(--nex-bg);
+                    }
                 }
             }
         }
