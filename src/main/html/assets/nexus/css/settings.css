@@ -88,6 +88,11 @@ table.table {
                     border: 1px solid transparent;
                 }
 
+                span.account-activeUUID {
+                    color: green;
+                    display: none !important;
+                }
+
                 .path-value:hover {
                     z-index: 99999;
                     max-width: fit-content;

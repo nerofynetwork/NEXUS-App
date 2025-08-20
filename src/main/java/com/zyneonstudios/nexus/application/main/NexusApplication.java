@@ -7,7 +7,10 @@ import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
+import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
+import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
+import com.zyneonstudios.nexus.index.ReadableZyndex;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
 import com.zyneonstudios.nexus.utilities.file.FileGetter;
@@ -22,8 +25,6 @@ import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
-import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
-import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,9 @@ import java.util.concurrent.CompletableFuture;
  * It also provides access to various application components and resources.
  */
 public class NexusApplication {
+
+    //Zyndexes
+    public static ReadableZyndex NEX = null;
 
     //Authentication
     private static AuthInfos authInfos = null;
@@ -113,6 +117,11 @@ public class NexusApplication {
             } catch (Exception e) {
                 NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't initialize key management. Account credentials won't be saved. You'll have to login everytime you restart the application.",e.getMessage(), e.getStackTrace(), "If you're on Linux try to install libsecret.");
             }
+        });
+
+        CompletableFuture.runAsync(()->{
+            getLogger().log("Initializing NEX connection...");
+            NEX = new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json");
         });
 
         loadVersion();
