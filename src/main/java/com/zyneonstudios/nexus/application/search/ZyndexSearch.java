@@ -22,6 +22,20 @@ public class ZyndexSearch {
         ArrayList<Instance> instances = new ArrayList<>();
 
         for (Instance instance : zyndex.getInstances()) {
+
+            if (tags != null && tags.length > 0) {
+                boolean tagMissmatch = false;
+                for (String tag : tags) {
+                    if (!instance.getTags().contains(tag.toLowerCase())) {
+                        tagMissmatch = true;
+                        break;
+                    }
+                }
+                if (tagMissmatch) {
+                    continue;
+                }
+            }
+
             if (instance.getId().equals(searchString)) {
                 instances.add(instance);
             } else {
