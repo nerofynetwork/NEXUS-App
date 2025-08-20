@@ -518,9 +518,10 @@ addEventListener("DOMContentLoaded", () => {
 
     // Load a page if specified in the URL
     if (urlParams.has("page")) {
-        const page = urlParams.get("page");
+        let page = urlParams.get("page");
         const menu = urlParams.has("menu") ? urlParams.get("menu") === "true" : false;
-        loadPage(page+"?"+urlParams.toString().replaceAll("?page="+page,"").replaceAll("&page="+page,"").replaceAll("page="+page,""), menu);
+        const params = urlParams.toString().replace("?page="+page,"").replace("&page="+page,"").replace("page="+page,"");
+        loadPage(page, menu, params);
         try {
             highlight(document.getElementById(page.toLowerCase().replace(".html", "-button")));
         } catch (ignore) { }
@@ -631,16 +632,19 @@ function applyAccentColorToElement(e, c) {
  * Loads a page into the content area.
  * @param {string} page - The name of the page to load (e.g., "settings.html").
  * @param {boolean} menu - Whether to enable the menu after loading the page.
+ * @param {string} params - Additional parameters to pass to the page.
  */
-function loadPage(page, menu) {
+function loadPage(page, menu, params = "") {
     const contentDiv = document.getElementById('content');
-    let params = "&";
-    if(page.includes("&")) {
-        params = params+page.split("&")[1];
-        page = page.split("&")[0];
+    if(params) {
+        if (params.startsWith("?")) {
+            params.replace("?", "&");
+        } else if (!params.startsWith("&")) {
+            params += "&";
+        }
     }
     document.querySelector("#page-specific").innerHTML = "";
-    window.history.pushState({}, document.title, window.location.pathname + "?page=" + page+params);
+    window.history.pushState({}, document.title, window.location.pathname + "?page=" + page + params);
     fetch(page)
         .then(response => response.text())
         .then(html => {

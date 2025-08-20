@@ -76,6 +76,28 @@ table.table {
                     min-width: 8rem;
                 }
 
+                .path-value {
+                    position: relative;
+                    display: flex;
+                    overflow: hidden;
+                    width: fit-content;
+                    max-width: 20vw;
+                    text-overflow: ellipsis;
+                    padding: 0 0.5rem;
+                    border-radius: var(--bs-border-radius-lg);
+                    border: 1px solid transparent;
+                }
+
+                .path-value:hover {
+                    z-index: 99999;
+                    max-width: fit-content;
+                    cursor: pointer;
+                    color: var(--nex-iv);
+                    background: var(--bs-body-bg);
+                    box-shadow: 0 0 0.4rem black;
+                    border: 1px solid var(--bs-border-color-translucent);
+                }
+
                 .text-switch {
                     z-index: 1;
                     display: flex;
