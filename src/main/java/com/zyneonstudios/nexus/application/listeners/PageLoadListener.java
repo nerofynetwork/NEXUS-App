@@ -16,7 +16,7 @@ public class PageLoadListener extends PageLoadedEvent {
         NexusApplication.getInstance().getApplicationFrame().executeJavaScript("enableDevTools("+NexusApplication.getLogger().isDebugging()+");","app = true;","localStorage.setItem('enabled','true');","version = 'Desktop v"+NexusApplication.getInstance().getVersion()+"';");
         if(getUrl().toLowerCase().contains("page=library")) {
             if(MicrosoftAuthenticator.isLoggedIn()) {
-                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.querySelector('.menu-panel').querySelector('.card-body').innerHTML = \"<button type='button' class='btn btn-light shadow' onclick=\\\"console.log('[CONNECTOR] logout');\\\"> Logout "+MicrosoftAuthenticator.getUsername()+"</button>\";");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.querySelector('.menu-panel').querySelector('.card-body').innerHTML = \"<div style='margin-left: 0.5rem;'><img src='https://cravatar.eu/helmhead/"+MicrosoftAuthenticator.getUUID()+"/128.png'></div><div class='w-100 h-100 p-2 d-flex flex-column'><p>Logged in as <strong>"+MicrosoftAuthenticator.getUsername()+"</strong><br><a onclick=\\\"loadPage('settings.html&st=account-settings');\\\">Manage account(s)</a></p></div>\";");
             } else {
                 NexusApplication.getInstance().getApplicationFrame().executeJavaScript("loadPage('login.html');");
             }

@@ -1,16 +1,17 @@
 package com.zyneonstudios.nexus.application.utilities;
 
+import com.google.gson.JsonArray;
 import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.zyneon.auth.ZyneonAuth;
 
-import java.util.Base64;
-import java.util.HashMap;
+import java.util.*;
 
 public class MicrosoftAuthenticator {
 
     private static AuthInfos authInfos = null;
+    private static ArrayList<String> authenticatedUUIDs;
 
     public static void startLogin(boolean save) {
         try {
@@ -19,9 +20,7 @@ public class MicrosoftAuthenticator {
             NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't fetch the Microsoft token.",exception.getMessage(), exception.getStackTrace());
         }
 
-        if(NexusApplication.getInstance().getApplicationFrame() != null) {
-            NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
-        }
+        refreshBrowser();
     }
 
     public static void refresh(String token, boolean save) {
@@ -31,9 +30,7 @@ public class MicrosoftAuthenticator {
             NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't refresh the Microsoft token.",exception.getMessage(), exception.getStackTrace());
         }
 
-        if(NexusApplication.getInstance().getApplicationFrame() != null) {
-            NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
-        }
+        refreshBrowser();
     }
 
     private static void setAuthInfos(HashMap<ZyneonAuth.AuthInfo, String> authData, boolean save) {
@@ -50,25 +47,52 @@ public class MicrosoftAuthenticator {
             String token = Base64.getEncoder().encodeToString(authData.get(ZyneonAuth.AuthInfo.REFRESH_TOKEN).getBytes());
             Keytar.getInstance().setPassword("ZNA||00||00","0",UUID);
             Keytar.getInstance().setPassword("ZNA||01||00",UUID+"_0",token);
+            NexusApplication.getInstance().getData().ensure("data.authentication.uuids",new JsonArray());
+            if(!authenticatedUUIDs.contains(UUID)) {
+                authenticatedUUIDs.add(UUID);
+            }
+            NexusApplication.getInstance().getData().set("data.authentication.uuids",authenticatedUUIDs);
+            NexusApplication.getInstance().getData().set("data.authentication.names."+UUID,Base64.getEncoder().encodeToString(getUsername().getBytes()));
         } catch (Exception e) {
             NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't save credentials.",e.getMessage(), e.getStackTrace());
         }
     }
 
     public static void logout() {
+        logout(authInfos.getUuid());
+    }
+
+    public static void logout(String decryptedUUID) {
         try {
-            String UUID = Base64.getEncoder().encodeToString(authInfos.getUuid().getBytes());
+            String encryptedUUID = Base64.getEncoder().encodeToString(decryptedUUID.getBytes());
             Keytar.getInstance().deletePassword("ZNA||00||00","0");
-            Keytar.getInstance().deletePassword("ZNA||01||00",UUID+"_0");
+            Keytar.getInstance().deletePassword("ZNA||01||00",encryptedUUID+"_0");
+            NexusApplication.getInstance().getData().ensure("data.authentication.uuids",new JsonArray());
+            if(authenticatedUUIDs.contains(encryptedUUID)) {
+                authenticatedUUIDs.remove(encryptedUUID);
+                NexusApplication.getInstance().getData().set("data.authentication.uuids",authenticatedUUIDs);
+            }
+            NexusApplication.getInstance().getData().delete("data.authentication.names."+encryptedUUID);
         } catch (Exception e) {
             NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't delete credentials.",e.getMessage(), e.getStackTrace());
         }
 
-        authInfos = null;
-        NexusApplication.setAuthInfos(null);
+        if(Objects.equals(getUUID(), decryptedUUID)) {
+            authInfos = null;
+            NexusApplication.setAuthInfos(null);
+        }
 
-        if(NexusApplication.getInstance().getApplicationFrame() != null) {
-            NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
+        refreshBrowser();
+
+        if(authInfos == null) {
+            if (!authenticatedUUIDs.isEmpty()) {
+                try {
+                    System.out.println(authenticatedUUIDs.getFirst() + "_0");
+                    refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00", authenticatedUUIDs.getFirst() + "_0"))), true);
+                } catch (Exception e) {
+                    NexusApplication.getLogger().printErr("NEXUS", "AUTHENTICATION", "Couldn't refresh the Microsoft token.", e.getMessage(), e.getStackTrace());
+                }
+            }
         }
     }
 
@@ -88,5 +112,50 @@ public class MicrosoftAuthenticator {
 
     public static boolean isLoggedIn() {
         return authInfos != null;
+    }
+
+    public static void init() {
+        NexusApplication.getInstance().getData().ensure("data.authentication.uuids",new JsonArray());
+        authenticatedUUIDs = (ArrayList<String>)NexusApplication.getInstance().getData().get("data.authentication.uuids");
+    }
+
+    public static List<String> getAuthenticatedUUIDs() {
+        return List.copyOf(authenticatedUUIDs);
+    }
+
+    public static String getAuthenticatedUsername(String UUID) {
+        if(authenticatedUUIDs.contains(UUID)) {
+            return NexusApplication.getInstance().getData().getString("data.authentication.names."+UUID);
+        }
+        return null;
+    }
+
+    public static List<String> getDecryptedAuthenticatedUUIDs() {
+        ArrayList<String> decryptedUUIDs = new ArrayList<>();
+        for(String s:authenticatedUUIDs) {
+            decryptedUUIDs.add(new String(Base64.getDecoder().decode(s)));
+        }
+        return decryptedUUIDs;
+    }
+
+    public static String getDecryptedAuthenticatedUsername(String UUID) {
+        String name = null;
+        if(authenticatedUUIDs.contains(UUID)) {
+            name = NexusApplication.getInstance().getData().getString("data.authentication.names."+UUID);
+        } else if(authenticatedUUIDs.contains(Base64.getEncoder().encodeToString(UUID.getBytes()))) {
+            UUID = Base64.getEncoder().encodeToString(UUID.getBytes());
+            name = NexusApplication.getInstance().getData().getString("data.authentication.names."+UUID);
+        }
+        return new String(Base64.getDecoder().decode(name));
+    }
+
+    private static void refreshBrowser() {
+        if(NexusApplication.getInstance().getApplicationFrame() != null) {
+            if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=library")||NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=login")) {
+                NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
+            } else {
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("loadPage('settings.html&st=account-settings');");
+            }
+        }
     }
 }

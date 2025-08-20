@@ -8,7 +8,7 @@ import com.zyneonstudios.nexus.desktop.frame.web.NWebFrame;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
-import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -43,7 +43,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      * @param decorated Whether the window should have a title bar and borders.
      */
     public AppFrame(NexusWebSetup setup, String url, boolean decorated) {
-        super(setup.getWebClient(), url, decorated, OperatingSystem.getType().equals(OperatingSystem.Type.Windows));
+        super(setup.getWebClient(), url, decorated, NexusApplication.getInstance().getLocalSettings().useNativeWindow());
         try {
             // Set the application icon.
             setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));

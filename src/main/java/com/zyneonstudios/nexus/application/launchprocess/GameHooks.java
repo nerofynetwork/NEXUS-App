@@ -21,7 +21,9 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
-                NexusApplication.getInstance().getApplicationFrame().setState(Frame.ICONIFIED);
+                if(NexusApplication.getInstance().getLocalSettings().minimizeApp()) {
+                    NexusApplication.getInstance().getApplicationFrame().setState(Frame.ICONIFIED);
+                }
             }
         };
     }
@@ -30,7 +32,9 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
-                NexusApplication.getInstance().getApplicationFrame().setState(Frame.NORMAL);
+                if(NexusApplication.getInstance().getLocalSettings().minimizeApp()) {
+                    NexusApplication.getInstance().getApplicationFrame().setState(Frame.NORMAL);
+                }
             }
         };
     }

@@ -394,6 +394,7 @@ body {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                color: var(--nex-fg);
 
                 * {
                     transition: all var(--nex-animation-speed) ease;
@@ -433,6 +434,20 @@ body {
                     cursor: unset;
                     border: 1px solid transparent;
                     background: var(--bs-dark-bg-subtle);
+                }
+
+                img {
+                    width: 2.75rem;
+                    height: 2.75rem;
+                }
+
+                a {
+                    color: var(--nex-iv);
+                }
+
+                a:hover {
+                    color: var(--nex-primary);
+                    cursor: pointer;
                 }
             }
         }

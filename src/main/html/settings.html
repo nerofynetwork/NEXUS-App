@@ -33,13 +33,13 @@
         </div>
         <div class="submenu-group">
             <!-- Button for Account Settings -->
-            <button id="account-settings-button" onclick="showSettingsCategory('account-settings');" type="button" class="btn btn-nex-secondary">
+            <button id="account-settings-button" onclick="showSettingsCategory('account-settings'); console.log('[CONNECTOR] initAccountSettings');" type="button" class="btn btn-nex-secondary">
                 <i class="bi bi-person-circle"></i>
                 <span>Account settings</span>
             </button>
 
             <!-- Button for Privacy Settings -->
-            <button id="privacy-settings-button" onclick="showSettingsCategory('privacy-settings'); console.log('[CONNECTOR] discordrpc');" type="button" class="btn btn-nex-secondary">
+            <button id="privacy-settings-button" onclick="showSettingsCategory('privacy-settings'); console.log('[CONNECTOR] initDiscordRPC');" type="button" class="btn btn-nex-secondary">
                 <i class="bi bi-shield"></i>
                 <span>Privacy settings</span>
             </button>
@@ -87,7 +87,7 @@
         <!-- Appearance Settings Section -->
         <div id="appearance-settings" class="settings-card overflow-auto flex-column gap-3">
             <!-- General Appearance Settings Card -->
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>General appearance settings</strong>
                 </div>
@@ -194,7 +194,7 @@
             </div>
 
             <!-- Dynamic Panel Appearance Settings Card -->
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>Dynamic panel appearance settings</strong>
                 </div>
@@ -247,6 +247,36 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="settings-section">
+                <div>
+                    <strong>Extended appearance settings</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <tr class="hide-app-switch">
+                        <td class="left" colspan="2">Hide application on game start <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Choose whether the application should minimize when the game starts. The app should automatically reappear when the game is closed."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="form-check-input appearance-hideApp switch" type="checkbox" role="switch" onchange="console.log('[CONNECTOR] hideApp.'+this.checked);">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="native-window-switch last">
+                        <td class="left" colspan="2">Use native window decorations (requires restart) <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Selects whether to use the operating system's native window display. Recommended for Windows: on, recommended for Linux: off."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="form-check-input appearance-nativeWindow switch" type="checkbox" role="switch" onchange="console.log('[CONNECTOR] nativeWindow.'+this.checked);">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Download Settings Section -->
@@ -256,7 +286,7 @@
 
         <!-- Java Settings Section -->
         <div id="java-settings" class="settings-card overflow-auto flex-column gap-3">
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>Java installations</strong>
                 </div>
@@ -295,7 +325,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>Actions</strong>
                 </div>
@@ -322,7 +352,7 @@
                         </td>
                     </tr>
                     <!-- Java 8 installation button -->
-                    <tr class="java-8-installer">
+                    <tr class="java-8-installer last">
                         <td class="left" colspan="2">Install Java 8 <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="This action lets you (re)install Java 8 in the specified path."></i></td>
                         <td>
                             <span class="java-8-path-value">No Java detected</span>
@@ -343,12 +373,53 @@
 
         <!-- Account Settings Section -->
         <div id="account-settings" class="settings-card overflow-auto flex-column gap-3">
-
+            <div class="settings-section">
+                <div class="card position-relative glass account-activeProfileCard" style="margin-bottom: 1rem; display: none">
+                    <div class="card-body overflow-hidden position-relative d-flex">
+                        <img alt="player head" class="account-activeSkin" src="assets/nexus/img/steve.png">
+                        <div class="d-flex flex-column" style="padding: 0 0 0 1rem;">
+                            <h4 class="p-0 m-0"><strong class="account-activeName">loading...</strong></h4>
+                            <span class="d-flex position-relative flex-column flex-lg-row gap-1"><strong>UUID: </strong><span class="account-activeUUID">loading...</span></span>
+                            <div style="height: 100%; white-space: nowrap; display: flex; gap: 0.5rem; align-items: flex-end;">
+                                <button type="button" class="btn btn-outline-light" onclick="window.open('https://www.minecraft.net/msaprofile/mygames/editprofile','_blank');">Change username</button>
+                                <button type="button" class="btn btn-outline-light" onclick="window.open('https://www.minecraft.net/msaprofile/mygames/editskin','_blank');">Change skin</button>
+                                <button type="button" class="btn btn-danger" onclick="console.log('[CONNECTOR] logout');">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <strong>Accounts</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <tr class="account-activeRow" style="display: none;">
+                        <td class="left account-activeRowName" colspan="2">loading...</td>
+                        <td class="right">
+                            <span style="padding-right: 0.25rem">Active account</span>
+                        </td>
+                    </tr>
+                    <tr class="account-template" style="display: none;">
+                        <td class="left account-templateName" colspan="2">loading...</td>
+                        <td class="right">
+                            <a onclick="console.log('[CONNECTOR] login.'+this.parentElement.parentElement.id);">Use account</a>
+                            <a onclick="console.log('[CONNECTOR] logout.'+this.parentElement.parentElement.id);">Logout</a>
+                        </td>
+                    </tr>
+                    <tr class="last">
+                        <td class="left" colspan="2">Add account</td>
+                        <td class="right">
+                            <button onclick="console.log('[CONNECTOR] login');" type="button" class="btn btn-warning m-0 shadow" style="border: 1px solid var(--bs-border-color-translucent) !important; padding: 0 1rem"><i class="bi bi-microsoft" style="cursor: unset; opacity: 1;"></i> Microsoft Login</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Privacy Settings Section -->
         <div id="privacy-settings" class="settings-card overflow-auto flex-column gap-3">
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>User related privacy settings</strong>
                 </div>
@@ -383,14 +454,14 @@
 
         <!-- Default Instance Settings Section -->
         <div id="default-instance-settings" class="settings-card overflow-auto flex-column gap-3">
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>Game window settings</strong>
                 </div>
                 <table class="table m-0">
                     <tbody>
-                    <tr class="fullscreen-switch last">
-                        <td class="left" colspan="2">Launch game in fullscreen <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose whether you want to use Discord Rich Presence to show your friends that you are using the NEXUS App."></i></td>
+                    <tr class="fullscreen-switch">
+                        <td class="left" colspan="2">Launch game in fullscreen <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you choose whether the game should start in full screen or not."></i></td>
                         <td class="right">
                             <div class="form-switch">
                                 <label>
@@ -399,17 +470,37 @@
                             </div>
                         </td>
                     </tr>
+                    <tr class="game-width-input">
+                        <td class="left" colspan="2">Game window width <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Sets the window width of the game."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="number-display instance-windowWidth" type="number" step="1" value="854" oninput="">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="game-height-input last">
+                        <td class="left" colspan="2">Game window height <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Sets the window height of the game."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="number-display instance-windowHeight" type="number" step="1" value="480" oninput="">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="p-3">
+            <div class="settings-section">
                 <div>
                     <strong>Java settings</strong>
                 </div>
                 <table class="table m-0">
                     <tbody>
-                    <tr class="memory-range last">
-                        <td class="left">Allocated memory (in MB) <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you set the radius of the rounded edges. This determines how rounded the corners of the NEXUS App interface should be, with a value between 0 and 2 (1 by default)."></i></td>
+                    <tr class="memory-range">
+                        <td class="left">Allocated memory (in MB) <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you specify how much RAM in megabytes (MB) the game uses by default."></i></td>
                         <td>
                             <label>
                                 <input class="number-display instance-JavaMemoryDisplay" type="number" min="512" max="16384" step="1" value="1024" oninput="document.body.querySelector('.instance-JavaMemory').value = this.value;" onchange="document.body.querySelector('.instance-JavaMemory').value = this.value;">
@@ -419,6 +510,65 @@
                             <label>
                                 <input type="range" class="range instance-JavaMemory form-range" min="512" value="1024" max="16384" step="1" oninput="document.body.querySelector('.instance-JavaMemoryDisplay').value = this.value;">
                             </label>
+                        </td>
+                    </tr>
+                    <tr class="java-args-input">
+                        <td class="left" colspan="2">Java arguments <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Sets the window height of the game."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="text-display instance-javaArgs" type="text" oninput="">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="environmental-args-input last">
+                        <td class="left" colspan="2">Environmental arguments <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Sets the window height of the game."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="text-display instance-environmentalArgs" type="text" oninput="">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="settings-section">
+                <div>
+                    <strong>Game hook settings</strong>
+                </div>
+                <table class="table m-0">
+                    <tbody>
+                    <tr class="java-args-input">
+                        <td class="left" colspan="2">Pre-launch command <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you execute a command right before the game starts."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="text-display instance-javaArgs" type="text" oninput="">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="java-args-input">
+                        <td class="left" colspan="2">On launch command <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you execute a command when the game starts."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="text-display instance-javaArgs" type="text" oninput="">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="environmental-args-input last">
+                        <td class="left" colspan="2">On exit command <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you execute a command when the game closes."></i></td>
+                        <td class="right">
+                            <div class="form-switch">
+                                <label>
+                                    <input class="text-display instance-environmentalArgs" type="text" oninput="">
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     </tbody>

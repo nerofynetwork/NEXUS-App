@@ -54,10 +54,15 @@ function initAppearanceValues() {
     } else {
         resetAccentColorButton.style.display = "none";
     }
+    console.log("[CONNECTOR] initAppearanceValues")
 } initAppearanceValues();
 
 function initSettings() {
     showSettingsCategory("appearance-settings")
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.has("st")) {
+        document.getElementById(urlParams.get("st")+"-button").click();
+    }
 }
 
 function showSettingsCategory(category) {
@@ -294,6 +299,18 @@ function setSettingsToPanel(bool) {
     settingsInMenu = !bool;
     setStorageItem("settings.appearance.settingsInPanel", settingsInMenu);
     updateButtonVisibility();
+}
+
+function addAccountToAccountList(name, uuid) {
+    if(!document.getElementById(uuid)) {
+        const template = document.querySelector(".account-template");
+        const account = template.cloneNode(true);
+        account.id = uuid;
+        account.classList.remove("account-template");
+        account.style.display = "";
+        account.querySelector(".account-templateName").innerText = name;
+        template.parentNode.insertBefore(account, template);
+    }
 }
 
 try {

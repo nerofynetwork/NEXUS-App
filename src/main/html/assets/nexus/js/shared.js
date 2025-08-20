@@ -634,7 +634,13 @@ function applyAccentColorToElement(e, c) {
  */
 function loadPage(page, menu) {
     const contentDiv = document.getElementById('content');
+    let params = "&";
+    if(page.includes("&")) {
+        params = params+page.split("&")[1];
+        page = page.split("&")[0];
+    }
     document.querySelector("#page-specific").innerHTML = "";
+    window.history.pushState({}, document.title, window.location.pathname + "?page=" + page+params);
     fetch(page)
         .then(response => response.text())
         .then(html => {
@@ -664,7 +670,6 @@ function loadPage(page, menu) {
     } else {
         disableMenu(true);
     }
-    window.history.pushState({}, document.title, window.location.pathname + "?page=" + page);
     console.log("[CONNECTOR] event.page.loaded");
 }
 

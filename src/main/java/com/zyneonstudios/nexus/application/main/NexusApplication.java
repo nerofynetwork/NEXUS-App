@@ -15,6 +15,7 @@ import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
+import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import net.nrfy.nexus.launcher.launcher.*;
 import org.cef.browser.CefBrowser;
@@ -55,6 +56,8 @@ public class NexusApplication {
 
     // Configuration and State
     private final JsonStorage settings;
+    private final JsonStorage data;
+    private final ApplicationSettings localSettings = new ApplicationSettings();
     private final boolean onlineUI;
     private boolean launched = false;
     private String version = StringGenerator.generateAlphanumericString(12);
@@ -75,8 +78,15 @@ public class NexusApplication {
         }
         NexusApplication.workingDir = workingDirFile.getAbsolutePath().replace("\\", "/");
 
-        // Setup settings storage
+        // Setup settings and data storage
         settings = new JsonStorage(workingDirFile.getAbsolutePath() + "/config/settings.json");
+        data = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/application.json");
+
+        settings.ensure("settings.window.nativeDecorations", OperatingSystem.getType().equals(OperatingSystem.Type.Windows));
+        localSettings.setUseNativeWindow(settings.getBool("settings.window.nativeDecorations"));
+
+        settings.ensure("settings.window.minimizeOnStart",true);
+        localSettings.setMinimizeApp(settings.getBool("settings.window.minimizeOnStart"));
 
         boolean rpc = true;
         if(settings.has("settings.discord.rpc")) {
@@ -94,6 +104,7 @@ public class NexusApplication {
 
         CompletableFuture.runAsync(()->{
             getLogger().log("Checking if user is logged in...");
+            MicrosoftAuthenticator.init();
             try {
                 if(Keytar.getInstance().getPassword("ZNA||00||00","0")!=null) {
                     MicrosoftAuthenticator.refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00",Keytar.getInstance().getPassword("ZNA||00||00","0")+"_0"))),true);
@@ -452,5 +463,23 @@ public class NexusApplication {
      */
     public static void setAuthInfos(AuthInfos authInfos) {
         NexusApplication.authInfos = authInfos;
+    }
+
+    /**
+     * Gets the application's local settings.
+     *
+     * @return The ApplicationSettings instance.
+     */
+    public ApplicationSettings getLocalSettings() {
+        return localSettings;
+    }
+
+    /**
+     * Gets the application's data storage.
+     *
+     * @return The JsonStorage instance.
+     */
+    public JsonStorage getData() {
+        return data;
     }
 }
