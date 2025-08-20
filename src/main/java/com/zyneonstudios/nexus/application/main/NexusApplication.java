@@ -26,7 +26,6 @@ import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
