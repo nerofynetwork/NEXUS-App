@@ -18,6 +18,7 @@ import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import net.nrfy.nexus.launcher.launcher.*;
+import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
@@ -224,6 +225,9 @@ public class NexusApplication {
                 getLogger().err("Couldn't launch application: " + e.getMessage());
             }
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> CefApp.getInstance().dispose()));
+
         runner.start();
         moduleLoader = new ModuleLoader(this);
         loadModules();

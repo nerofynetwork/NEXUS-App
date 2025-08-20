@@ -51,6 +51,13 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             // Ignore any exceptions that occur during icon loading.
         }
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                getBrowser().doClose();
+            }
+        });
+
         JMenuBar devBar = new JMenuBar();
         if(Main.getLogger().isDebugging()) {
 
