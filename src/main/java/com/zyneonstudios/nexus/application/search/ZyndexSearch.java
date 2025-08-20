@@ -14,7 +14,6 @@ public class ZyndexSearch {
     }
 
     public ReadableZyndex getZyndex() {
-        search("suche");
         return zyndex;
     }
 
