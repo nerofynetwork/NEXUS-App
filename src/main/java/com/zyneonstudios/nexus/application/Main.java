@@ -18,7 +18,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class Main {
 
     // Application Logger
-    private static final NexusLogger logger = new NexusLogger("NEXUS");
+    private static final NexusLogger logger = NexusUtilities.getLogger();
 
     // Application Configuration
     private static String path = "";
@@ -124,6 +124,7 @@ public class Main {
      *
      * @return The NexusLogger instance.
      */
+    @Deprecated(forRemoval = true)
     public static NexusLogger getLogger() {
         return logger;
     }

@@ -1,6 +1,5 @@
 package com.zyneonstudios.nexus.application.frame;
 
-import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.listeners.AsyncConnectorListener;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.desktop.frame.nexus.NexusWebFrame;
@@ -59,7 +58,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         });
 
         JMenuBar devBar = new JMenuBar();
-        if(Main.getLogger().isDebugging()) {
+        if(NexusApplication.getLogger().isDebugging()) {
 
             JMenu browser = new JMenu("Browser");
             browser.getPopupMenu().setBackground(Color.black);

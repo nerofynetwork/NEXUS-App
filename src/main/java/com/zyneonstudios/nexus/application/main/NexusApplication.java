@@ -7,11 +7,11 @@ import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
-import com.zyneonstudios.nexus.application.search.ZyndexSearch;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
+import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
 import com.zyneonstudios.nexus.utilities.file.FileGetter;
@@ -123,9 +123,6 @@ public class NexusApplication {
         CompletableFuture.runAsync(()->{
             getLogger().log("Initializing NEX connection...");
             NEX = new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json");
-
-            ZyndexSearch search = new ZyndexSearch(NEX);
-            search.search("UKZP");
         });
 
         loadVersion();
@@ -310,7 +307,7 @@ public class NexusApplication {
      * @return The NexusLogger instance.
      */
     public static NexusLogger getLogger() {
-        return Main.getLogger();
+        return NexusUtilities.getLogger();
     }
 
     /**
