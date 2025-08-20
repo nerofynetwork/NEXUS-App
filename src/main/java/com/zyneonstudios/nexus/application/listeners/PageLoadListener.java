@@ -16,13 +16,14 @@ public class PageLoadListener extends PageLoadedEvent {
         NexusApplication.getInstance().getApplicationFrame().executeJavaScript("enableDevTools("+NexusApplication.getLogger().isDebugging()+");","app = true;","localStorage.setItem('enabled','true');","version = 'Desktop v"+NexusApplication.getInstance().getVersion()+"';");
         if(getUrl().toLowerCase().contains("page=library")) {
             if(MicrosoftAuthenticator.isLoggedIn()) {
-                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.querySelector('.menu-panel').querySelector('.card-body').innerHTML = \"<div style='margin-left: 0.5rem;'><img src='https://cravatar.eu/helmhead/"+MicrosoftAuthenticator.getUUID()+"/128.png'></div><div class='w-100 h-100 p-2 d-flex flex-column'><p>Account: <label><select id='authenticatedAccounts' onchange=\\\"console.log('[CONNECTOR] login.'+this.value);\\\"><option value='"+MicrosoftAuthenticator.getUUID()+"'>"+MicrosoftAuthenticator.getUsername()+"</option></select></label><br><a onclick=\\\"loadPage('settings.html&st=account-settings');\\\">Manage account(s)</a></p></div>\";");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.querySelector('.menu-panel').querySelector('.card-body').innerHTML = \"<div style='margin-left: 0.5rem;'><img src='https://cravatar.eu/helmhead/"+MicrosoftAuthenticator.getUUID()+"/128.png'></div><div class='w-100 h-100 p-2 d-flex flex-column'><p>Account: <label><select id='authenticatedAccounts' onchange=\\\"console.log('[CONNECTOR] login.'+this.value); document.getElementById('login-overlay').innerText = 'Please wait...';\\\"><option value='"+MicrosoftAuthenticator.getUUID()+"'>"+MicrosoftAuthenticator.getUsername()+"</option></select></label><br><a onclick=\\\"loadPage('settings.html&st=account-settings');\\\">Manage account(s)</a></p></div>\";");
                 for(String u:MicrosoftAuthenticator.getDecryptedAuthenticatedUUIDs()) {
                     if (!u.equals(MicrosoftAuthenticator.getUUID())) {
                         String n = MicrosoftAuthenticator.getDecryptedAuthenticatedUsername(u);
                         NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('authenticatedAccounts').innerHTML += \"<option value='" + u + "'>" + n + "</option>\"");
                     }
                 }
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('authenticatedAccounts').innerHTML += \"<option value='new'>Add account</option>\"");
             } else {
                 NexusApplication.getInstance().getApplicationFrame().executeJavaScript("loadPage('login.html');");
             }

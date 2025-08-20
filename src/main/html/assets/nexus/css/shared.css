@@ -79,6 +79,35 @@
     display: none;
 }
 
+#login-overlay {
+    z-index: 99999;
+    position: fixed;
+    background: var(--nex-bg);
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+    font-size: 1.5rem;
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        position: relative;
+        width: fit-content;
+        text-align: center;
+
+        a {
+            width: 100%;
+        }
+    }
+}
+
+#login-overlay.active {
+    display: flex;
+}
+
 button {
     i {
         margin-right: 0.5rem;

@@ -402,8 +402,8 @@
                     <tr class="account-template" style="display: none;">
                         <td class="left account-templateName" colspan="2">loading...</td>
                         <td class="right">
-                            <a onclick="console.log('[CONNECTOR] login.'+this.parentElement.parentElement.id);">Use account</a>
-                            <a onclick="console.log('[CONNECTOR] logout.'+this.parentElement.parentElement.id);">Logout</a>
+                            <a onclick="console.log('[CONNECTOR] login.'+this.parentElement.parentElement.id); document.getElementById('login-overlay').innerText = 'Please wait...';">Use account</a>
+                            <a onclick="console.log('[CONNECTOR] logout.'+this.parentElement.parentElement.id); document.getElementById('login-overlay').innerText = 'Please wait...';">Logout</a>
                         </td>
                     </tr>
                     <tr class="last">

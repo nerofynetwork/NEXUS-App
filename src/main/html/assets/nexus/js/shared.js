@@ -520,7 +520,7 @@ addEventListener("DOMContentLoaded", () => {
     if (urlParams.has("page")) {
         const page = urlParams.get("page");
         const menu = urlParams.has("menu") ? urlParams.get("menu") === "true" : false;
-        loadPage(page, menu);
+        loadPage(page+"?"+urlParams.toString().replaceAll("?page="+page,"").replaceAll("&page="+page,"").replaceAll("page="+page,""), menu);
         try {
             highlight(document.getElementById(page.toLowerCase().replace(".html", "-button")));
         } catch (ignore) { }

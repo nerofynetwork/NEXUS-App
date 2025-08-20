@@ -22,6 +22,13 @@
 
     <!-- Body of the application -->
     <body data-bs-theme="dark" class="d-flex flex-column h-100 w-100 position-absolute">
+        <!-- Login overlay-->
+        <div id="login-overlay">
+            <p>
+                Please finish the login process...<br>
+                <a type="button" class="btn btn-danger" onclick="location.reload();">Cancel</a>
+            </p>
+        </div>
         <!-- Screen saver-->
         <div id="screensaver"></div>
         <!-- Title bar (likely for custom window controls) -->

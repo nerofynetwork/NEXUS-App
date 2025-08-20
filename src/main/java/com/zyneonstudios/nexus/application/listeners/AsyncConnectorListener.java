@@ -53,6 +53,10 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             String uuid = s.replace("logout.","");
             MicrosoftAuthenticator.logout(uuid);
         } else if(s.startsWith("login.")) {
+            if(s.replace("login.","").equals("new")) {
+                resolveMessage("login");
+                return;
+            }
             try {
                 MicrosoftAuthenticator.refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00", Base64.getEncoder().encodeToString(s.replace("login.", "").getBytes())+"_0"))), true);
             } catch (Exception e) {

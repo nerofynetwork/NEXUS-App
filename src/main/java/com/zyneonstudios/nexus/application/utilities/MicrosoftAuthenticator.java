@@ -2,6 +2,7 @@ package com.zyneonstudios.nexus.application.utilities;
 
 import com.google.gson.JsonArray;
 import com.starxg.keytar.Keytar;
+import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import live.nerotv.zyneon.auth.ZyneonAuth;
@@ -14,6 +15,8 @@ public class MicrosoftAuthenticator {
     private static ArrayList<String> authenticatedUUIDs;
 
     public static void startLogin(boolean save) {
+        showOverlay(false);
+
         try {
             setAuthInfos(ZyneonAuth.getAuthInfos(), save);
         } catch (Exception exception) {
@@ -24,6 +27,8 @@ public class MicrosoftAuthenticator {
     }
 
     public static void refresh(String token, boolean save) {
+        showOverlay(true);
+
         try {
             setAuthInfos(ZyneonAuth.getAuthInfos(token), save);
         } catch (Exception exception) {
@@ -59,10 +64,12 @@ public class MicrosoftAuthenticator {
     }
 
     public static void logout() {
+        showOverlay(true);
         logout(authInfos.getUuid());
     }
 
     public static void logout(String decryptedUUID) {
+        showOverlay(true);
         try {
             String encryptedUUID = Base64.getEncoder().encodeToString(decryptedUUID.getBytes());
             Keytar.getInstance().deletePassword("ZNA||00||00","0");
@@ -87,7 +94,6 @@ public class MicrosoftAuthenticator {
         if(authInfos == null) {
             if (!authenticatedUUIDs.isEmpty()) {
                 try {
-                    System.out.println(authenticatedUUIDs.getFirst() + "_0");
                     refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00", authenticatedUUIDs.getFirst() + "_0"))), true);
                 } catch (Exception e) {
                     NexusApplication.getLogger().printErr("NEXUS", "AUTHENTICATION", "Couldn't refresh the Microsoft token.", e.getMessage(), e.getStackTrace());
@@ -154,8 +160,17 @@ public class MicrosoftAuthenticator {
             if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=library")||NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=login")) {
                 NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
             } else {
-                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("loadPage('settings.html&st=account-settings');");
+                NexusApplication.getInstance().getApplicationFrame().getBrowser().loadURL(NexusApplication.getInstance().isOnlineUI() ? "https://nerofynetwork.github.io/NEXUS-App/src/main/html/index.html?app=true&page=settings.html&st=account-settings" : "localhost:" + Main.getPort() + "/index.html?app=true&page=settings.html&st=account-settings");
             }
+        }
+    }
+
+    private static void showOverlay(boolean pleaseWait) {
+        if(NexusApplication.getInstance().getApplicationFrame()!=null) {
+            if(pleaseWait) {
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('login-overlay').innerText = 'Please wait...';");
+            }
+            NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('login-overlay').classList.add('active');");
         }
     }
 }
