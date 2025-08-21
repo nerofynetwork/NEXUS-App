@@ -94,7 +94,7 @@ table.table {
                 }
 
                 .path-value:hover {
-                    z-index: 99999;
+                    z-index: 100;
                     max-width: fit-content;
                     cursor: pointer;
                     color: var(--nex-iv);

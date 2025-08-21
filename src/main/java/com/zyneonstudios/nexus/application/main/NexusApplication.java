@@ -7,6 +7,7 @@ import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
+import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
@@ -128,6 +129,8 @@ public class NexusApplication {
         setupTempDirectory();
         setupWebEnvironment(workingDirFile);
         getLogger().log("Initializing application...");
+
+        CurseForgeCategories.init();
     }
 
     /**
@@ -496,5 +499,14 @@ public class NexusApplication {
      */
     public JsonStorage getData() {
         return data;
+    }
+
+    /**
+     * Gets NEX, the official Zyndex instance by Zyneon Nexus
+     *
+     * @return The ReadableZyndex object of our official modpack repository
+     */
+    public static ReadableZyndex getNEX() {
+        return NEX;
     }
 }

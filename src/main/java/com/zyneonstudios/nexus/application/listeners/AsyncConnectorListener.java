@@ -1,16 +1,20 @@
 package com.zyneonstudios.nexus.application.listeners;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.starxg.keytar.Keytar;
-import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
-import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
+import com.zyneonstudios.nexus.application.search.CombinedSearch;
+import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
+import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.verget.fabric.FabricVerget;
 import net.nrfy.nexus.launcher.launcher.FabricLauncher;
+
 import java.awt.*;
 import java.nio.file.Path;
 import java.util.Base64;
@@ -42,6 +46,29 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 event.execute();
             }
 
+        } else if(s.startsWith("search.")) {
+            String search = s.replaceFirst("search.","");
+            CombinedSearch CS = new CombinedSearch();
+
+            for(JsonElement e:CS.search(search)) {
+                JsonObject result = e.getAsJsonObject();
+                //function addSearchResult(id,iconUrl,name,authors,summary,meta,actions,url,connector) {
+
+                String id = result.get("id").getAsString();
+                String iconUrl = result.get("iconUrl").getAsString();
+                String name = result.get("name").getAsString();
+                String downloads = result.get("downloads").getAsString();
+                String followers = result.get("followers").getAsString();
+                String authors = result.getAsJsonArray("authors").get(0).getAsString();
+                String summary = result.get("summary").getAsString();
+                String url = result.get("url").getAsString();
+                String source = result.get("source").getAsString();
+                String connector = result.get("connector").getAsString();
+
+                String cmd = "addSearchResult(\""+id.replace("\"","''")+"\",\""+iconUrl.replace("\"","''")+"\",\""+name.replace("\"","''")+"\",\""+downloads+"\",\""+followers+"\",\""+ authors.replace("\"","''") +"\",\""+summary.replace("\"","''")+"\",\""+url.replace("\"","''")+"\",\""+source.replace("\"","''")+"\",\""+connector.replace("\"","''")+"\");";
+                System.out.println(cmd);
+                frame.executeJavaScript(cmd);
+            }
         } else if (s.equals("exit")) {
             NexusApplication.stop(0);
         } else if (s.equals("restart")) {

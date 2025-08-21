@@ -46,11 +46,6 @@ public class ZyndexSearch {
                 }
             }
         }
-
-        System.out.println("ZyndexSearch: Found " + instances.size() + " instances matching '" + searchString + "'");
-        for (Instance instance : instances) {
-            System.out.println("ZyndexSearch: - " + instance.getName() + " (" + instance.getId() + ")");
-        }
         return instances;
     }
 

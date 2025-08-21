@@ -97,6 +97,7 @@ public class CurseForgeSearch {
                 }
                 search = search + "&index=" + offset;
                 search = search + "&pageSize=" + limit;
+                search = search + "&sortOrder=desc";
                 if(facets != null && !facets.isEmpty()) {
                     search = search + facets;
                 }

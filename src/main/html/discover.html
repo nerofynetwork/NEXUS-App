@@ -1,26 +1,4 @@
-<style>
-    /* Styling for the main discover section */
-    #discover {
-        background: url("assets/nexus/img/bg/discover-home.png") no-repeat center; /* Background image */
-        background-size: cover; /* Cover the entire area */
-        /* The following styles are now applied to the child elements */
-    }
-
-    /* Styling for the header section within discover */
-    #discover #header {
-        height: 90%; /* Takes up 90% of the discover section's height */
-        width: 100%; /* Full width */
-        background: linear-gradient(to bottom, transparent, var(--bs-body-bg)); /* Gradient from transparent to background color */
-    }
-
-    /* Styling for the news section within discover */
-    #discover #news {
-        min-height: 10%; /* Takes up at least 10% of the discover section's height */
-        width: 100%; /* Full width */
-        background: var(--bs-body-bg); /* Background color */
-    }
-</style>
-
+<link href="assets/nexus/css/discover.css" rel="stylesheet">
 <!-- Main container for the discover section -->
 <div id="discover" class="position-relative w-100 h-100 d-flex flex-column">
     <!-- Navigation bar -->
@@ -41,10 +19,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                 </ul>
-                <!-- Search form -->
-                <form class="d-flex" role="search">
-                    <input style="background: var(--nex-brighter-100); border: none;" class="form-control rounded-3" type="search" placeholder="Search" aria-label="Search">
-                </form>
+                <a onclick="document.getElementById('search').classList.toggle('active'); document.getElementById('search-label').querySelector('input').focus();" class="search-button"><i class="bi bi-search"></i> Open Search</a>
             </div>
         </div>
     </nav>
@@ -58,9 +33,46 @@
     </div>
 </div>
 
-<div id="search" class="position-relative w-100 h-100 d-flex flex-column">
+<div id="search" class="nex-flex w-100 h-100">
+    <div class="card bg-dark-subtle submenu glass d-none"></div>
+    <div class="position-relative w-100 m-2 card glass shadow overflow-hidden p-0">
+        <div class="title-menu card-header p-1 shadow border-bottom-0">
+            <h4><label id="search-label">
+                <input onkeydown="if(event.keyCode===13) { resetResults(); console.log('[CONNECTOR] search.'+this.value); }" onfocus="if(!document.getElementById('search').classList.contains('active')) { document.getElementById('search').classList.add('active'); } disableMenu(true);" type="text" placeholder="Search here...">
+            </label></h4>
+            <button onclick="location.reload();" type="button">X</button>
+        </div>
+        <div class="nex-side-view position-relative p-3 overflow-hidden" style="">
+            <div class="w-100 h-100 p-2 overflow-y-auto results-container">
 
+            </div>
+            <div class="d-none template-container">
+                <div class="card glass shadow mw-100 w-100 overflow-hidden search-result search-result-template p-0" style="height: 9rem; display: none; margin-bottom: 0.5rem;">
+                    <img alt="search result-icon" src="">
+                    <div>
+                        <strong class="result-source"></strong>
+                        <h5><strong style="color: var(--nex-iv);" class="result-name"></strong> by <span class="result-authors"></span></h5>
+                        <div class="result-summary-container p-0 m-0"><span class="result-summary"></span></div>
+                        <div class="result-actions-container m-0">
+                            <div class="left p-0 m-0">
+                                <p><i class="bi bi-download"></i> <span class="result-downloads">0</span></p>
+                                <p><i class="bi bi-heart"></i> <span class="result-followers">0</span></p>
+                            </div>
+                            <div class="right p-0 m-0">
+                                <a type="button" class="btn btn-nex-secondary">View</a>
+                                <a type="button" class="btn btn-nex-primary"><i class="bi bi-download"></i> Install</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass" style="max-width: fit-content; width: fit-content; min-width: fit-content;">
+                <strong>Categories</strong><br>
+                to be implemented...
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Button to trigger menu enabling (likely for JavaScript) -->
-<button onclick="loadScript('assets/nexus/js/discover.js', null); enableMenu(true); setTimeout(()=>{ initDiscoverPanel(); }, 100);" class="onload d-none">On page load</button>
+<button onclick="loadScript('assets/nexus/js/discover.js', null); enableMenu(true); setTimeout(()=>{ initDiscoverPanel(); resetResults(); }, 100);" class="onload d-none">On page load</button>
