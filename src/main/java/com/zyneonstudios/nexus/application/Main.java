@@ -120,16 +120,6 @@ public class Main {
     }
 
     /**
-     * Gets the application's logger.
-     *
-     * @return The NexusLogger instance.
-     */
-    @Deprecated(forRemoval = true)
-    public static NexusLogger getLogger() {
-        return logger;
-    }
-
-    /**
      * Gets the port used by the web server.
      *
      * @return The web server port.

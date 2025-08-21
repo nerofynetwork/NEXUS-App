@@ -5,6 +5,13 @@
 // --- Global Variables ---
 
 /**
+ * The offset for the search results.
+ *
+ * @type number
+ */
+let searchOffset = 0;
+
+/**
  * Defines the selected settings category
  *
  * @type string

@@ -29,17 +29,40 @@ function addSearchResult(id,iconUrl,name,downloads,followers,authors,summary,url
         result.classList.remove("search-result-template");
         result.style.display = "flex";
         result.querySelector("img").src = iconUrl;
+        if(url!=="hidden") {
+            result.querySelector("img").onclick = function () {
+                window.open(url,`_blank`);
+            };
+            result.querySelector("img").classList.add("active");
+        }
         result.querySelector(".result-name").innerText = name;
         result.querySelector(".result-authors").innerText = authors;
         result.querySelector(".result-summary").innerText = summary;
         result.querySelector(".result-source").innerText = "@"+source;
         result.querySelector(".result-downloads").innerText = downloads;
+        if(downloads==="hidden") {
+            result.querySelector(".result-downloads").parentElement.remove();
+        }
         result.querySelector(".result-followers").innerText = followers;
+        if(followers==="hidden") {
+            result.querySelector(".result-followers").parentElement.remove();
+        }
+        result.querySelector(".result-url").onclick = function () {
+            window.open(url,`_blank`);
+        };
+        if(url==="hidden") {
+            result.querySelector(".result-url").remove();
+        }
+        result.querySelector(".result-install").onclick = function () {
+            console.log("[CONNECTOR] "+connector);
+        };
         result.classList.add(source.toLowerCase());
         template.parentNode.insertBefore(result, template);
+        document.getElementById("loadmore").style.display = "";
     }
 }
 
 function resetResults() {
+    searchOffset = 0;
     document.querySelector(".results-container").innerHTML = document.querySelector(".template-container").innerHTML;
 }

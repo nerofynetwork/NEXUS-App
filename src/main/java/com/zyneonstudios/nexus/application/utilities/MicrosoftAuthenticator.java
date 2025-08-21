@@ -40,7 +40,7 @@ public class MicrosoftAuthenticator {
 
     private static void setAuthInfos(HashMap<ZyneonAuth.AuthInfo, String> authData, boolean save) {
         authInfos = new AuthInfos(authData.get(ZyneonAuth.AuthInfo.USERNAME), authData.get(ZyneonAuth.AuthInfo.ACCESS_TOKEN), authData.get(ZyneonAuth.AuthInfo.UUID));
-        NexusApplication.setAuthInfos(authInfos);
+        NexusApplication.getInstance().setAuthInfos(authInfos);
         if(save) {
             save(authData);
         }
@@ -86,7 +86,7 @@ public class MicrosoftAuthenticator {
 
         if(Objects.equals(getUUID(), decryptedUUID)) {
             authInfos = null;
-            NexusApplication.setAuthInfos(null);
+            NexusApplication.getInstance().setAuthInfos(null);
         }
 
         refreshBrowser();

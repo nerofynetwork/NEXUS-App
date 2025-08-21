@@ -47,12 +47,16 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             }
 
         } else if(s.startsWith("search.")) {
-            String search = s.replaceFirst("search.","");
+            String[] query = (s.replace("search.","")).split("\\.",2);
+            int offset = Integer.parseInt(query[0]);
+            String search = query[1];
+
             CombinedSearch CS = new CombinedSearch();
+            CS.setLimit(25);
+            CS.setOffset(CS.getOffset()+offset);
 
             for(JsonElement e:CS.search(search)) {
                 JsonObject result = e.getAsJsonObject();
-                //function addSearchResult(id,iconUrl,name,authors,summary,meta,actions,url,connector) {
 
                 String id = result.get("id").getAsString();
                 String iconUrl = result.get("iconUrl").getAsString();
@@ -66,7 +70,6 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 String connector = result.get("connector").getAsString();
 
                 String cmd = "addSearchResult(\""+id.replace("\"","''")+"\",\""+iconUrl.replace("\"","''")+"\",\""+name.replace("\"","''")+"\",\""+downloads+"\",\""+followers+"\",\""+ authors.replace("\"","''") +"\",\""+summary.replace("\"","''")+"\",\""+url.replace("\"","''")+"\",\""+source.replace("\"","''")+"\",\""+connector.replace("\"","''")+"\");";
-                System.out.println(cmd);
                 frame.executeJavaScript(cmd);
             }
         } else if (s.equals("exit")) {
@@ -127,7 +130,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             NexusApplication.restart();
         } else if(s.equals("run.test")) {
 
-            FabricLauncher launcher = NexusApplication.getFabricLauncher();
+            FabricLauncher launcher = NexusApplication.getInstance().getFabricLauncher();
             launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
             launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
             launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));

@@ -41,7 +41,7 @@ public class RootController {
         if (isLocalRequest(url)) {
             try {
                 // Construct the full path to the requested file in the UI directory.
-                String frontendPath = NexusApplication.getUiPath();
+                String frontendPath = NexusApplication.getInstance().getUiPath();
                 File file = new File(frontendPath + path);
 
                 // Check if the file exists

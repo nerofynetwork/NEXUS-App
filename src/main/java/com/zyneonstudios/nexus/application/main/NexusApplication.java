@@ -1,13 +1,16 @@
 package com.zyneonstudios.nexus.application.main;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.Main;
+import com.zyneonstudios.nexus.application.downloads.DownloadManager;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
+import com.zyneonstudios.nexus.application.search.zyndex.LocalZyndex;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
@@ -27,6 +30,7 @@ import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -43,15 +47,19 @@ import java.util.concurrent.CompletableFuture;
 public class NexusApplication {
 
     //Zyndexes
-    public static ReadableZyndex NEX = null;
+    private ReadableZyndex NEX = null;
+    private LocalZyndex localZyndex;
 
     //Authentication
-    private static AuthInfos authInfos = null;
+    private AuthInfos authInfos = null;
+
+    //Download management
+    private final DownloadManager downloadManager;
 
     // Static Instance and Directories
     private static NexusApplication instance = null;
-    private static String workingDir;
-    private static String uiPath = null;
+    private String workingDir;
+    private String uiPath = null;
 
     // Application Components
     private final NexusEventHandler eventHandler = new NexusEventHandler();
@@ -82,11 +90,22 @@ public class NexusApplication {
         if (workingDirFile.mkdirs()) {
             getLogger().deb("Creating working directory (first run)...");
         }
-        NexusApplication.workingDir = workingDirFile.getAbsolutePath().replace("\\", "/");
+        workingDir = workingDirFile.getAbsolutePath().replace("\\", "/");
 
         // Setup settings and data storage
         settings = new JsonStorage(workingDirFile.getAbsolutePath() + "/config/settings.json");
         data = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/application.json");
+
+        // Determine UI mode (online or local)
+        this.onlineUI = uiPath != null && uiPath.equals("online");
+        if (!onlineUI) {
+            this.uiPath = (uiPath != null) ? uiPath : workingDirFile.getAbsolutePath() + "/temp/ui";
+        }
+
+        loadVersion();
+        setupTempDirectory();
+        setupWebEnvironment(workingDirFile);
+        getLogger().log("Initializing application...");
 
         settings.ensure("settings.window.nativeDecorations", OperatingSystem.getType().equals(OperatingSystem.Type.Windows));
         localSettings.setUseNativeWindow(settings.getBool("settings.window.nativeDecorations"));
@@ -102,11 +121,7 @@ public class NexusApplication {
             DiscordRichPresence.startRPC();
         }
 
-        // Determine UI mode (online or local)
-        this.onlineUI = uiPath != null && uiPath.equals("online");
-        if (!onlineUI) {
-            NexusApplication.uiPath = (uiPath != null) ? uiPath : NexusApplication.getWorkingDir().getAbsolutePath() + "/temp/ui";
-        }
+        CurseForgeCategories.init();
 
         CompletableFuture.runAsync(()->{
             getLogger().log("Checking if user is logged in...");
@@ -125,12 +140,8 @@ public class NexusApplication {
             NEX = new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json");
         });
 
-        loadVersion();
-        setupTempDirectory();
-        setupWebEnvironment(workingDirFile);
-        getLogger().log("Initializing application...");
-
-        CurseForgeCategories.init();
+        this.downloadManager = new DownloadManager(this);
+        reloadLocalZyndex(false);
     }
 
     /**
@@ -149,7 +160,7 @@ public class NexusApplication {
      * Sets up the temporary directory for the application.
      */
     private void setupTempDirectory() {
-        File temp = new File(NexusApplication.workingDir + "/temp");
+        File temp = new File(workingDir + "/temp");
         if (temp.exists()) {
             try {
                 FileActions.deleteFolder(temp);
@@ -162,9 +173,9 @@ public class NexusApplication {
         if (temp.mkdirs()) {
             temp.deleteOnExit();
             try {
-                FileExtractor.extractResourceFile("html.zip", NexusApplication.workingDir + "/temp/ui.zip", Main.class);
-                File uiZip = new File(NexusApplication.workingDir + "/temp/ui.zip");
-                FileExtractor.unzipFile(uiZip.getAbsolutePath(), NexusApplication.workingDir + "/temp/ui/");
+                FileExtractor.extractResourceFile("html.zip", workingDir + "/temp/ui.zip", Main.class);
+                File uiZip = new File(workingDir + "/temp/ui.zip");
+                FileExtractor.unzipFile(uiZip.getAbsolutePath(), workingDir + "/temp/ui/");
                 if (!uiZip.delete()) {
                     uiZip.deleteOnExit();
                 }
@@ -301,6 +312,34 @@ public class NexusApplication {
         }
     }
 
+    private boolean reloading = false;
+    public boolean reloadLocalZyndex(boolean retry) {
+        if(!reloading) {
+            reloading = true;
+            try {
+                localZyndex = new LocalZyndex(new JsonStorage(workingDir+"/data/zyndex.json"));
+                //TODO RELOAD ZYNDEX
+
+                reloading = false;
+                return true;
+            } catch (Exception e) {
+                if (!retry) {
+                    JsonStorage zyndex = new JsonStorage(workingDir + "/data/zyndex.json");
+                    zyndex.ensure("name", "Local NEXUS App Zyndex");
+                    zyndex.ensure("url", "file://" + zyndex.getPath().replace("\\", "/"));
+                    zyndex.ensure("owner", "NEXUS App");
+                    zyndex.ensure("modules", new JsonArray());
+                    zyndex.ensure("instances", new JsonArray());
+                    reloadLocalZyndex(true);
+                } else {
+                    getLogger().printErr("NEXUS", "INSTANCE MANAGEMENT", "Fatal error on reloading Zyndex", e.getMessage(), e.getStackTrace());
+                }
+            }
+        }
+        reloading = false;
+        return false;
+    }
+
     // --- Getter Methods ---
 
     /**
@@ -317,7 +356,7 @@ public class NexusApplication {
      *
      * @return The working directory.
      */
-    public static File getWorkingDir() {
+    public File getWorkingDir() {
         return new File(workingDir);
     }
 
@@ -326,7 +365,7 @@ public class NexusApplication {
      *
      * @return The UI path.
      */
-    public static String getUiPath() {
+    public String getUiPath() {
         return uiPath;
     }
 
@@ -434,7 +473,7 @@ public class NexusApplication {
      *
      * @return A pre-initialized Vanilla launcher
      */
-    public static VanillaLauncher getVanillaLauncher() {
+    public VanillaLauncher getVanillaLauncher() {
         return new VanillaLauncher(authInfos);
     }
 
@@ -443,7 +482,7 @@ public class NexusApplication {
      *
      * @return A pre-initialized Fabric launcher
      */
-    public static FabricLauncher getFabricLauncher() {
+    public FabricLauncher getFabricLauncher() {
         return new FabricLauncher(authInfos);
     }
 
@@ -452,7 +491,7 @@ public class NexusApplication {
      *
      * @return A pre-initialized Forge launcher
      */
-    public static ForgeLauncher getForgeLauncher() {
+    public ForgeLauncher getForgeLauncher() {
         return new ForgeLauncher(authInfos);
     }
 
@@ -461,7 +500,7 @@ public class NexusApplication {
      *
      * @return A pre-initialized NeoForge launcher
      */
-    public static NeoForgeLauncher getNeoForgeLauncher() {
+    public NeoForgeLauncher getNeoForgeLauncher() {
         return new NeoForgeLauncher(authInfos);
     }
 
@@ -470,7 +509,7 @@ public class NexusApplication {
      *
      * @return A pre-initialized Quilt launcher
      */
-    public static QuiltLauncher getQuiltLauncher() {
+    public QuiltLauncher getQuiltLauncher() {
         return new QuiltLauncher(authInfos);
     }
 
@@ -479,8 +518,8 @@ public class NexusApplication {
      *
      * @param authInfos Map of authentication information
      */
-    public static void setAuthInfos(AuthInfos authInfos) {
-        NexusApplication.authInfos = authInfos;
+    public void setAuthInfos(AuthInfos authInfos) {
+        authInfos = authInfos;
     }
 
     /**
@@ -506,7 +545,25 @@ public class NexusApplication {
      *
      * @return The ReadableZyndex object of our official modpack repository
      */
-    public static ReadableZyndex getNEX() {
+    public ReadableZyndex getNEX() {
         return NEX;
+    }
+
+    /**
+     * Gets the local Zyndex to manage all local instances
+     *
+     * @return LocalZyndex object
+     */
+    public LocalZyndex getLocalZyndex() {
+        return localZyndex;
+    }
+
+    /**
+     * Gets the download manager
+     *
+     * @return DownloadManager object
+     */
+    public DownloadManager getDownloadManager() {
+        return downloadManager;
     }
 }
