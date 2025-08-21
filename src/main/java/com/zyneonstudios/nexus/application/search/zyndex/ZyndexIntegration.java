@@ -84,22 +84,31 @@ public class ZyndexIntegration {
     @SuppressWarnings("all")
     private static boolean installInstance(Instance instance, File installDir) {
         try {
+            System.out.println(10);
             if(!installDir.exists()) {
                 if(!installDir.mkdirs()) {
                     throw new NullPointerException("Could not find or create instance directory \""+installDir.getAbsolutePath()+"\"");
                 }
             }
+            System.out.println(11);
             Path path = Paths.get(NexusApplication.getInstance().getWorkingDir() +"/temp/"+ UUID.randomUUID() +".zip");
             Download download = new Download(instance.getName(), URI.create(instance.getDownloadUrl()).toURL(),path);
             NexusApplication.getInstance().getDownloadManager().addDownload(download);
+            download.start();
+            System.out.println(12);
             while (!download.isFinished()) {
                 Thread.sleep(1000);
             }
+            System.out.println(13);
             File zip = path.toFile();
+            System.out.println(14);
             if(FileExtractor.unzipFile(zip.getAbsolutePath(),installDir.getAbsolutePath())) {
+                System.out.println(15);
                 zip.delete();
+                System.out.println(16);
                 return FileGetter.downloadFile(instance.getLocation(),installDir.getAbsolutePath()+"/zyneonInstance.json").exists();
             }
+            System.out.println(15.2);
             zip.delete();
         } catch (Exception e) {
             NexusApplication.getLogger().err("[Minecraft] (ZyndexIntegration) Couldn't install instance "+instance.getId()+" v"+instance.getVersion()+": "+e.getMessage());
