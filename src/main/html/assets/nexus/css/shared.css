@@ -114,6 +114,14 @@ button {
     }
 }
 
+.form-check-input.switch {
+    margin: 0;
+}
+
+.form-check-input.switch:hover {
+    cursor: pointer;
+}
+
 .form-switch .form-check-input {
     border-radius: var(--bs-border-radius-2xl);
 }

@@ -107,11 +107,23 @@ public class NexusApplication {
         setupWebEnvironment(workingDirFile);
         getLogger().log("Initializing application...");
 
+        settings.ensure("settings.minecraft.defaultMemory",2048);
+        localSettings.setDefaultMemory(settings.getInt("settings.minecraft.defaultMemory"));
+
         settings.ensure("settings.window.nativeDecorations", OperatingSystem.getType().equals(OperatingSystem.Type.Windows));
         localSettings.setUseNativeWindow(settings.getBool("settings.window.nativeDecorations"));
 
         settings.ensure("settings.window.minimizeOnStart",true);
         localSettings.setMinimizeApp(settings.getBool("settings.window.minimizeOnStart"));
+
+        settings.ensure("settings.discover.search.nex.enabled", true);
+        localSettings.setDiscoverSearchNEX(settings.getBool("settings.discover.search.nex.enabled"));
+
+        settings.ensure("settings.discover.search.curseforge.enabled", true);
+        localSettings.setDiscoverSearchCurseForge(settings.getBool("settings.discover.search.curseforge.enabled"));
+
+        settings.ensure("settings.discover.search.modrinth.enabled", true);
+        localSettings.setDiscoverSearchModrinth(settings.getBool("settings.discover.search.modrinth.enabled"));
 
         boolean rpc = true;
         if(settings.has("settings.discord.rpc")) {

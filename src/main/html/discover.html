@@ -38,7 +38,7 @@
     <div class="position-relative w-100 m-2 card glass shadow overflow-hidden p-0">
         <div class="title-menu card-header p-1 shadow border-bottom-0">
             <h4><label id="search-label">
-                <input onkeydown="if(event.keyCode===13) { document.getElementById('loadmore').style.display = 'none'; resetResults(); console.log('[CONNECTOR] search.0.'+this.value); }" onfocus="if(!document.getElementById('search').classList.contains('active')) { document.getElementById('search').classList.add('active'); } disableMenu(true);" type="text" placeholder="Search here...">
+                <input onkeydown="if(event.keyCode===13) { startSearch(0); }" onfocus="if(!document.getElementById('search').classList.contains('active')) { document.getElementById('search').classList.add('active'); } disableMenu(true);" type="text" placeholder="Search here...">
             </label></h4>
             <button onclick="location.reload();" type="button">X</button>
         </div>
@@ -67,15 +67,34 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="searchOffset = searchOffset+1; this.style.display = 'none'; console.log('[CONNECTOR] search.'+searchOffset+'.'+document.getElementById('search-label').querySelector('input').value);" id="loadmore" style="display: none">Load more</button>
+                <button onclick="searchOffset = searchOffset+1; startSearch(searchOffset);" id="loadmore" style="display: none">Load more</button>
             </div>
             <div class="glass" style="max-width: fit-content; width: fit-content; min-width: fit-content;">
-                <strong>Categories</strong><br>
-                to be implemented...
+                <div class="p-0 m-0 category-container" id="search-source">
+                    <strong>Search sources</strong><br>
+                    <div onclick="console.log('[CONNECTOR] discover.search.enable.nex.'+!this.querySelector('input').checked); this.querySelector('input').checked = !this.querySelector('input').checked;" class="form-check form-switch d-flex category-row nex">
+                        NEX (Official)
+                        <label>
+                            <input disabled class="form-check-input switch" type="checkbox" role="switch" checked>
+                        </label>
+                    </div>
+                    <div onclick="console.log('[CONNECTOR] discover.search.enable.curseforge.'+!this.querySelector('input').checked); this.querySelector('input').checked = !this.querySelector('input').checked;" class="form-check form-switch d-flex category-row modrinth">
+                        CurseForge
+                        <label>
+                            <input disabled class="form-check-input switch" type="checkbox" role="switch" checked>
+                        </label>
+                    </div>
+                    <div onclick="console.log('[CONNECTOR] discover.search.enable.modrinth.'+!this.querySelector('input').checked); this.querySelector('input').checked = !this.querySelector('input').checked;" class="form-check form-switch d-flex category-row curseforge">
+                        Modrinth
+                        <label>
+                            <input disabled class="form-check-input switch" type="checkbox" role="switch" checked>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Button to trigger menu enabling (likely for JavaScript) -->
-<button onclick="loadScript('assets/nexus/js/discover.js', null); enableMenu(true); setTimeout(()=>{ initDiscoverPanel(); resetResults(); console.log('[CONNECTOR] search.0.'); }, 100);" class="onload d-none">On page load</button>
+<button onclick="loadScript('assets/nexus/js/discover.js', null); enableMenu(true); setTimeout(()=>{ initDiscover(); }, 100);" class="onload d-none">On page load</button>

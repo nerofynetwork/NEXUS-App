@@ -1,8 +1,28 @@
 document.getElementById('discover').querySelector('li.nav-item').innerHTML = version;
 resetResults();
 
-function initDiscoverPanel() {
+function initDiscover() {
     document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<i onclick='window.open(`https://discord.gg/Awwh6JrJBS`,`_blank`);' class='bi bi-discord'></i><i onclick='window.open(`https://github.com/zyneonstudios/nexus-app`,`_blank`);' class='bi bi-github'></i><i onclick='window.open(`https://nexus.zyneonstudios.org/app`,`_blank`);' class='bi bi-globe'></i><i onclick='console.log(`[CONNECTOR] exit`)' class='bi bi-door-open'></i>";
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("[CONNECTOR] discover.search.init");
+    if(urlParams.has("dt")) {
+        if(urlParams.get("dt")==="search") {
+            disableMenu(true);
+            document.getElementById("search").classList.add("active");
+            document.getElementById("search-label").querySelector("input").focus();
+        }
+    }
+    if(urlParams.has("q")) {
+        try {
+            const searchInput = document.getElementById("search-label").querySelector("input");
+            searchInput.value = decodeURIComponent(urlParams.get("q"));
+            startSearch(0);
+        } catch (e) {
+            startSearch(0);
+        }
+    } else {
+        startSearch(0);
+    }
 }
 
 
@@ -65,4 +85,14 @@ function addSearchResult(id,iconUrl,name,downloads,followers,authors,summary,url
 function resetResults() {
     searchOffset = 0;
     document.querySelector(".results-container").innerHTML = document.querySelector(".template-container").innerHTML;
+}
+
+function startSearch(offset) {
+    if(!offset||offset < 1) {
+        offset = 0;
+        resetResults();
+    }
+    document.getElementById('loadmore').style.display = 'none';
+    console.log("[CONNECTOR] search."+offset+"."+document.getElementById('search-label').querySelector('input').value);
+    window.history.pushState({}, document.title, window.location.pathname + "?page=discover.html&q=" + encodeURIComponent(document.getElementById('search-label').querySelector('input').value));
 }

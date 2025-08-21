@@ -46,6 +46,25 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 event.execute();
             }
 
+        } else if(s.startsWith("discover.search.")) {
+            s = s.replace("discover.search.", "");
+
+            if(s.equals("init")) {
+                frame.executeJavaScript("document.getElementById('search-source').querySelector('.nex').querySelector('input').checked = "+NexusApplication.getInstance().getLocalSettings().isDiscoverSearchNEX()+";");
+                frame.executeJavaScript("document.getElementById('search-source').querySelector('.modrinth').querySelector('input').checked = "+NexusApplication.getInstance().getLocalSettings().isDiscoverSearchModrinth()+";");
+                frame.executeJavaScript("document.getElementById('search-source').querySelector('.curseforge').querySelector('input').checked = "+NexusApplication.getInstance().getLocalSettings().isDiscoverSearchCurseForge()+";");
+            } else if(s.startsWith("enable.")) {
+                String[] cmd = s.replace("enable.", "").split("\\.", 2);
+                String p = cmd[0].toLowerCase();
+                boolean e = cmd[1].equals("true");
+                switch (p) {
+                    case "nex" -> NexusApplication.getInstance().getLocalSettings().setDiscoverSearchNEX(e);
+                    case "modrinth" -> NexusApplication.getInstance().getLocalSettings().setDiscoverSearchModrinth(e);
+                    case "curseforge" ->
+                            NexusApplication.getInstance().getLocalSettings().setDiscoverSearchCurseForge(e);
+                }
+                frame.executeJavaScript("startSearch(0);");
+            }
         } else if(s.startsWith("search.")) {
             String[] query = (s.replace("search.","")).split("\\.",2);
             int offset = Integer.parseInt(query[0]);

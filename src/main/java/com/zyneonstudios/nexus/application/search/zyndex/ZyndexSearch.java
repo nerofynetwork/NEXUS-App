@@ -39,12 +39,15 @@ public class ZyndexSearch {
                 instances.add(instance);
             } else {
                 String query = searchString.toLowerCase();
-                if (instance.getId().toLowerCase().contains(query) || instance.getName().toLowerCase().contains(query)) {
+                if (instance.getId().toLowerCase().contains(query) || instance.getName().toLowerCase().contains(query) || instance.getAuthor().toLowerCase().contains(query)) {
                     if (!instance.isHidden()) {
                         instances.add(instance);
                     }
                 }
             }
+        }
+        for (Instance instance : instances) {
+            System.out.println(instance.getName()+" ("+instance.getId()+") - "+instance.getVersion()+" - "+instance.getAuthor());
         }
         return instances;
     }
