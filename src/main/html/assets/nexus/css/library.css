@@ -13,6 +13,9 @@
     height: 100%;
 
     .nav {
+        container-type: inline-size;
+        container-name: nav-container;
+
         .nav-link {
             color: var(--nex-iv);
             padding: 0.25rem 0.5rem;
@@ -41,6 +44,20 @@
             border-radius: 0 var(--bs-border-radius-lg) var(--bs-border-radius-lg) 0;
         }
     }
+
+
+
+    @container nav-container (max-width: 31rem) {
+        .nav-link {
+            font-size: 0;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+    }
+
 
     * {
         transition: all var(--nex-animation-speed) ease;
