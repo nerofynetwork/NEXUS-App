@@ -53,29 +53,29 @@
 
         <div class="nex-side-view p-3">
             <div id="instance-description">
-                <ul class="nav" role="tablist">
+                <ul class="nav">
                     <li class="nav-item">
-                        <button class="nav-link left active" id="tab-about" data-bs-toggle="pill" data-bs-target="#tab-about-content" type="button" role="tab" aria-controls="tab-about-content" aria-selected="true"><i class="bi bi-card-text"></i>About</button>
+                        <button class="nav-link left active" id="tab-about" data-bs-toggle="tab" data-bs-target="#tab-about-content" type="button" aria-controls="tab-about-content" aria-selected="true"><i class="bi bi-card-text"></i>About</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" id="tab-mods" data-bs-toggle="pill" data-bs-target="#tab-mods-content" type="button" role="tab" aria-controls="tab-mods-content" aria-selected="false"><i class="bi bi-code-slash"></i>Mods</button>
+                        <button class="nav-link" id="tab-mods" data-bs-toggle="tab" data-bs-target="#tab-mods-content" type="button" aria-controls="tab-mods-content" aria-selected="false"><i class="bi bi-code-slash"></i>Mods</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" id="tab-maps" data-bs-toggle="pill" data-bs-target="#tab-maps-content" type="button" role="tab" aria-controls="tab-maps-content" aria-selected="false"><i class="bi bi-map"></i>Maps</button>
+                        <button class="nav-link" id="tab-maps" data-bs-toggle="tab" data-bs-target="#tab-maps-content" type="button" aria-controls="tab-maps-content" aria-selected="false"><i class="bi bi-map"></i>Maps</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" id="tab-resourcePacks" data-bs-toggle="pill" data-bs-target="#tab-resourcePacks-content" type="button" role="tab" aria-controls="tab-resourcePacks-content" aria-selected="false"><i class="bi bi-brush"></i>Resource Packs</button>
+                        <button class="nav-link" id="tab-resourcePacks" data-bs-toggle="tab" data-bs-target="#tab-resourcePacks-content" type="button" aria-controls="tab-resourcePacks-content" aria-selected="false"><i class="bi bi-brush"></i>Resource Packs</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link right" id="tab-shaders" data-bs-toggle="pill" data-bs-target="#tab-shaders-content" type="button" role="tab" aria-controls="tab-shaders-content" aria-selected="false"><i class="bi bi-cloud-haze2"></i>Shaders</button>
+                        <button class="nav-link right" id="tab-shaders" data-bs-toggle="tab" data-bs-target="#tab-shaders-content" type="button" aria-controls="tab-shaders-content" aria-selected="false"><i class="bi bi-cloud-haze2"></i>Shaders</button>
                     </li>
                 </ul>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane m-0 p-0 fade show active" id="tab-about-content" role="tabpanel" aria-labelledby="tab-about" tabindex="0">${instance.description}</div>
-                    <div class="tab-pane m-0 p-0 fade" id="tab-mods-content" role="tabpanel" aria-labelledby="tab-mods" tabindex="0">${instance.mods}</div>
-                    <div class="tab-pane m-0 p-0 fade" id="tab-maps-content" role="tabpanel" aria-labelledby="tab-maps" tabindex="0">${instance.maps}</div>
-                    <div class="tab-pane m-0 p-0 fade" id="tab-resourcePacks-content" role="tabpanel" aria-labelledby="tab-resourcePacks" tabindex="0">${instance.resourcePacks}</div>
-                    <div class="tab-pane m-0 p-0 fade" id="tab-shaders-content" role="tabpanel" aria-labelledby="tab-shaders" tabindex="0">${instance.shaders}</div>
+                <div class="tab-content">
+                    <div class="tab-pane m-0 p-0 fade show active" id="tab-about-content" aria-labelledby="tab-about">${instance.description}</div>
+                    <div class="tab-pane m-0 p-0 fade" id="tab-mods-content" aria-labelledby="tab-mods">${instance.mods}</div>
+                    <div class="tab-pane m-0 p-0 fade" id="tab-maps-content" aria-labelledby="tab-maps">${instance.maps}</div>
+                    <div class="tab-pane m-0 p-0 fade" id="tab-resourcePacks-content" aria-labelledby="tab-resourcePacks">${instance.resourcePacks}</div>
+                    <div class="tab-pane m-0 p-0 fade" id="tab-shaders-content" aria-labelledby="tab-shaders">${instance.shaders}</div>
                 </div>
             </div>
             <div class="glass">
