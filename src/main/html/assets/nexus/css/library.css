@@ -13,7 +13,7 @@
     height: 100%;
 
     .nav-link{
-        color: white;
+        color: var(--nex-iv);
         padding: 0.25rem 0.5rem;
         border-radius: var(--bs-border-radius-lg);
         border: 1px solid transparent;
