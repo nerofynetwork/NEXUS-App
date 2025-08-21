@@ -35,10 +35,10 @@ function addSearchResult(id,iconUrl,name,downloads,followers,authors,summary,url
             };
             result.querySelector("img").classList.add("active");
         }
-        result.querySelector(".result-name").innerText = name;
-        result.querySelector(".result-authors").innerText = authors;
-        result.querySelector(".result-summary").innerText = summary;
-        result.querySelector(".result-source").innerText = "@"+source;
+        result.querySelector(".result-name").innerText = decodeURIComponent(name);
+        result.querySelector(".result-authors").innerText = decodeURIComponent(authors);
+        result.querySelector(".result-summary").innerText = decodeURIComponent(summary);
+        result.querySelector(".result-source").innerText = decodeURIComponent(source);
         result.querySelector(".result-downloads").innerText = downloads;
         if(downloads==="hidden") {
             result.querySelector(".result-downloads").parentElement.remove();
@@ -54,7 +54,7 @@ function addSearchResult(id,iconUrl,name,downloads,followers,authors,summary,url
             result.querySelector(".result-url").remove();
         }
         result.querySelector(".result-install").onclick = function () {
-            console.log("[CONNECTOR] "+connector);
+            console.log("[CONNECTOR] "+decodeURIComponent(connector));
         };
         result.classList.add(source.toLowerCase());
         template.parentNode.insertBefore(result, template);

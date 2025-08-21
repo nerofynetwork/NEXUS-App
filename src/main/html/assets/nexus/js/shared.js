@@ -248,6 +248,7 @@ function initPanel() {
     const modeIcon = panel.querySelector("i.mode");
     let enable = false;
 
+    updateButtonVisibility();
     // Handle inlined panel
     if (panelInlined) {
         panel.classList.add("inlined", "floating");
@@ -280,8 +281,6 @@ function initPanel() {
         panel.classList.add("hover");
         modeIcon.className = "mode bi bi-cursor-fill";
     }
-
-    updateButtonVisibility();
 }
 
 function updateButtonVisibility() {

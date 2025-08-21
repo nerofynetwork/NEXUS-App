@@ -110,8 +110,8 @@
         img.active:hover {
             border: 1px solid white;
             scale: 1.05;
-            cursor: pointer;
             rotate: 0.5deg;
+            cursor: pointer;
         }
 
         div {
