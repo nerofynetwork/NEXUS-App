@@ -46,9 +46,6 @@ public class ZyndexSearch {
                 }
             }
         }
-        for (Instance instance : instances) {
-            System.out.println(instance.getName()+" ("+instance.getId()+") - "+instance.getVersion()+" - "+instance.getAuthor());
-        }
         return instances;
     }
 

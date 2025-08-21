@@ -54,7 +54,7 @@ function initAppearanceValues() {
     } else {
         resetAccentColorButton.style.display = "none";
     }
-    console.log("[CONNECTOR] initAppearanceValues")
+    console.log("[CONNECTOR] initAppearanceValues");
 } initAppearanceValues();
 
 function initSettings() {
@@ -63,6 +63,8 @@ function initSettings() {
     if(urlParams.has("st")) {
         document.getElementById(urlParams.get("st")+"-button").click();
     }
+
+    console.log("[CONNECTOR] settings.init");
 }
 
 function showSettingsCategory(category) {

@@ -11,6 +11,7 @@ public class ApplicationSettings {
     private boolean discoverSearchNEX = true;
     private boolean discoverSearchCurseForge = true;
     private boolean discoverSearchModrinth = true;
+    private String defaultMinecraftPath = "instances/minecraft/";
 
     public HashMap<String, Object> getTemporarySettings() {
         return temporarySettings;
@@ -100,5 +101,14 @@ public class ApplicationSettings {
 
     public boolean isDiscoverSearchModrinth() {
         return discoverSearchModrinth;
+    }
+
+    public String getDefaultMinecraftPath() {
+        return defaultMinecraftPath;
+    }
+
+    public void setDefaultMinecraftPath(String defaultMinecraftPath) {
+        this.defaultMinecraftPath = defaultMinecraftPath;
+        NexusApplication.getInstance().getSettings().set("settings.minecraft.defaultPath", defaultMinecraftPath);
     }
 }

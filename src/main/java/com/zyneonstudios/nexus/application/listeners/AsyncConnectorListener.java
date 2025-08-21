@@ -8,14 +8,17 @@ import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.CombinedSearch;
+import com.zyneonstudios.nexus.application.search.zyndex.ZyndexIntegration;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.verget.fabric.FabricVerget;
+import jnafilechooser.api.JnaFileChooser;
 import net.nrfy.nexus.launcher.launcher.FabricLauncher;
 
 import java.awt.*;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Base64;
 
@@ -103,14 +106,38 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             String uuid = s.replace("logout.","");
             MicrosoftAuthenticator.logout(uuid);
         } else if(s.startsWith("login.")) {
-            if(s.replace("login.","").equals("new")) {
+            if (s.replace("login.", "").equals("new")) {
                 resolveMessage("login");
                 return;
             }
             try {
-                MicrosoftAuthenticator.refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00", Base64.getEncoder().encodeToString(s.replace("login.", "").getBytes())+"_0"))), true);
+                MicrosoftAuthenticator.refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00", Base64.getEncoder().encodeToString(s.replace("login.", "").getBytes()) + "_0"))), true);
             } catch (Exception e) {
-                NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't refresh the Microsoft token.",e.getMessage(), e.getStackTrace());
+                NexusApplication.getLogger().printErr("NEXUS", "AUTHENTICATION", "Couldn't refresh the Microsoft token.", e.getMessage(), e.getStackTrace());
+            }
+        } else if(s.startsWith("settings.")) {
+            s = s.replace("settings.", "");
+            if(s.equals("init")) {
+                frame.executeJavaScript("document.querySelector('.instance-default-path-value').innerText = '" + NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath() + "';");
+            } else if(s.startsWith("select.")) {
+                s = s.replace("select.", "");
+                if(s.equals("instancePath")) {
+                    JnaFileChooser fc = new JnaFileChooser();
+                    fc.setMode(JnaFileChooser.Mode.Directories);
+                    if (fc.showOpenDialog(frame)) {
+                        File path = fc.getSelectedFile();
+                        if(path.isDirectory()) {
+                            String pathString = path.getAbsolutePath().replace("\\","/");
+                            if(!pathString.endsWith("/")) {
+                                pathString += "/";
+                            }
+                            NexusApplication.getInstance().getLocalSettings().setDefaultMinecraftPath(pathString);
+                            frame.executeJavaScript("document.querySelector('.instance-default-path-value').innerText = '" + pathString + "';");
+                        } else {
+                            NexusApplication.getLogger().err("[NEXUS] The selected path is not a directory: " + path.getAbsolutePath());
+                        }
+                    }
+                }
             }
         } else if(s.equals("initAccountSettings")) {
             if(MicrosoftAuthenticator.isLoggedIn()) {
@@ -142,6 +169,18 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             boolean bool = s.replace("hideApp.", "").equals("true");
             NexusApplication.getInstance().getSettings().set("settings.window.minimizeOnStart", bool);
             NexusApplication.getInstance().getLocalSettings().setMinimizeApp(bool);
+        } else if(s.startsWith("install.minecraft.")) {
+            String[] cmd = s.replace("install.minecraft.", "").split("\\.",2);
+            String source = cmd[0].toLowerCase();
+            String id = cmd[1];
+            if(source.equals("nex")) {
+                ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
+            } else if(source.equals("modrinth")) {
+
+            } else if(source.equals("curseforge")) {
+
+            }
+
         } else if(s.startsWith("nativeWindow.")) {
             boolean bool = s.replace("nativeWindow.", "").equals("true");
             NexusApplication.getInstance().getSettings().set("settings.window.nativeDecorations", bool);

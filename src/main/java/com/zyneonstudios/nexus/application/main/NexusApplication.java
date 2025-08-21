@@ -107,6 +107,9 @@ public class NexusApplication {
         setupWebEnvironment(workingDirFile);
         getLogger().log("Initializing application...");
 
+        settings.ensure("settings.minecraft.defaultPath",workingDirFile.getAbsolutePath().replace("\\", "/") + "/instances/minecraft/");
+        localSettings.setDefaultMinecraftPath(settings.getString("settings.minecraft.defaultPath"));
+
         settings.ensure("settings.minecraft.defaultMemory",2048);
         localSettings.setDefaultMemory(settings.getInt("settings.minecraft.defaultMemory"));
 
