@@ -16,6 +16,11 @@
         container-type: inline-size;
         container-name: nav-container;
 
+        transition: none;
+        * {
+            transition: none;
+        }
+
         .nav-link {
             color: var(--nex-iv);
             padding: 0.25rem 0.5rem;
@@ -23,17 +28,18 @@
             background: var(--nex-brighter-200);
             border: 1px solid transparent;
             margin: 0 0 0.25rem 0;
-            transition: all 0.15s ease;
         }
 
         .nav-link:hover {
-            background: var(--nex-brighter-200);
+            background: var(--nex-brighter-300);
+            transition: all 0.15s ease;
         }
 
         .nav-link.active {
             background: var(--nex-primary);
             border: 1px solid var(--nex-primary-accent);
             box-shadow: 0 0 0.3rem #00000050;
+            transition: all 0.15s ease;
         }
 
         .nav-link.left {
