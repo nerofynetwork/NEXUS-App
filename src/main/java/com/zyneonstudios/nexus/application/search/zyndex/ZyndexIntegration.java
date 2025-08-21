@@ -65,11 +65,14 @@ public class ZyndexIntegration {
     }
 
     public static boolean install(Instance instance, String installDirPathString) {
+        NexusApplication.getLogger().deb("1");
         return install(instance,new File(installDirPathString));
     }
 
     public static boolean install(Instance instance, File installDir) {
+        NexusApplication.getLogger().deb("2");
         if(installInstance(instance,installDir)) {
+            NexusApplication.getLogger().deb("3");
             NexusApplication.getInstance().reloadLocalZyndex(false);
             System.gc();
             return true;

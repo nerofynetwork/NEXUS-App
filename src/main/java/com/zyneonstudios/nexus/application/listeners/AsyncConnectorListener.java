@@ -174,7 +174,13 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             String source = cmd[0].toLowerCase();
             String id = cmd[1];
             if(source.equals("nex")) {
-                ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
+                NexusApplication.getLogger().deb("INSTALLING SOMETHING FROM NEX: " + id);
+                try {
+                    NexusApplication.getLogger().deb(NexusApplication.getInstance().getNEX().getInstancesById().get(id).toString());
+                    ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), "/target/run/game/test_1");
+                } catch (Exception e) {
+                    NexusApplication.getLogger().err("[NEXUS] Error while installing from NEX: " + e.getMessage());
+                }
             } else if(source.equals("modrinth")) {
 
             } else if(source.equals("curseforge")) {
