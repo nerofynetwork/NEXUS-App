@@ -28,7 +28,7 @@ public class CombinedSearch {
     private int hits = 20;
 
     public CombinedSearch() {
-        NEXSearch = new ZyndexSearch(new ReadableZyndex("https://zyneonstudios.github.io/nexus-nex/zyndex/index.json"));
+        NEXSearch = new ZyndexSearch(NexusApplication.getInstance().getNEX());
         curseForgeSearch = new CurseForgeSearch();
         modrinthSearch = new ModrinthSearch();
 
@@ -66,9 +66,9 @@ public class CombinedSearch {
 
     public JsonArray search(String query) {
         curseForgeSearch.setLimit(hits);
-        curseForgeSearch.setOffset(offset*hits);
+        curseForgeSearch.setOffset(offset * hits);
         modrinthSearch.setLimit(hits);
-        modrinthSearch.setOffset(offset*hits);
+        modrinthSearch.setOffset(offset * hits);
 
         JsonArray results = new JsonArray();
         curseForgeSearch.setQuery(encodeData(query));
@@ -77,19 +77,19 @@ public class CombinedSearch {
         JsonObject modrinthResults;
         JsonObject curseForgeResults;
 
-        if(NexusApplication.getInstance().getLocalSettings().isDiscoverSearchNEX()) {
+        if (NexusApplication.getInstance().getLocalSettings().isDiscoverSearchNEX()) {
             nexResults = NEXSearch.search(query);
         } else {
             nexResults = new ArrayList<>();
         }
 
-        if(NexusApplication.getInstance().getLocalSettings().isDiscoverSearchCurseForge()) {
+        if (NexusApplication.getInstance().getLocalSettings().isDiscoverSearchCurseForge()) {
             curseForgeResults = curseForgeSearch.search();
         } else {
             curseForgeResults = null;
         }
 
-        if(NexusApplication.getInstance().getLocalSettings().isDiscoverSearchModrinth()) {
+        if (NexusApplication.getInstance().getLocalSettings().isDiscoverSearchModrinth()) {
             modrinthResults = modrinthSearch.search();
         } else {
             modrinthResults = null;
@@ -112,7 +112,7 @@ public class CombinedSearch {
                 result.addProperty("summary", encodeData(instance.getSummary()));
                 result.addProperty("url", "hidden");
                 result.addProperty("source", "NEX");
-                result.addProperty("connector", "install.minecraft.nex."+instance.getId());
+                result.addProperty("connector", "install.minecraft.nex." + instance.getId());
                 nexJsonResults.add(result);
             }
 
@@ -136,7 +136,7 @@ public class CombinedSearch {
                     result.addProperty("summary", encodeData(curseforgeResult.get("summary").getAsString()));
                     result.addProperty("url", curseforgeResult.get("links").getAsJsonObject().get("websiteUrl").getAsString());
                     result.addProperty("source", "CurseForge");
-                    result.addProperty("connector", encodeData("install.minecraft.curseforge."+curseforgeResult.get("id").getAsString()));
+                    result.addProperty("connector", encodeData("install.minecraft.curseforge." + curseforgeResult.get("id").getAsString()));
                     curseForgeJsonResults.add(result);
                 }
             }
@@ -157,27 +157,27 @@ public class CombinedSearch {
                     result.addProperty("summary", encodeData(modrinthResult.get("description").getAsString()));
                     result.addProperty("url", "https://modrinth.com/modpack/" + modrinthResult.get("slug").getAsString());
                     result.addProperty("source", "Modrinth");
-                    result.addProperty("connector", encodeData("install.minecraft.modrinth."+modrinthResult.get("project_id").getAsString()));
+                    result.addProperty("connector", encodeData("install.minecraft.modrinth." + modrinthResult.get("project_id").getAsString()));
                     modrinthJsonResults.add(result);
                 }
             }
 
-        int i = 0;
-        while (i < nexJsonResults.size() || i < modrinthJsonResults.size() || i < curseForgeJsonResults.size()) {
-            if (i < nexJsonResults.size()) {
-                results.add(nexJsonResults.get(i));
+            int i = 0;
+            while (i < nexJsonResults.size() || i < modrinthJsonResults.size() || i < curseForgeJsonResults.size()) {
+                if (i < nexJsonResults.size()) {
+                    results.add(nexJsonResults.get(i));
+                }
+                if (i < curseForgeJsonResults.size()) {
+                    results.add(curseForgeJsonResults.get(i));
+                }
+                if (i < modrinthJsonResults.size()) {
+                    results.add(modrinthJsonResults.get(i));
+                }
+                i++;
             }
-            if (i < curseForgeJsonResults.size()) {
-                results.add(curseForgeJsonResults.get(i));
-            }
-            if (i < modrinthJsonResults.size()) {
-                results.add(modrinthJsonResults.get(i));
-            }
-            i++;
-        }
 
         } catch (Exception e) {
-            NexusApplication.getLogger().printErr("NEXUS","COMBINED SEARCH","Couldn't process the search results...",e.getMessage(), e.getStackTrace());
+            NexusApplication.getLogger().printErr("NEXUS", "COMBINED SEARCH", "Couldn't process the search results...", e.getMessage(), e.getStackTrace());
         }
         return results;
     }
@@ -186,7 +186,7 @@ public class CombinedSearch {
         try {
             return URLEncoder.encode(searchTerm, StandardCharsets.UTF_8).replace("+", "%20");
         } catch (Exception e) {
-            return searchTerm.replace(" ","%20");
+            return searchTerm.replace(" ", "%20");
         }
     }
 }
