@@ -82,11 +82,26 @@ function showInstance(id,name,version,summary,description) {
     summary = decodeURIComponent(summary);
     description = decodeURIComponent(description);
 
+    if(activeInstance) {
+        if(document.getElementById(activeInstance)) {
+            document.getElementById(activeInstance).classList.remove("active");
+        }
+    }
+
     activeInstance = id;
+    if(document.getElementById(activeInstance)) {
+        document.getElementById(activeInstance).classList.add("active");
+    }
     document.getElementById("library-title").innerText = "Library » " + name;
     document.getElementById("instance-view").style.display = "flex";
     document.getElementById("instance-name").innerText = name;
     document.getElementById("instance-version").innerText = version;
     document.getElementById("instance-summary").innerText = summary;
     document.getElementById("tab-about-content").innerText = description;
+
+    document.getElementById("launch-button").innerHTML = "<i class=\"bi bi-rocket-takeoff\"></i> LAUNCH";
+    document.getElementById("launch-button").onclick = function () {
+        console.log('[CONNECTOR] library.start.'+activeInstance); document.getElementById("launch-button").onclick = function () {}
+        document.getElementById("launch-button").innerText = "LAUNCHED"; document.getElementById("launch-button").classList.add("disabled");
+    }
 }

@@ -9,13 +9,17 @@ import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.CombinedSearch;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexIntegration;
+import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstance;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
+import com.zyneonstudios.nexus.application.utilities.StringUtility;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
+import com.zyneonstudios.nexus.instance.ReadableZynstance;
+import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.verget.fabric.FabricVerget;
 import jnafilechooser.api.JnaFileChooser;
-import net.nrfy.nexus.launcher.launcher.FabricLauncher;
+import net.nrfy.nexus.launcher.launcher.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,7 +126,10 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
         } else if(s.startsWith("settings.")) {
             s = s.replace("settings.", "");
             if(s.equals("init")) {
+                long maxMemoryInMegabytes = ((com.sun.management.OperatingSystemMXBean) java.lang.management.ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize() / (1024 * 1024);
                 frame.executeJavaScript("document.querySelector('.instance-default-path-value').innerText = '" + NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath() + "';");
+                frame.executeJavaScript("document.querySelector('.instance-JavaMemoryDisplay').min = 1024; document.querySelector('.instance-JavaMemoryDisplay').max = "+maxMemoryInMegabytes+"; document.querySelector('.instance-JavaMemoryDisplay').value = "+NexusApplication.getInstance().getLocalSettings().getDefaultMemory()+";");
+                frame.executeJavaScript("document.querySelector('.instance-JavaMemory').min = 1024; document.querySelector('.instance-JavaMemory').max = "+maxMemoryInMegabytes+"; document.querySelector('.instance-JavaMemory').value = "+NexusApplication.getInstance().getLocalSettings().getDefaultMemory()+";");
             } else if(s.startsWith("select.")) {
                 s = s.replace("select.", "");
                 if(s.equals("instancePath")) {
@@ -141,6 +148,12 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                             NexusApplication.getLogger().err("[NEXUS] The selected path is not a directory: " + path.getAbsolutePath());
                         }
                     }
+                }
+            } else if(s.startsWith("set.")) {
+                s = s.replace("set.","");
+                if(s.startsWith("defaultMemory.")) {
+                    int memory = Integer.parseInt(s.replace("defaultMemory.", ""));
+                    NexusApplication.getInstance().getLocalSettings().setDefaultMemory(memory);
                 }
             }
         } else if(s.equals("initAccountSettings")) {
@@ -190,6 +203,74 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             NexusApplication.getInstance().getSettings().set("settings.window.nativeDecorations", bool);
             NexusApplication.getInstance().getLocalSettings().setUseNativeWindow(bool);
             NexusApplication.restart();
+        } else if(s.startsWith("library.")) {
+            s = s.replace("library.", "");
+            if(s.equals("init")) {
+                NexusApplication.getInstance().getInstanceManager().reload();
+                String showId = null;
+                for(LocalInstance lI:NexusApplication.getInstance().getInstanceManager().getInstances().values()) {
+                    Zynstance i = lI.getInstance();
+                    frame.executeJavaScript("addInstance(\""+i.getId()+"\",\""+i.getName()+"\",\""+i.getIconUrl()+"\",\"\");");
+                    if(showId == null) {
+                        showId = i.getId();
+                    }
+                }
+
+                if(showId != null) {
+                    if (!NexusApplication.getInstance().getLocalSettings().getLastInstanceId().isEmpty()) {
+                        showId = NexusApplication.getInstance().getLocalSettings().getLastInstanceId();
+                    }
+                    resolveMessage("library.showInstance." + showId);
+                }
+            } else if(s.startsWith("showInstance.")) {
+                String showId = s.replace("showInstance.", "");
+                ReadableZynstance show = NexusApplication.getInstance().getNEX().getInstancesById().get(showId);
+                String cmd = "showInstance(\""+ StringUtility.encodeData(show.getId())+"\",\""+StringUtility.encodeData(show.getName())+"\",\""+StringUtility.encodeData(show.getVersion())+"\",\""+StringUtility.encodeData(show.getSummary())+"\",\""+ StringUtility.encodeData(show.getDescription()) +"\");";
+                frame.executeJavaScript(cmd);
+                NexusApplication.getInstance().getLocalSettings().setLastInstanceId(showId);
+            } else if(s.startsWith("start.")) {
+                String id = s.replace("start.", "");
+                ReadableZynstance instance = NexusApplication.getInstance().getInstanceManager().getInstance(id).getInstance();
+                if(instance != null) {
+                    String mc = instance.getMinecraftVersion();
+                    String modloaderVersion;
+                    if(instance.getModloader().equalsIgnoreCase("fabric")) {
+                        modloaderVersion = instance.getFabricVersion();
+                        FabricLauncher launcher = NexusApplication.getInstance().getFabricLauncher();
+                        launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
+                        launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
+                        launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
+                        launcher.launch(mc, modloaderVersion, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
+                    } else if(instance.getModloader().equalsIgnoreCase("forge")) {
+                        modloaderVersion = instance.getForgeVersion();
+                        ForgeLauncher launcher = NexusApplication.getInstance().getForgeLauncher();
+                        launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
+                        launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
+                        launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
+                        launcher.launch(mc,modloaderVersion,NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()),instance.getId());
+                    } else if(instance.getModloader().equalsIgnoreCase("neoforge")) {
+                        modloaderVersion = instance.getNeoForgeVersion();
+                        NeoForgeLauncher launcher = NexusApplication.getInstance().getNeoForgeLauncher();
+                        launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
+                        launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
+                        launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
+                        launcher.launch(mc, modloaderVersion, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
+                    } else if(instance.getModloader().equalsIgnoreCase("quilt")) {
+                        modloaderVersion = instance.getQuiltVersion();
+                        QuiltLauncher launcher = NexusApplication.getInstance().getQuiltLauncher();
+                        launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
+                        launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
+                        launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
+                        launcher.launch(mc, modloaderVersion, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
+                    } else {
+                        VanillaLauncher launcher = NexusApplication.getInstance().getVanillaLauncher();
+                        launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
+                        launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
+                        launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
+                        launcher.launch(mc, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
+                    }
+                }
+            }
         } else if(s.equals("run.test")) {
 
             FabricLauncher launcher = NexusApplication.getInstance().getFabricLauncher();

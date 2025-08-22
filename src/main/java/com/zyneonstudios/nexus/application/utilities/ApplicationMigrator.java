@@ -3,8 +3,6 @@ package com.zyneonstudios.nexus.application.utilities;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -13,8 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class ApplicationMigrator {
-
-    private static final Logger log = LoggerFactory.getLogger(ApplicationMigrator.class);
 
     public static String getOldApplicationPath(boolean ancient) {
         String folderName;

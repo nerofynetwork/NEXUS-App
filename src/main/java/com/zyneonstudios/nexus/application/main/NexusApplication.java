@@ -9,6 +9,7 @@ import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
+import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstanceManager;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
@@ -28,6 +29,8 @@ import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.handler.CefLoadHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,10 +47,12 @@ import java.util.concurrent.CompletableFuture;
  */
 public class NexusApplication {
 
+    private static final Logger log = LoggerFactory.getLogger(NexusApplication.class);
     private ReadableZyndex NEX = null;
+    private LocalInstanceManager instanceManager;
 
     //Authentication
-    private AuthInfos authInfos = null;
+    private static AuthInfos authInfos = null;
 
     //Download management
     private final DownloadManager downloadManager;
@@ -65,7 +70,6 @@ public class NexusApplication {
     private AppFrame applicationFrame = null;
 
     // Configuration and State
-    private final JsonStorage instances;
     private final JsonStorage settings;
     private final JsonStorage data;
     private final ApplicationSettings localSettings = new ApplicationSettings();
@@ -90,7 +94,6 @@ public class NexusApplication {
         workingDir = workingDirFile.getAbsolutePath().replace("\\", "/");
 
         // Setup settings and data storage
-        instances = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/instances.json");
         settings = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/settings.json");
         data = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/application.json");
 
@@ -129,6 +132,8 @@ public class NexusApplication {
         settings.ensure("settings.library.instance.last","");
         localSettings.setLastInstanceId(settings.getString("settings.library.instance.last"));
 
+        instanceManager = new LocalInstanceManager(new JsonStorage(workingDirFile.getAbsolutePath() + "/data/instances.json"));
+
         boolean rpc = true;
         if(settings.has("settings.discord.rpc")) {
             rpc = settings.getBool("settings.discord.rpc");
@@ -146,6 +151,7 @@ public class NexusApplication {
                 if(Keytar.getInstance().getPassword("ZNA||00||00","0")!=null) {
                     MicrosoftAuthenticator.refresh(new String(Base64.getDecoder().decode(Keytar.getInstance().getPassword("ZNA||01||00",Keytar.getInstance().getPassword("ZNA||00||00","0")+"_0"))),true);
                 }
+
             } catch (Exception e) {
                 NexusApplication.getLogger().printErr("NEXUS","AUTHENTICATION","Couldn't initialize key management. Account credentials won't be saved. You'll have to login everytime you restart the application.",e.getMessage(), e.getStackTrace(), "If you're on Linux try to install libsecret.");
             }
@@ -506,8 +512,8 @@ public class NexusApplication {
      *
      * @param authInfos Map of authentication information
      */
-    public void setAuthInfos(AuthInfos authInfos) {
-        authInfos = authInfos;
+    public static void setAuthInfos(AuthInfos authInfos) {
+        NexusApplication.authInfos = authInfos;
     }
 
     /**
@@ -544,5 +550,9 @@ public class NexusApplication {
      */
     public DownloadManager getDownloadManager() {
         return downloadManager;
+    }
+
+    public LocalInstanceManager getInstanceManager() {
+        return instanceManager;
     }
 }

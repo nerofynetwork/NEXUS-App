@@ -324,6 +324,12 @@ function copyUUID(element) {
     }, 2000);
 }
 
+function setDefaultMemory(mem) {
+    document.body.querySelector('.instance-JavaMemoryDisplay').value = mem;
+    document.body.querySelector('.instance-JavaMemory').value = mem;
+    console.log("[CONNECTOR] settings.set.defaultMemory." + mem);
+}
+
 try {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));

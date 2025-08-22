@@ -2,6 +2,7 @@ package com.zyneonstudios.nexus.application.search.zyndex;
 
 import com.zyneonstudios.nexus.application.downloads.Download;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
+import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstance;
 import com.zyneonstudios.nexus.instance.Instance;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
 import com.zyneonstudios.nexus.utilities.file.FileGetter;
@@ -26,7 +27,7 @@ public class ZyndexIntegration {
     public static boolean install(Instance instance, File installDir) {
         installDir = getInstallDir(installDir, instance.getId());
         if(installInstance(instance,installDir)) {
-            //TODO ADD INSTANCE AND RELOAD
+            NexusApplication.getInstance().getInstanceManager().addInstance(new LocalInstance(installDir+"/zyneonInstance.json"));
             System.gc();
             return true;
         }

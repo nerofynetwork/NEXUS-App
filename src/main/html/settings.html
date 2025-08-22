@@ -521,12 +521,12 @@
                         <td class="left">Allocated memory (in MB) <i class="bi bi-info-circle" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Lets you specify how much RAM in megabytes (MB) the game uses by default."></i></td>
                         <td>
                             <label>
-                                <input class="number-display instance-JavaMemoryDisplay" type="number" min="512" max="16384" step="1" value="1024" oninput="document.body.querySelector('.instance-JavaMemory').value = this.value;" onchange="document.body.querySelector('.instance-JavaMemory').value = this.value;">
+                                <input class="number-display instance-JavaMemoryDisplay" type="number" min="512" max="16384" step="1" value="1024" onfocusout="setDefaultMemory(this.value);" onchange="document.body.querySelector('.instance-JavaMemory').value = this.value;">
                             </label>
                         </td>
                         <td class="right">
                             <label>
-                                <input type="range" class="range instance-JavaMemory form-range" min="512" value="1024" max="16384" step="1" oninput="document.body.querySelector('.instance-JavaMemoryDisplay').value = this.value;">
+                                <input type="range" class="range instance-JavaMemory form-range" min="512" value="1024" max="16384" step="1" onchange="setDefaultMemory(this.value);">
                             </label>
                         </td>
                     </tr>
