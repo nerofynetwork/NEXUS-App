@@ -10,11 +10,10 @@ import com.zyneonstudios.nexus.application.search.modrinth.search.ModrinthSearch
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.ModrinthFacetsBuilder;
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.ModrinthProjectType;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexSearch;
+import com.zyneonstudios.nexus.application.utilities.StringUtility;
 import com.zyneonstudios.nexus.instance.Instance;
 import com.zyneonstudios.nexus.instance.ReadableZynstance;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +70,8 @@ public class CombinedSearch {
         modrinthSearch.setOffset(offset * hits);
 
         JsonArray results = new JsonArray();
-        curseForgeSearch.setQuery(encodeData(query));
-        modrinthSearch.setQuery(encodeData(query));
+        curseForgeSearch.setQuery(StringUtility.encodeData(query));
+        modrinthSearch.setQuery(StringUtility.encodeData(query));
         ArrayList<ReadableZynstance> nexResults;
         JsonObject modrinthResults;
         JsonObject curseForgeResults;
@@ -99,17 +98,17 @@ public class CombinedSearch {
             List<JsonObject> nexJsonResults = new ArrayList<>();
             for (Instance instance : nexResults) {
                 JsonObject result = new JsonObject();
-                result.addProperty("id", encodeData(instance.getId()));
+                result.addProperty("id", StringUtility.encodeData(instance.getId()));
                 result.addProperty("iconUrl", instance.getThumbnailUrl());
-                result.addProperty("name", encodeData(instance.getName()));
+                result.addProperty("name", StringUtility.encodeData(instance.getName()));
                 result.addProperty("downloads", "hidden");
                 result.addProperty("followers", "hidden");
                 JsonArray authors = new JsonArray();
                 for (String author : instance.getAuthors()) {
-                    authors.add(encodeData(author));
+                    authors.add(StringUtility.encodeData(author));
                 }
                 result.add("authors", authors);
-                result.addProperty("summary", encodeData(instance.getSummary()));
+                result.addProperty("summary", StringUtility.encodeData(instance.getSummary()));
                 result.addProperty("url", "hidden");
                 result.addProperty("source", "NEX");
                 result.addProperty("connector", "install.minecraft.nex." + instance.getId());
@@ -121,22 +120,22 @@ public class CombinedSearch {
                 for (JsonElement hit : curseForgeResults.getAsJsonArray("data")) {
                     JsonObject curseforgeResult = hit.getAsJsonObject();
                     JsonObject result = new JsonObject();
-                    result.addProperty("id", encodeData(curseforgeResult.get("id").getAsString()));
+                    result.addProperty("id", StringUtility.encodeData(curseforgeResult.get("id").getAsString()));
                     if (curseforgeResult.get("logo").isJsonObject()) {
                         result.addProperty("iconUrl", curseforgeResult.get("logo").getAsJsonObject().get("url").getAsString());
                     }
-                    result.addProperty("name", encodeData(curseforgeResult.get("name").getAsString()));
+                    result.addProperty("name", StringUtility.encodeData(curseforgeResult.get("name").getAsString()));
                     result.addProperty("downloads", curseforgeResult.get("downloadCount").getAsString());
                     result.addProperty("followers", "hidden");
                     JsonArray authors = new JsonArray();
                     for (JsonElement author : curseforgeResult.get("authors").getAsJsonArray()) {
-                        authors.add(encodeData(author.getAsJsonObject().get("name").getAsString()));
+                        authors.add(StringUtility.encodeData(author.getAsJsonObject().get("name").getAsString()));
                     }
                     result.add("authors", authors);
-                    result.addProperty("summary", encodeData(curseforgeResult.get("summary").getAsString()));
+                    result.addProperty("summary", StringUtility.encodeData(curseforgeResult.get("summary").getAsString()));
                     result.addProperty("url", curseforgeResult.get("links").getAsJsonObject().get("websiteUrl").getAsString());
                     result.addProperty("source", "CurseForge");
-                    result.addProperty("connector", encodeData("install.minecraft.curseforge." + curseforgeResult.get("id").getAsString()));
+                    result.addProperty("connector", StringUtility.encodeData("install.minecraft.curseforge." + curseforgeResult.get("id").getAsString()));
                     curseForgeJsonResults.add(result);
                 }
             }
@@ -146,18 +145,18 @@ public class CombinedSearch {
                 for (JsonElement hit : modrinthResults.getAsJsonArray("hits")) {
                     JsonObject modrinthResult = hit.getAsJsonObject();
                     JsonObject result = new JsonObject();
-                    result.addProperty("id", encodeData(modrinthResult.get("project_id").getAsString()));
+                    result.addProperty("id", StringUtility.encodeData(modrinthResult.get("project_id").getAsString()));
                     result.addProperty("iconUrl", modrinthResult.get("icon_url").getAsString());
-                    result.addProperty("name", encodeData(modrinthResult.get("title").getAsString()));
+                    result.addProperty("name", StringUtility.encodeData(modrinthResult.get("title").getAsString()));
                     result.addProperty("downloads", modrinthResult.get("downloads").getAsString());
                     result.addProperty("followers", modrinthResult.get("follows").getAsString());
                     JsonArray authors = new JsonArray();
-                    authors.add(encodeData(modrinthResult.get("author").getAsString()));
+                    authors.add(StringUtility.encodeData(modrinthResult.get("author").getAsString()));
                     result.add("authors", authors);
-                    result.addProperty("summary", encodeData(modrinthResult.get("description").getAsString()));
+                    result.addProperty("summary", StringUtility.encodeData(modrinthResult.get("description").getAsString()));
                     result.addProperty("url", "https://modrinth.com/modpack/" + modrinthResult.get("slug").getAsString());
                     result.addProperty("source", "Modrinth");
-                    result.addProperty("connector", encodeData("install.minecraft.modrinth." + modrinthResult.get("project_id").getAsString()));
+                    result.addProperty("connector", StringUtility.encodeData("install.minecraft.modrinth." + modrinthResult.get("project_id").getAsString()));
                     modrinthJsonResults.add(result);
                 }
             }
@@ -180,13 +179,5 @@ public class CombinedSearch {
             NexusApplication.getLogger().printErr("NEXUS", "COMBINED SEARCH", "Couldn't process the search results...", e.getMessage(), e.getStackTrace());
         }
         return results;
-    }
-
-    private String encodeData(String searchTerm) {
-        try {
-            return URLEncoder.encode(searchTerm, StandardCharsets.UTF_8).replace("+", "%20");
-        } catch (Exception e) {
-            return searchTerm.replace(" ", "%20");
-        }
     }
 }

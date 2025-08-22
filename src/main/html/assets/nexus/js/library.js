@@ -14,6 +14,9 @@ function addInstance(id,name,icon,group) {
 
             if (id && name) {
                 button.id = id;
+                button.onclick = function () {
+                    console.log("[CONNECTOR] library.showInstance."+id);
+                }
                 button.querySelector("span").innerText = name;
 
                 if(icon) {
@@ -70,4 +73,20 @@ function loadFolderButtonHoverEvent() {
 
 function initLibrary() {
     console.log("[CONNECTOR] library.init");
+}
+
+function showInstance(id,name,version,summary,description) {
+    id = decodeURIComponent(id);
+    name = decodeURIComponent(name);
+    version = decodeURIComponent(version);
+    summary = decodeURIComponent(summary);
+    description = decodeURIComponent(description);
+
+    activeInstance = id;
+    document.getElementById("library-title").innerText = "Library » " + name;
+    document.getElementById("instance-view").style.display = "flex";
+    document.getElementById("instance-name").innerText = name;
+    document.getElementById("instance-version").innerText = version;
+    document.getElementById("instance-summary").innerText = summary;
+    document.getElementById("tab-about-content").innerText = description;
 }

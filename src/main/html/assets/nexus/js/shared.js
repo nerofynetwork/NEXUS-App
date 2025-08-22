@@ -5,7 +5,14 @@
 // --- Global Variables ---
 
 /**
+ * The currently active instance of the application.
  *
+ * @type {string}
+ */
+let activeInstance = "";
+
+/**
+ * The current search ID used for discover searches.
  *
  * @type {string}
  */

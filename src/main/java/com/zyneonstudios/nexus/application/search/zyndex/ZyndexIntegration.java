@@ -26,7 +26,7 @@ public class ZyndexIntegration {
     public static boolean install(Instance instance, File installDir) {
         installDir = getInstallDir(installDir, instance.getId());
         if(installInstance(instance,installDir)) {
-            NexusApplication.getInstance().addInstance(installDir.getAbsolutePath().replace("\\","/")+"/zyneonInstance.json");
+            //TODO ADD INSTANCE AND RELOAD
             System.gc();
             return true;
         }

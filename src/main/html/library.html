@@ -43,7 +43,7 @@
     </div>
     <div class="position-relative w-100 m-2 card glass shadow overflow-hidden p-0">
         <div class="title-menu card-header shadow p-1 w-100 d-flex flex-row border-bottom-0">
-            <h4 class="m-0 w-100" style="padding: 0.5rem 0.5rem 0.75rem 0.75rem; ;">Library</h4>
+            <h4 class="m-0 w-100" style="padding: 0.5rem 0.5rem 0.75rem 0.75rem;" id="library-title">Library</h4>
             <div class="buttons w-100 d-flex flex-row align-self-center justify-content-end">
                 <a class="update shadow d-none"><i class="bi bi-download"></i></a>
                 <a class="folder shadow"><i class="bi bi-folder2"></i></a>
@@ -51,27 +51,27 @@
             </div>
         </div>
 
-        <div class="nex-side-view p-3">
+        <div class="nex-side-view p-3" style="display: none" id="instance-view">
             <div id="instance-description">
                 <ul class="nav">
                     <li class="nav-item">
-                        <button class="nav-link left" id="tab-about" data-bs-toggle="tab" data-bs-target="#tab-about-content" type="button" aria-controls="tab-about-content" aria-selected="true"><i class="bi bi-card-text"></i>About</button>
+                        <button class="nav-link left active" id="tab-about" data-bs-toggle="tab" data-bs-target="#tab-about-content" type="button" aria-controls="tab-about-content" aria-selected="true"><i class="bi bi-card-text"></i>About</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link" id="tab-mods" data-bs-toggle="tab" data-bs-target="#tab-mods-content" type="button" aria-controls="tab-mods-content" aria-selected="false"><i class="bi bi-code-slash"></i>Mods</button>
+                    <li class="nav-item disabled active">
+                        <button disabled class="nav-link" id="tab-mods" data-bs-toggle="tab" data-bs-target="#tab-mods-content" type="button" aria-controls="tab-mods-content" aria-selected="false"><i class="bi bi-code-slash"></i>Mods</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link" id="tab-maps" data-bs-toggle="tab" data-bs-target="#tab-maps-content" type="button" aria-controls="tab-maps-content" aria-selected="false"><i class="bi bi-map"></i>Maps</button>
+                    <li class="nav-item disabled">
+                        <button disabled class="nav-link" id="tab-maps" data-bs-toggle="tab" data-bs-target="#tab-maps-content" type="button" aria-controls="tab-maps-content" aria-selected="false"><i class="bi bi-map"></i>Maps</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link" id="tab-resourcePacks" data-bs-toggle="tab" data-bs-target="#tab-resourcePacks-content" type="button" aria-controls="tab-resourcePacks-content" aria-selected="false"><i class="bi bi-brush"></i>Resource Packs</button>
+                    <li class="nav-item disabled">
+                        <button disabled class="nav-link" id="tab-resourcePacks" data-bs-toggle="tab" data-bs-target="#tab-resourcePacks-content" type="button" aria-controls="tab-resourcePacks-content" aria-selected="false"><i class="bi bi-brush"></i>Resource Packs</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link right" id="tab-shaders" data-bs-toggle="tab" data-bs-target="#tab-shaders-content" type="button" aria-controls="tab-shaders-content" aria-selected="false"><i class="bi bi-cloud-haze2"></i>Shaders</button>
+                    <li class="nav-item disabled">
+                        <button disabled class="nav-link right" id="tab-shaders" data-bs-toggle="tab" data-bs-target="#tab-shaders-content" type="button" aria-controls="tab-shaders-content" aria-selected="false"><i class="bi bi-cloud-haze2"></i>Shaders</button>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane m-0 p-0 fade" id="tab-about-content" aria-labelledby="tab-about">${instance.description}</div>
+                    <div class="tab-pane m-0 p-0 fade show active" id="tab-about-content" aria-labelledby="tab-about">${instance.description}</div>
                     <div class="tab-pane m-0 p-0 fade" id="tab-mods-content" aria-labelledby="tab-mods">${instance.mods}</div>
                     <div class="tab-pane m-0 p-0 fade" id="tab-maps-content" aria-labelledby="tab-maps">${instance.maps}</div>
                     <div class="tab-pane m-0 p-0 fade" id="tab-resourcePacks-content" aria-labelledby="tab-resourcePacks">${instance.resourcePacks}</div>
@@ -96,12 +96,11 @@
                     </div>
                     <div class="card-body">
                         <h5>
-                            <span class="badge bg-black">Minecraft: 1.21.8</span>
-                            <span class="badge text-bg-light">Fabric: 0.17.2</span>
+                            <span class="badge bg-black">Minecraft</span>
                         </h5>
                     </div>
                 </div>
-                <button onclick="console.log('[CONNECTOR] run.test');" id="launch-button" type="button" class="btn btn-nex-primary w-100">
+                <button onclick="console.log('[CONNECTOR] library.start.'+activeInstance);" id="launch-button" type="button" class="btn btn-nex-primary w-100">
                     <i class="bi bi-rocket-takeoff"></i>
                     LAUNCH
                 </button>

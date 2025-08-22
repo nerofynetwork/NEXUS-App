@@ -9,12 +9,10 @@ import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
-import com.zyneonstudios.nexus.application.utilities.ApplicationMigrator;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
-import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
@@ -34,7 +32,9 @@ import org.cef.handler.CefLoadHandlerAdapter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -45,7 +45,6 @@ import java.util.concurrent.CompletableFuture;
 public class NexusApplication {
 
     private ReadableZyndex NEX = null;
-    private HashMap<String, Zynstance> instanceList = new HashMap<>();
 
     //Authentication
     private AuthInfos authInfos = null;
@@ -127,7 +126,8 @@ public class NexusApplication {
         settings.ensure("settings.discover.search.modrinth.enabled", true);
         localSettings.setDiscoverSearchModrinth(settings.getBool("settings.discover.search.modrinth.enabled"));
 
-        reloadLocalInstances();
+        settings.ensure("settings.library.instance.last","");
+        localSettings.setLastInstanceId(settings.getString("settings.library.instance.last"));
 
         boolean rpc = true;
         if(settings.has("settings.discord.rpc")) {
@@ -325,86 +325,6 @@ public class NexusApplication {
                 }
             }
         }
-    }
-
-    public void reloadLocalInstances() {
-        instanceList = new HashMap<>();
-        instances.ensure("instances",new ArrayList<>());
-        ArrayList<String> instancePaths = (ArrayList<String>)instances.get("instances");
-        File basePath = new File(getLocalSettings().getDefaultMinecraftPath());
-        if(!basePath.exists()) {
-            if(!basePath.mkdirs()) {
-                throw new RuntimeException("Couldn't create default Minecraft instances directory: " + basePath.getAbsolutePath());
-            }
-        }
-        if(!basePath.isDirectory()) {
-            throw new RuntimeException("Default Minecraft instances directory is not a directory: " + basePath.getAbsolutePath());
-        }
-        for(File file:Objects.requireNonNull(basePath.listFiles())) {
-            if(file.isDirectory()) {
-                File instance = new File(file.getAbsolutePath().replace("\\","/")+ "/zyneonInstance.json");
-                if(instance.exists() && !instancePaths.contains(instance.getAbsolutePath().replace("\\","/"))) {
-                    instancePaths.add(instance.getAbsolutePath().replace("\\","/"));
-                    instance = null; file = null;
-                }
-            }
-        }
-        String[] oldInstances = ApplicationMigrator.getOldMinecraftInstances();
-        if(oldInstances != null) {
-            for(String oldInstance : oldInstances) {
-                if(!instancePaths.contains(oldInstance)) {
-                    instancePaths.add(oldInstance);
-                }
-            }
-        }
-        for(int i = 0; i < instancePaths.size(); i++) {
-            String instancePath = instancePaths.get(i);
-            File instance = new File(instancePath);
-            if(instance.exists()) {
-                try {
-                    instanceList.put(instancePath,new Zynstance(instance));
-                } catch (Exception e) {
-                    getLogger().printErr("NEXUS","INSTANCE","Couldn't load instance at path: " + instancePath, e.getMessage(), e.getStackTrace());
-                }
-            } else {
-                instancePaths.remove(instancePath);
-            }
-        }
-        instances.set("instances",instancePaths);
-        System.gc();
-    }
-
-    public boolean addInstance(String instancePath) {
-        if(!instanceList.containsKey(instancePath)) {
-            File instance = new File(instancePath);
-            if(instance.exists()) {
-                Zynstance localInstance = new Zynstance(instance);
-                instanceList.put(instancePath, localInstance);
-                ArrayList<String> instancePaths = (ArrayList<String>) instances.get("instances");
-                if (!instancePaths.contains(instancePath)) {
-                    instancePaths.add(instancePath);
-                    instances.set("instances", instancePaths);
-                }
-                reloadLocalInstances();
-                System.gc();
-            }
-        }
-        return false;
-    }
-
-    public boolean removeInstance(String instancePath) {
-        if(instanceList.containsKey(instancePath)) {
-            instanceList.remove(instancePath);
-            ArrayList<String> instancePaths = (ArrayList<String>) instances.get("instances");
-            if (instancePaths.contains(instancePath)) {
-                instancePaths.remove(instancePath);
-                instances.set("instances", instancePaths);
-            }
-            reloadLocalInstances();
-            System.gc();
-            return true;
-        }
-        return false;
     }
 
 
@@ -624,32 +544,5 @@ public class NexusApplication {
      */
     public DownloadManager getDownloadManager() {
         return downloadManager;
-    }
-
-    /**
-     * Gets the list of instances managed by the application.
-     *
-     * @return A HashMap of instance paths to Zynstance objects.
-     */
-    public HashMap<String, Zynstance> getInstanceList() {
-        return new HashMap<>(instanceList);
-    }
-
-    /**
-     * Gets the paths of all instances managed by the application.
-     *
-     * @return A collection of instance paths.
-     */
-    public Collection<String> getInstancePaths() {
-        return instanceList.keySet();
-    }
-
-    /**
-     * Gets all instances managed by the application.
-     *
-     * @return A collection of Zynstances.
-     */
-    public Collection<Zynstance> getLocalInstances() {
-        return instanceList.values();
     }
 }

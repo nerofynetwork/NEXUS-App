@@ -13,7 +13,6 @@ import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
-import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.verget.fabric.FabricVerget;
 import jnafilechooser.api.JnaFileChooser;
 import net.nrfy.nexus.launcher.launcher.FabricLauncher;
@@ -191,14 +190,6 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             NexusApplication.getInstance().getSettings().set("settings.window.nativeDecorations", bool);
             NexusApplication.getInstance().getLocalSettings().setUseNativeWindow(bool);
             NexusApplication.restart();
-        } else if(s.startsWith("library.")) {
-            s = s.replace("library.", "");
-            if(s.equals("init")) {
-                NexusApplication.getInstance().reloadLocalInstances();
-                for(Zynstance i:NexusApplication.getInstance().getLocalInstances()) {
-                    frame.executeJavaScript("addInstance(\""+i.getId()+"\",\""+i.getName()+"\",\""+i.getIconUrl()+"\",\"\");");
-                }
-            }
         } else if(s.equals("run.test")) {
 
             FabricLauncher launcher = NexusApplication.getInstance().getFabricLauncher();

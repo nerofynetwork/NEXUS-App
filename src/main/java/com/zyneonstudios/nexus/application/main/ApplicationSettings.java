@@ -12,6 +12,7 @@ public class ApplicationSettings {
     private boolean discoverSearchCurseForge = true;
     private boolean discoverSearchModrinth = true;
     private String defaultMinecraftPath = "instances/";
+    private String lastInstanceId = "";
 
     public HashMap<String, Object> getTemporarySettings() {
         return temporarySettings;
@@ -110,5 +111,13 @@ public class ApplicationSettings {
     public void setDefaultMinecraftPath(String defaultMinecraftPath) {
         this.defaultMinecraftPath = defaultMinecraftPath;
         NexusApplication.getInstance().getSettings().set("settings.minecraft.defaultPath", defaultMinecraftPath);
+    }
+
+    public String getLastInstanceId() {
+        return lastInstanceId;
+    }
+
+    public void setLastInstanceId(String lastInstanceId) {
+        this.lastInstanceId = lastInstanceId;
     }
 }
