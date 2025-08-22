@@ -2,11 +2,16 @@ package com.zyneonstudios.nexus.application;
 
 import com.zyneonstudios.nexus.application.frame.ZyneonSplash;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
+import com.zyneonstudios.nexus.application.utilities.ApplicationMigrator;
 import com.zyneonstudios.nexus.desktop.NexusDesktop;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * The {@code Main} class is the primary entry point for the Nexus application.
@@ -21,7 +26,7 @@ public class Main {
     private static final NexusLogger logger = NexusUtilities.getLogger();
 
     // Application Configuration
-    private static String path = "";
+    private static String path = getDefaultPath();
     private static String ui = null;
     private static int port = 8094;
 
@@ -37,6 +42,9 @@ public class Main {
 
         // Resolve command-line arguments.
         resolveArguments(args);
+        if(path.equals(getDefaultPath())) {
+            ApplicationMigrator.migrateFolder();
+        }
 
         // Display the splash screen.
         ZyneonSplash splash = new ZyneonSplash();
@@ -126,5 +134,24 @@ public class Main {
      */
     public static int getPort() {
         return port;
+    }
+
+    private static String getDefaultPath() {
+        String appData;
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            appData = System.getenv("LOCALAPPDATA");
+        } else if (os.contains("mac")) {
+            appData = System.getProperty("user.home") + "/Library/Application Support";
+        } else {
+            appData = System.getProperty("user.home") + "/.local/share";
+        }
+        Path folderPath = Paths.get(appData, "Zyneon/NEXUS App");
+        try {
+            Files.createDirectories(folderPath);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return (folderPath + "/").replace("\\", "/");
     }
 }

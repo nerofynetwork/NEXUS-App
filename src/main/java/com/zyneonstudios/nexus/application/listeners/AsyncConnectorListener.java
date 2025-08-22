@@ -13,9 +13,12 @@ import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
+import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.verget.fabric.FabricVerget;
 import jnafilechooser.api.JnaFileChooser;
 import net.nrfy.nexus.launcher.launcher.FabricLauncher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
@@ -24,6 +27,7 @@ import java.util.Base64;
 
 public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
 
+    private static final Logger log = LoggerFactory.getLogger(AsyncConnectorListener.class);
     private final AppFrame frame;
 
     public AsyncConnectorListener(WebFrame frame, String message) {
@@ -69,9 +73,10 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 frame.executeJavaScript("startSearch(0);");
             }
         } else if(s.startsWith("search.")) {
-            String[] query = (s.replace("search.","")).split("\\.",2);
-            int offset = Integer.parseInt(query[0]);
-            String search = query[1];
+            String[] query = (s.replace("search.","")).split("\\.",3);
+            String serachId = query[0];
+            int offset = Integer.parseInt(query[1]);
+            String search = query[2];
 
             CombinedSearch CS = new CombinedSearch();
             CS.setLimit(25);
@@ -91,7 +96,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 String source = result.get("source").getAsString();
                 String connector = result.get("connector").getAsString();
 
-                String cmd = "addSearchResult(\""+id.replace("\"","''")+"\",\""+iconUrl.replace("\"","''")+"\",\""+name.replace("\"","''")+"\",\""+downloads+"\",\""+followers+"\",\""+ authors.replace("\"","''") +"\",\""+summary.replace("\"","''")+"\",\""+url.replace("\"","''")+"\",\""+source.replace("\"","''")+"\",\""+connector.replace("\"","''")+"\");";
+                String cmd = "addSearchResult(\""+serachId+"\",\""+id.replace("\"","''")+"\",\""+iconUrl.replace("\"","''")+"\",\""+name.replace("\"","''")+"\",\""+downloads+"\",\""+followers+"\",\""+ authors.replace("\"","''") +"\",\""+summary.replace("\"","''")+"\",\""+url.replace("\"","''")+"\",\""+source.replace("\"","''")+"\",\""+connector.replace("\"","''")+"\");";
                 frame.executeJavaScript(cmd);
             }
         } else if (s.equals("exit")) {
@@ -186,6 +191,14 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             NexusApplication.getInstance().getSettings().set("settings.window.nativeDecorations", bool);
             NexusApplication.getInstance().getLocalSettings().setUseNativeWindow(bool);
             NexusApplication.restart();
+        } else if(s.startsWith("library.")) {
+            s = s.replace("library.", "");
+            if(s.equals("init")) {
+                NexusApplication.getInstance().reloadLocalInstances();
+                for(Zynstance i:NexusApplication.getInstance().getLocalInstances()) {
+                    frame.executeJavaScript("addInstance(\""+i.getId()+"\",\""+i.getName()+"\",\""+i.getIconUrl()+"\",\"\");");
+                }
+            }
         } else if(s.equals("run.test")) {
 
             FabricLauncher launcher = NexusApplication.getInstance().getFabricLauncher();

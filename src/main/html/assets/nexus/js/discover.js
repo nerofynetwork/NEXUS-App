@@ -29,6 +29,7 @@ function initDiscover() {
 /**
  * Adds a search result card to the discover search panel.
  *
+ * @param searchId_ The id of the search
  * @param id The id of the result project
  * @param iconUrl The url of the result project's icon
  * @param name The name of the result project
@@ -41,44 +42,46 @@ function initDiscover() {
  * @param connector The connector of the result project
  */
 
-function addSearchResult(id,iconUrl,name,downloads,followers,authors,summary,url,source,connector) {
-    if(!document.getElementById(id)) {
-        const template = document.querySelector(".search-result-template");
-        const result = template.cloneNode(true);
-        result.id = id;
-        result.classList.remove("search-result-template");
-        result.style.display = "flex";
-        result.querySelector("img").src = iconUrl;
-        if(url!=="hidden") {
-            result.querySelector("img").onclick = function () {
-                window.open(url,`_blank`);
+function addSearchResult(searchId_,id,iconUrl,name,downloads,followers,authors,summary,url,source,connector) {
+    if(searchId_&&searchId_===searchId) {
+        if (!document.getElementById(id)) {
+            const template = document.querySelector(".search-result-template");
+            const result = template.cloneNode(true);
+            result.id = id;
+            result.classList.remove("search-result-template");
+            result.style.display = "flex";
+            result.querySelector("img").src = iconUrl;
+            if (url !== "hidden") {
+                result.querySelector("img").onclick = function () {
+                    window.open(url, `_blank`);
+                };
+                result.querySelector("img").classList.add("active");
+            }
+            result.querySelector(".result-name").innerText = decodeURIComponent(name);
+            result.querySelector(".result-authors").innerText = decodeURIComponent(authors);
+            result.querySelector(".result-summary").innerText = decodeURIComponent(summary);
+            result.querySelector(".result-source").innerText = decodeURIComponent(source);
+            result.querySelector(".result-downloads").innerText = downloads;
+            if (downloads === "hidden") {
+                result.querySelector(".result-downloads").parentElement.remove();
+            }
+            result.querySelector(".result-followers").innerText = followers;
+            if (followers === "hidden") {
+                result.querySelector(".result-followers").parentElement.remove();
+            }
+            result.querySelector(".result-url").onclick = function () {
+                window.open(url, `_blank`);
             };
-            result.querySelector("img").classList.add("active");
+            if (url === "hidden") {
+                result.querySelector(".result-url").remove();
+            }
+            result.querySelector(".result-install").onclick = function () {
+                console.log("[CONNECTOR] " + decodeURIComponent(connector));
+            };
+            result.classList.add(source.toLowerCase());
+            template.parentNode.insertBefore(result, template);
+            document.getElementById("loadmore").style.display = "";
         }
-        result.querySelector(".result-name").innerText = decodeURIComponent(name);
-        result.querySelector(".result-authors").innerText = decodeURIComponent(authors);
-        result.querySelector(".result-summary").innerText = decodeURIComponent(summary);
-        result.querySelector(".result-source").innerText = decodeURIComponent(source);
-        result.querySelector(".result-downloads").innerText = downloads;
-        if(downloads==="hidden") {
-            result.querySelector(".result-downloads").parentElement.remove();
-        }
-        result.querySelector(".result-followers").innerText = followers;
-        if(followers==="hidden") {
-            result.querySelector(".result-followers").parentElement.remove();
-        }
-        result.querySelector(".result-url").onclick = function () {
-            window.open(url,`_blank`);
-        };
-        if(url==="hidden") {
-            result.querySelector(".result-url").remove();
-        }
-        result.querySelector(".result-install").onclick = function () {
-            console.log("[CONNECTOR] "+decodeURIComponent(connector));
-        };
-        result.classList.add(source.toLowerCase());
-        template.parentNode.insertBefore(result, template);
-        document.getElementById("loadmore").style.display = "";
     }
 }
 
@@ -88,11 +91,12 @@ function resetResults() {
 }
 
 function startSearch(offset) {
+    searchId = randomString(12);
     if(!offset||offset < 1) {
         offset = 0;
         resetResults();
     }
     document.getElementById('loadmore').style.display = 'none';
-    console.log("[CONNECTOR] search."+offset+"."+document.getElementById('search-label').querySelector('input').value);
+    console.log("[CONNECTOR] search."+searchId+"."+offset+"."+document.getElementById('search-label').querySelector('input').value);
     window.history.pushState({}, document.title, window.location.pathname + "?page=discover.html&q=" + encodeURIComponent(document.getElementById('search-label').querySelector('input').value));
 }

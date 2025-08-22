@@ -716,7 +716,7 @@ body {
                     font-size: 1.05rem;
                     width: calc(100% - 1rem);
                     box-shadow: 0 0 0.4rem #00000050;
-                    border: 1px solid transparent;
+                    border: 1px solid var(--bs-border-color-translucent);
                     background: var(--nex-brighter);
                     padding: 0.25rem 0.5rem;
                     white-space: nowrap;

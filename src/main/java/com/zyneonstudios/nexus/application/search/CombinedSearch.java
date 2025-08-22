@@ -10,8 +10,8 @@ import com.zyneonstudios.nexus.application.search.modrinth.search.ModrinthSearch
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.ModrinthFacetsBuilder;
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.ModrinthProjectType;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexSearch;
-import com.zyneonstudios.nexus.index.ReadableZyndex;
 import com.zyneonstudios.nexus.instance.Instance;
+import com.zyneonstudios.nexus.instance.ReadableZynstance;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -73,7 +73,7 @@ public class CombinedSearch {
         JsonArray results = new JsonArray();
         curseForgeSearch.setQuery(encodeData(query));
         modrinthSearch.setQuery(encodeData(query));
-        ArrayList<Instance> nexResults;
+        ArrayList<ReadableZynstance> nexResults;
         JsonObject modrinthResults;
         JsonObject curseForgeResults;
 

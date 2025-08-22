@@ -1,52 +1,78 @@
 package com.zyneonstudios.nexus.application.search.zyndex;
 
+import com.zyneonstudios.nexus.index.Index;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
-import com.zyneonstudios.nexus.instance.Instance;
+import com.zyneonstudios.nexus.instance.ReadableZynstance;
 
 import java.util.ArrayList;
 
 public class ZyndexSearch {
 
-    private final ReadableZyndex zyndex;
+    private final ArrayList<ReadableZynstance> instances;
+    private ArrayList<ReadableZynstance> cachedResults = null;
+    private String cachedSearchTerm = null;
+    private final boolean officialSource;
 
-    public ZyndexSearch(ReadableZyndex zyndex) {
-        this.zyndex = zyndex;
+    public ZyndexSearch(String zyndexUrl) {
+        instances = new ReadableZyndex(zyndexUrl).getInstances();
+        officialSource = isOfficial(zyndexUrl);
     }
 
-    public ReadableZyndex getZyndex() {
-        return zyndex;
+    public ZyndexSearch(Index zyndex) {
+        instances = zyndex.getInstances();
+        officialSource = isOfficial(zyndex.getUrl());
     }
 
-    public ArrayList<Instance> search(String searchString, String... tags) {
-        ArrayList<Instance> instances = new ArrayList<>();
+    private boolean isOfficial(String url) {
+        ArrayList<String> officialUrls = new ArrayList<>();
+        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
+        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex/index.json");
+        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index");
+        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex/index");
+        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/");
+        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex/");
+        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex");
+        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex");
+        return officialUrls.contains(url.toLowerCase());
+    }
 
-        for (Instance instance : zyndex.getInstances()) {
+    @SuppressWarnings("all")
+    public ArrayList<ReadableZynstance> search(String searchTerm) {
+        if(!searchTerm.replace(" ","").isEmpty()) {
+            cachedSearchTerm = searchTerm;
+        }
 
-            if (tags != null && tags.length > 0) {
-                boolean tagMissmatch = false;
-                for (String tag : tags) {
-                    if (!instance.getTags().contains(tag.toLowerCase())) {
-                        tagMissmatch = true;
+        ArrayList<ReadableZynstance> results = new ArrayList<>();
+        String[] searchTerms = searchTerm.toLowerCase().replace(" ",",").replace(",,",",").split(",");
+
+        if(!instances.isEmpty()) {
+            for(ReadableZynstance instance : instances) {
+                boolean idMatching = false;
+                for(String s:searchTerms) {
+                    if (instance.getId().equalsIgnoreCase(s)) {
+                        idMatching = true;
                         break;
                     }
                 }
-                if (tagMissmatch) {
-                    continue;
-                }
-            }
 
-            if (instance.getId().equals(searchString)) {
-                instances.add(instance);
-            } else {
-                String query = searchString.toLowerCase();
-                if (instance.getId().toLowerCase().contains(query) || instance.getName().toLowerCase().contains(query) || instance.getAuthor().toLowerCase().contains(query)) {
-                    if (!instance.isHidden()) {
-                        instances.add(instance);
+                if(instance.getName().toLowerCase().contains(searchTerm.toLowerCase())||instance.getAuthor().toLowerCase().contains(searchTerm.toLowerCase())||idMatching) {
+                    if(!instance.isHidden()||idMatching) {
+                        results.add(instance);
                     }
                 }
-            }
+            };
         }
-        return instances;
+
+        cachedResults = results;
+        return cachedResults;
+    }
+
+    public ArrayList<ReadableZynstance> getCachedResults() {
+        return cachedResults;
+    }
+
+    public String getCachedSearchTerm() {
+        return cachedSearchTerm;
     }
 
 }

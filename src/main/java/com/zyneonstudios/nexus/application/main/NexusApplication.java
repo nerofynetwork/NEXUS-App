@@ -1,7 +1,6 @@
 package com.zyneonstudios.nexus.application.main;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.starxg.keytar.Keytar;
 import com.zyneonstudios.nexus.application.Main;
@@ -10,11 +9,12 @@ import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
-import com.zyneonstudios.nexus.application.search.zyndex.LocalZyndex;
+import com.zyneonstudios.nexus.application.utilities.ApplicationMigrator;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
+import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
@@ -34,9 +34,7 @@ import org.cef.handler.CefLoadHandlerAdapter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -46,9 +44,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public class NexusApplication {
 
-    //Zyndexes
     private ReadableZyndex NEX = null;
-    private LocalZyndex localZyndex;
+    private HashMap<String, Zynstance> instanceList = new HashMap<>();
 
     //Authentication
     private AuthInfos authInfos = null;
@@ -69,6 +66,7 @@ public class NexusApplication {
     private AppFrame applicationFrame = null;
 
     // Configuration and State
+    private final JsonStorage instances;
     private final JsonStorage settings;
     private final JsonStorage data;
     private final ApplicationSettings localSettings = new ApplicationSettings();
@@ -93,7 +91,8 @@ public class NexusApplication {
         workingDir = workingDirFile.getAbsolutePath().replace("\\", "/");
 
         // Setup settings and data storage
-        settings = new JsonStorage(workingDirFile.getAbsolutePath() + "/config/settings.json");
+        instances = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/instances.json");
+        settings = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/settings.json");
         data = new JsonStorage(workingDirFile.getAbsolutePath() + "/data/application.json");
 
         // Determine UI mode (online or local)
@@ -107,7 +106,7 @@ public class NexusApplication {
         setupWebEnvironment(workingDirFile);
         getLogger().log("Initializing application...");
 
-        settings.ensure("settings.minecraft.defaultPath",workingDirFile.getAbsolutePath().replace("\\", "/") + "/instances/minecraft/");
+        settings.ensure("settings.minecraft.defaultPath",workingDirFile.getAbsolutePath().replace("\\", "/") + "/instances/");
         localSettings.setDefaultMinecraftPath(settings.getString("settings.minecraft.defaultPath"));
 
         settings.ensure("settings.minecraft.defaultMemory",2048);
@@ -127,6 +126,8 @@ public class NexusApplication {
 
         settings.ensure("settings.discover.search.modrinth.enabled", true);
         localSettings.setDiscoverSearchModrinth(settings.getBool("settings.discover.search.modrinth.enabled"));
+
+        reloadLocalInstances();
 
         boolean rpc = true;
         if(settings.has("settings.discord.rpc")) {
@@ -156,7 +157,6 @@ public class NexusApplication {
         });
 
         this.downloadManager = new DownloadManager(this);
-        reloadLocalZyndex(false);
     }
 
     /**
@@ -327,33 +327,86 @@ public class NexusApplication {
         }
     }
 
-    private boolean reloading = false;
-    public boolean reloadLocalZyndex(boolean retry) {
-        if(!reloading) {
-            reloading = true;
-            try {
-                localZyndex = new LocalZyndex(new JsonStorage(workingDir+"/data/zyndex.json"));
-                //TODO RELOAD ZYNDEX
-
-                reloading = false;
-                return true;
-            } catch (Exception e) {
-                if (!retry) {
-                    JsonStorage zyndex = new JsonStorage(workingDir + "/data/zyndex.json");
-                    zyndex.ensure("name", "Local NEXUS App Zyndex");
-                    zyndex.ensure("url", "file://" + zyndex.getPath().replace("\\", "/"));
-                    zyndex.ensure("owner", "NEXUS App");
-                    zyndex.ensure("modules", new JsonArray());
-                    zyndex.ensure("instances", new JsonArray());
-                    reloadLocalZyndex(true);
-                } else {
-                    getLogger().printErr("NEXUS", "INSTANCE MANAGEMENT", "Fatal error on reloading Zyndex", e.getMessage(), e.getStackTrace());
+    public void reloadLocalInstances() {
+        instanceList = new HashMap<>();
+        instances.ensure("instances",new ArrayList<>());
+        ArrayList<String> instancePaths = (ArrayList<String>)instances.get("instances");
+        File basePath = new File(getLocalSettings().getDefaultMinecraftPath());
+        if(!basePath.exists()) {
+            if(!basePath.mkdirs()) {
+                throw new RuntimeException("Couldn't create default Minecraft instances directory: " + basePath.getAbsolutePath());
+            }
+        }
+        if(!basePath.isDirectory()) {
+            throw new RuntimeException("Default Minecraft instances directory is not a directory: " + basePath.getAbsolutePath());
+        }
+        for(File file:Objects.requireNonNull(basePath.listFiles())) {
+            if(file.isDirectory()) {
+                File instance = new File(file.getAbsolutePath().replace("\\","/")+ "/zyneonInstance.json");
+                if(instance.exists() && !instancePaths.contains(instance.getAbsolutePath().replace("\\","/"))) {
+                    instancePaths.add(instance.getAbsolutePath().replace("\\","/"));
+                    instance = null; file = null;
                 }
             }
         }
-        reloading = false;
+        String[] oldInstances = ApplicationMigrator.getOldMinecraftInstances();
+        if(oldInstances != null) {
+            for(String oldInstance : oldInstances) {
+                if(!instancePaths.contains(oldInstance)) {
+                    instancePaths.add(oldInstance);
+                }
+            }
+        }
+        for(int i = 0; i < instancePaths.size(); i++) {
+            String instancePath = instancePaths.get(i);
+            File instance = new File(instancePath);
+            if(instance.exists()) {
+                try {
+                    instanceList.put(instancePath,new Zynstance(instance));
+                } catch (Exception e) {
+                    getLogger().printErr("NEXUS","INSTANCE","Couldn't load instance at path: " + instancePath, e.getMessage(), e.getStackTrace());
+                }
+            } else {
+                instancePaths.remove(instancePath);
+            }
+        }
+        instances.set("instances",instancePaths);
+        System.gc();
+    }
+
+    public boolean addInstance(String instancePath) {
+        if(!instanceList.containsKey(instancePath)) {
+            File instance = new File(instancePath);
+            if(instance.exists()) {
+                Zynstance localInstance = new Zynstance(instance);
+                instanceList.put(instancePath, localInstance);
+                ArrayList<String> instancePaths = (ArrayList<String>) instances.get("instances");
+                if (!instancePaths.contains(instancePath)) {
+                    instancePaths.add(instancePath);
+                    instances.set("instances", instancePaths);
+                }
+                reloadLocalInstances();
+                System.gc();
+            }
+        }
         return false;
     }
+
+    public boolean removeInstance(String instancePath) {
+        if(instanceList.containsKey(instancePath)) {
+            instanceList.remove(instancePath);
+            ArrayList<String> instancePaths = (ArrayList<String>) instances.get("instances");
+            if (instancePaths.contains(instancePath)) {
+                instancePaths.remove(instancePath);
+                instances.set("instances", instancePaths);
+            }
+            reloadLocalInstances();
+            System.gc();
+            return true;
+        }
+        return false;
+    }
+
 
     // --- Getter Methods ---
 
@@ -565,20 +618,38 @@ public class NexusApplication {
     }
 
     /**
-     * Gets the local Zyndex to manage all local instances
-     *
-     * @return LocalZyndex object
-     */
-    public LocalZyndex getLocalZyndex() {
-        return localZyndex;
-    }
-
-    /**
      * Gets the download manager
      *
      * @return DownloadManager object
      */
     public DownloadManager getDownloadManager() {
         return downloadManager;
+    }
+
+    /**
+     * Gets the list of instances managed by the application.
+     *
+     * @return A HashMap of instance paths to Zynstance objects.
+     */
+    public HashMap<String, Zynstance> getInstanceList() {
+        return new HashMap<>(instanceList);
+    }
+
+    /**
+     * Gets the paths of all instances managed by the application.
+     *
+     * @return A collection of instance paths.
+     */
+    public Collection<String> getInstancePaths() {
+        return instanceList.keySet();
+    }
+
+    /**
+     * Gets all instances managed by the application.
+     *
+     * @return A collection of Zynstances.
+     */
+    public Collection<Zynstance> getLocalInstances() {
+        return instanceList.values();
     }
 }

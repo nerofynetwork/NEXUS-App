@@ -157,10 +157,10 @@ public class MicrosoftAuthenticator {
 
     private static void refreshBrowser() {
         if(NexusApplication.getInstance().getApplicationFrame() != null) {
-            if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=library")||NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=login")) {
-                NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
-            } else {
+            if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=settings")) {
                 NexusApplication.getInstance().getApplicationFrame().getBrowser().loadURL(NexusApplication.getInstance().isOnlineUI() ? "https://nerofynetwork.github.io/NEXUS-App/src/main/html/index.html?page=settings.html&st=account-settings&app=true" : "localhost:" + Main.getPort() + "/index.html?page=settings.html&st=account-settings&app=true");
+            } else {
+                NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
             }
         }
     }

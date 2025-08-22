@@ -5,13 +5,13 @@ import java.util.HashMap;
 public class ApplicationSettings {
 
     private final HashMap<String, Object> temporarySettings = new HashMap<>();
-    private int memory = 1024;
+    private int memory = 2048;
     private boolean minimizeApp = true;
     private boolean nativeWindow = true;
     private boolean discoverSearchNEX = true;
     private boolean discoverSearchCurseForge = true;
     private boolean discoverSearchModrinth = true;
-    private String defaultMinecraftPath = "instances/minecraft/";
+    private String defaultMinecraftPath = "instances/";
 
     public HashMap<String, Object> getTemporarySettings() {
         return temporarySettings;

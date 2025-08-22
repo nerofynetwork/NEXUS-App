@@ -58,7 +58,7 @@ function addInstanceGroup(id,name,colorName) {
 }
 
 function loadFolderButtonHoverEvent() {
-    const button = document.getElementById("library-menu").querySelector(".buttons").querySelector(".folder");
+    const button = document.querySelector(".title-menu").querySelector(".buttons").querySelector(".folder");
     const icon = button.querySelector("i");
     button.addEventListener("mouseover", () => {
         icon.className = "bi bi-folder2-open";
@@ -66,4 +66,8 @@ function loadFolderButtonHoverEvent() {
     button.addEventListener("mouseout", () => {
         icon.className = "bi bi-folder2";
     });
+}
+
+function initLibrary() {
+    console.log("[CONNECTOR] library.init");
 }
