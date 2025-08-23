@@ -41,7 +41,6 @@ public class ZyndexIntegration {
             Path path = Paths.get(NexusApplication.getInstance().getWorkingDir() +"/temp/"+ UUID.randomUUID() +".zip");
             Download download = new Download(instance.getName(), URI.create(instance.getDownloadUrl()).toURL(),path);
             NexusApplication.getInstance().getDownloadManager().addDownload(download);
-            download.start();
             while (!download.isFinished()) {
                 Thread.sleep(1000);
             }
