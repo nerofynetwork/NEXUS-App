@@ -173,7 +173,7 @@ public class NexusApplication {
             JsonObject data = new Gson().fromJson(GsonUtility.getFromFile(FileGetter.getResourceFile("nexus.json", NexusApplication.class)), JsonObject.class);
             version = data.get("version").getAsString();
         } catch (Exception e) {
-            getLogger().deb("Failed to load version from nexus.json: " + e.getMessage());
+            getLogger().deb("Couldn't fetch version from nexus.json: " + e.getMessage());
         }
     }
 
