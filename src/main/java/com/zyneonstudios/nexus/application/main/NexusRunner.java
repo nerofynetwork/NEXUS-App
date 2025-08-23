@@ -178,7 +178,7 @@ public class NexusRunner {
     }
 
     private boolean runUpdateCheck(JsonObject json) {
-        NexusApplication.getLogger().dbg("[RUNNER] Checking for Updates...");
+        /*NexusApplication.getLogger().dbg("[RUNNER] Checking for Updates...");
         NexusApplication.getLogger().dbg("[RUNNER] Parsed JSON Data...");
         String v = json.get("info").getAsJsonObject().get("version").getAsString();
         NexusApplication.getLogger().dbg("[RUNNER] Latest version: " + v + "...");
@@ -186,7 +186,7 @@ public class NexusRunner {
         if (!v.equals(NexusApplication.getInstance().getVersion())) {
             NexusApplication.getLogger().dbg("[RUNNER] The application is not up to date!");
             return true;
-        }
+        }*/
 
         return false;
     }
