@@ -210,9 +210,9 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 String showId = null;
                 for(LocalInstance lI:NexusApplication.getInstance().getInstanceManager().getInstances().values()) {
                     Zynstance i = lI.getInstance();
-                    frame.executeJavaScript("addInstance(\""+i.getId()+"\",\""+i.getName()+"\",\""+i.getIconUrl()+"\",\"\");");
+                    frame.executeJavaScript("addInstance(\""+StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(i.getName())+"\",\""+StringUtility.encodeData(i.getIconUrl())+"\",\"\");");
                     if(showId == null) {
-                        showId = i.getId();
+                        showId = lI.getPath();
                     }
                 }
 
@@ -224,8 +224,9 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 }
             } else if(s.startsWith("showInstance.")) {
                 String showId = s.replace("showInstance.", "");
-                ReadableZynstance show = NexusApplication.getInstance().getNEX().getInstancesById().get(showId);
-                String cmd = "showInstance(\""+ StringUtility.encodeData(show.getId())+"\",\""+StringUtility.encodeData(show.getName())+"\",\""+StringUtility.encodeData(show.getVersion())+"\",\""+StringUtility.encodeData(show.getSummary())+"\",\""+ StringUtility.encodeData(show.getDescription()) +"\");";
+                LocalInstance lI = NexusApplication.getInstance().getInstanceManager().getInstance(showId);
+                ReadableZynstance show = lI.getInstance();
+                String cmd = "showInstance(\""+ StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(show.getName())+"\",\""+StringUtility.encodeData(show.getVersion())+"\",\""+StringUtility.encodeData(show.getSummary())+"\",\""+ StringUtility.encodeData(show.getDescription()) +"\");";
                 frame.executeJavaScript(cmd);
                 NexusApplication.getInstance().getLocalSettings().setLastInstanceId(showId);
             } else if(s.startsWith("start.")) {

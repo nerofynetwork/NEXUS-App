@@ -1,4 +1,10 @@
 function addInstance(id,name,icon,group) {
+
+    id = decodeURIComponent(id);
+    name = decodeURIComponent(name);
+    icon = decodeURIComponent(icon);
+    group = decodeURIComponent(group);
+
     if(!document.getElementById(id)) {
         let list = document.getElementById("instance-list");
         if (group) {
