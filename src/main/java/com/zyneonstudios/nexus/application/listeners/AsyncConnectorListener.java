@@ -8,6 +8,7 @@ import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.CombinedSearch;
+import com.zyneonstudios.nexus.application.search.modrinth.search.facets.categories.ModrinthCategory;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexIntegration;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstance;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
@@ -81,7 +82,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             int offset = Integer.parseInt(query[1]);
             String search = query[2];
 
-            CombinedSearch CS = new CombinedSearch();
+            CombinedSearch CS = new CombinedSearch(new int[0],new ModrinthCategory[0]);
             CS.setLimit(25);
             CS.setOffset(CS.getOffset()+offset);
 
