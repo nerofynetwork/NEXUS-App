@@ -9,6 +9,7 @@ import com.zyneonstudios.nexus.application.search.curseforge.search.facets.Curse
 import com.zyneonstudios.nexus.application.search.modrinth.search.ModrinthSearch;
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.ModrinthFacetsBuilder;
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.ModrinthProjectType;
+import com.zyneonstudios.nexus.application.search.modrinth.search.facets.categories.ModrinthCategory;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexSearch;
 import com.zyneonstudios.nexus.application.utilities.StringUtility;
 import com.zyneonstudios.nexus.instance.Instance;
@@ -26,13 +27,13 @@ public class CombinedSearch {
     private int offset = 0;
     private int hits = 20;
 
-    public CombinedSearch() {
+    public CombinedSearch(int[] curseForgeCategoryIds, ModrinthCategory[] modrinthCategories) {
         NEXSearch = new ZyndexSearch(NexusApplication.getInstance().getNEX());
         curseForgeSearch = new CurseForgeSearch();
         modrinthSearch = new ModrinthSearch();
 
-        curseForgeSearch.setFacets(new CurseForgeFacetsBuilder().withClassId(4471).build());
-        modrinthSearch.setFacets(new ModrinthFacetsBuilder().withProjectType(ModrinthProjectType.modpack).build());
+        curseForgeSearch.setFacets(new CurseForgeFacetsBuilder().withClassId(4471).withCategoryIds(curseForgeCategoryIds).build());
+        modrinthSearch.setFacets(new ModrinthFacetsBuilder().withProjectType(ModrinthProjectType.modpack).withCategories(modrinthCategories).build());
     }
 
     public void setLimit(int limit) {
