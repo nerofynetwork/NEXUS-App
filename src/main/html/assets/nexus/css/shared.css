@@ -312,6 +312,16 @@ body {
                     box-shadow: 0 0 1rem var(--bs-secondary);
                     border: 1px var(--bs-secondary-text-emphasis) solid;
                     cursor: pointer;
+
+                    i {
+                        text-shadow: none !important;
+                        color: white !important;
+                    }
+
+                    span {
+                        text-shadow: none !important;
+                        color: white !important;
+                    }
                 }
 
                 li.active {
@@ -319,7 +329,16 @@ body {
                     box-shadow: 0 0 1rem var(--nex-primary);
                     border: 1px var(--nex-primary-accent) solid;
                     cursor: unset;
-                    color: white;
+
+                    i {
+                        text-shadow: none !important;
+                        color: white !important;
+                    }
+
+                    span {
+                        text-shadow: none !important;
+                        color: white !important;
+                    }
                 }
             }
         }
@@ -389,15 +408,23 @@ body {
                     color: var(--nex-fg);
                 }
 
-                i.active {
+                i.downloading {
                     opacity: 1;
-                    text-shadow: 0 0 0.4rem var(--nex-fg);
+                    color: var(--nex-fg);
+                    text-shadow: 0 0 1rem var(--nex-primary) !important;
                 }
 
                 i:hover {
                     opacity: 1;
                     cursor: pointer;
-                    text-shadow: none;
+                    color: var(--nex-fg) !important;
+                    text-shadow: 0 0 0.4rem var(--nex-fg) !important;
+                }
+
+                i.active {
+                    opacity: 1;
+                    color: var(--nex-fg) !important;
+                    text-shadow: 0 0 0.4rem var(--nex-fg) !important;
                 }
 
                 i.mode {

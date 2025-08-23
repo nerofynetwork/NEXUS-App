@@ -91,8 +91,19 @@ public class NexusRunner {
             System.gc();
         }
 
-
         CompletableFuture.runAsync(()-> {
+            if(downloading != null) {
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-button').style.color = 'var(--nex-primary)';");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-button').querySelector('span').style.textShadow = '0 0 0.3rem var(--nex-primary)';");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-button').querySelector('i').style.textShadow = '0 0 0.3rem var(--nex-primary)';");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-icon').classList.add('downloading');");
+            } else {
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-button').style.color = '';");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-button').querySelector('span').style.textShadow = '';");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-button').querySelector('i').style.textShadow = '';");
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById('downloads-icon').classList.remove('downloading');");
+            }
+
             if (downloading != null) {
                 Download download = NexusApplication.getInstance().getDownloadManager().getDownloads().get(downloading);
                 if (download.isFinished()) {
