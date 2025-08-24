@@ -1,8 +1,8 @@
 package com.zyneonstudios.nexus.application.launchprocess;
 
 import com.zyneonstudios.nexus.application.main.NexusApplication;
-import net.nrfy.nexus.launcher.launcher.LauncherHook;
-import net.nrfy.nexus.launcher.launcher.MinecraftLauncher;
+import live.nerotv.aminecraftlauncher.launcher.LauncherHook;
+import live.nerotv.aminecraftlauncher.launcher.MinecraftLauncher;
 
 import java.awt.*;
 

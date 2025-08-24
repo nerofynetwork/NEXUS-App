@@ -47,14 +47,19 @@
             <version>2025.8.1</version>
         </dependency>
         <dependency>
+            <groupId>com.zyneonstudios.nexus</groupId>
+            <artifactId>zyndex-java</artifactId>
+            <version>2025.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>live.nerotv</groupId>
+            <artifactId>a-minecraft-launcher</artifactId>
+            <version>2025.8.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>3.5.4</version>
-        </dependency>
-        <dependency>
-            <groupId>net.nrfy.nexus</groupId>
-            <artifactId>a-minecraft-launcher-libs</artifactId>
-            <version>2025.8</version>
         </dependency>
         <dependency>
             <groupId>com.starxg</groupId>

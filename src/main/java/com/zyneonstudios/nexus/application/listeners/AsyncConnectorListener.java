@@ -20,7 +20,7 @@ import com.zyneonstudios.nexus.instance.ReadableZynstance;
 import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.verget.fabric.FabricVerget;
 import jnafilechooser.api.JnaFileChooser;
-import net.nrfy.nexus.launcher.launcher.*;
+import live.nerotv.aminecraftlauncher.launcher.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -194,7 +194,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             if(source.equals("nex")) {
                 ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
             } else if(source.equals("modrinth")) {
+                try {
 
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             } else if(source.equals("curseforge")) {
 
             }
