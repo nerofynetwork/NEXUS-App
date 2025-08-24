@@ -3,11 +3,14 @@ package com.zyneonstudios.nexus.application.listeners;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.starxg.keytar.Keytar;
+import com.zyneonstudios.nexus.application.downloads.Download;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.CombinedSearch;
+import com.zyneonstudios.nexus.application.search.modrinth.ModrinthResource;
+import com.zyneonstudios.nexus.application.search.modrinth.ModrinthResourceVersion;
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.categories.ModrinthCategory;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexIntegration;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstance;
@@ -26,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.Base64;
 
@@ -194,11 +198,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             if(source.equals("nex")) {
                 ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
             } else if(source.equals("modrinth")) {
-                try {
 
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
             } else if(source.equals("curseforge")) {
 
             }

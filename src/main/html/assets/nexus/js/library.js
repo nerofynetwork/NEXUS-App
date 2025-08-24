@@ -98,7 +98,7 @@ function showInstance(id,name,version,summary,description) {
     if(document.getElementById(activeInstance)) {
         document.getElementById(activeInstance).classList.add("active");
     }
-    document.getElementById("library-title").innerText = "Library » " + name;
+    document.getElementById("library-title").innerText = name;
     document.getElementById("instance-view").style.display = "flex";
     document.getElementById("instance-name").innerText = name;
     document.getElementById("instance-version").innerText = version;

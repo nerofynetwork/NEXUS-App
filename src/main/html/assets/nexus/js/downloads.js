@@ -73,6 +73,12 @@ function setDownload(title,state,elapsedTime,downloadSpeed,remainingTime,downloa
     }
 
     document.getElementById("downloads-loading").style.display = "none";
+
+    if(getStorageItem("devtools")) {
+        if(getStorageItem("devtools") === "true") {
+            download.querySelector(".extended-download-info").classList.remove("d-none");
+        }
+    }
 }
 
 function initDownloads() {

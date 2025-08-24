@@ -499,6 +499,10 @@ public class ModrinthResource {
         return versions;
     }
 
+    public ModrinthResourceVersion getVersion(String versionId) {
+        return new ModrinthResourceVersion(this, versionId);
+    }
+
     public String getIconUrl() {
         return iconUrl;
     }
