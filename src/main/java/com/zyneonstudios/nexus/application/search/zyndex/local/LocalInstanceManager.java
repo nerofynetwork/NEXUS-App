@@ -1,5 +1,6 @@
 package com.zyneonstudios.nexus.application.search.zyndex.local;
 
+import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.utilities.ApplicationMigrator;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
@@ -38,13 +39,15 @@ public class LocalInstanceManager {
                 throw new RuntimeException("Failed to create instances directory: " + instancePath.getAbsolutePath());
             }
         }
-        if(ApplicationMigrator.getOldMinecraftInstances()!=null) {
-            for(String oldInstance:ApplicationMigrator.getOldMinecraftInstances()) {
-                File instanceFile = new File(oldInstance);
-                if(instanceFile.exists()) {
-                    LocalInstance instance = new LocalInstance(instanceFile.getAbsolutePath());
-                    if (!instances.containsKey(instance.getPath())) {
-                        instances.put(instance.getPath(), instance);
+        if(NexusApplication.getInstance().getWorkingPath().equals(Main.getDefaultPath())) {
+            if (ApplicationMigrator.getOldMinecraftInstances() != null) {
+                for (String oldInstance : ApplicationMigrator.getOldMinecraftInstances()) {
+                    File instanceFile = new File(oldInstance);
+                    if (instanceFile.exists()) {
+                        LocalInstance instance = new LocalInstance(instanceFile.getAbsolutePath());
+                        if (!instances.containsKey(instance.getPath())) {
+                            instances.put(instance.getPath(), instance);
+                        }
                     }
                 }
             }

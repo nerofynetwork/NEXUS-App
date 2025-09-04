@@ -136,7 +136,7 @@ public class Main {
         return port;
     }
 
-    private static String getDefaultPath() {
+    public static String getDefaultPath() {
         String appData;
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
