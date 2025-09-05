@@ -12,7 +12,7 @@ public class ExitCommand extends NexusConsoleCommand {
 
     @Override
     public boolean run(String[] args) {
-        NexusApplication.getInstance().getApplicationFrame().executeJavaScript("console.log('[CONNECTOR] exit');");
-        return false;
+        NexusApplication.stop(0);
+        return true;
     }
 }

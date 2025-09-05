@@ -170,7 +170,16 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             devBar.add(actions);
             setMinimumSize(minSize);
         }
-        setJMenuBar(devBar);
+        if(!NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
+            devBar.setBorder(null);
+            JPanel spacer = new JPanel();
+            spacer.setBackground(null);
+            devBar.add(spacer);
+            smartBar.setMaximumSize(new Dimension(250,getSize().height));
+            getTitlebar().add(devBar, BorderLayout.SOUTH);
+        } else {
+            setJMenuBar(devBar);
+        }
 
         getBrowser().getUIComponent().addMouseListener(new MouseAdapter() {
             @Override

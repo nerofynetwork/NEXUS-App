@@ -10,6 +10,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class SmartBar extends JPanel {
 
+    private final JPanel root = new JPanel(new BorderLayout());
+    private final JPanel marginTop = new JPanel();
+    private final JPanel marginRight = new JPanel();
+    private final JPanel marginBottom = new JPanel();
+    private final JPanel marginLeft = new JPanel();
+
     private Color backgroundColor = Color.decode("#1f1f1f");
     private Color spaceColor = null;
     private Color color = Color.lightGray;
@@ -18,7 +24,7 @@ public class SmartBar extends JPanel {
     private Color successColor = Color.decode("#34bf49");
     private Color feedbackColor = Color.decode("#96e8ff");
     private Color placeholderColor = Color.darkGray;
-    private String placeholder = "Tell me what to do...";
+    private String placeholder = "▶ Tell me what to do...";
 
     private final JPanel bar = new JPanel(new BorderLayout());
     private JPanel smartBarLeft = new JPanel();
@@ -32,11 +38,20 @@ public class SmartBar extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(247, 30));
 
+        marginTop.setBackground(null);
+        root.add(marginTop, BorderLayout.NORTH);
+        marginRight.setBackground(null);
+        root.add(marginRight, BorderLayout.EAST);
+        marginBottom.setBackground(null);
+        root.add(marginBottom, BorderLayout.SOUTH);
+        marginLeft.setBackground(null);
+        root.add(marginLeft, BorderLayout.WEST);
+
         spacerTop.setPreferredSize(new Dimension(247, 3));
-        add(spacerTop, BorderLayout.NORTH);
+        root.add(spacerTop, BorderLayout.NORTH);
 
         spacerBottom.setPreferredSize(new Dimension(247, 3));
-        add(spacerBottom, BorderLayout.SOUTH);
+        root.add(spacerBottom, BorderLayout.SOUTH);
 
 
         smartBarLeft.setPreferredSize(new Dimension(3,30));
@@ -93,7 +108,9 @@ public class SmartBar extends JPanel {
         });
         bar.add(smartBarInput, BorderLayout.CENTER);
         bar.setBorder(new RoundedBorder(2,borderColor));
-        add(bar, BorderLayout.CENTER);
+        root.add(bar, BorderLayout.CENTER);
+
+        add(root, BorderLayout.CENTER);
 
         setColor(color);
         setBackgroundColor(backgroundColor);
@@ -156,6 +173,7 @@ public class SmartBar extends JPanel {
         spacerBottom.setBackground(spaceColor);
         smartBarLeft.setBackground(null);
         bar.setBackground(this.backgroundColor);
+        root.setBackground(spaceColor);
     }
 
     public void setSpaceColor(Color spaceColor) {
@@ -305,15 +323,15 @@ public class SmartBar extends JPanel {
     }
 
     public void setSpacerTop(JPanel spacerTop) {
-        remove(this.spacerTop);
+        root.remove(this.spacerTop);
         this.spacerTop = spacerTop;
-        add(this.spacerTop, BorderLayout.NORTH);
+        root.add(this.spacerTop, BorderLayout.NORTH);
     }
 
     public void setSpacerBottom(JPanel spacerBottom) {
-        remove(this.spacerBottom);
+        root.remove(this.spacerBottom);
         this.spacerBottom = spacerBottom;
-        add(this.spacerBottom, BorderLayout.SOUTH);
+        root.add(this.spacerBottom, BorderLayout.SOUTH);
     }
 
     public void setBorderColor(Color borderColor) {
@@ -334,6 +352,20 @@ public class SmartBar extends JPanel {
                 }
             } catch (Exception ignore) {}
         });
+    }
+
+    public void setMargin(int margin) {
+        marginTop.setSize(marginTop.getWidth(), margin);
+        marginRight.setSize(margin, marginRight.getHeight());
+        marginBottom.setSize(marginBottom.getWidth(), margin);
+        marginLeft.setSize(margin, marginLeft.getHeight());
+    }
+
+    public void setMargin(int top, int right, int bottom, int left) {
+        marginTop.setSize(marginTop.getWidth(), top);
+        marginRight.setSize(right, marginRight.getHeight());
+        marginBottom.setSize(marginBottom.getWidth(), bottom);
+        marginLeft.setSize(left, marginLeft.getHeight());
     }
 
     private static class RoundedBorder implements Border {
