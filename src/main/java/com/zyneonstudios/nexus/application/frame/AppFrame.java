@@ -63,10 +63,10 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         spacer.setBackground(null);
         devBar.add(spacer);
 
-        JMenu browser = new JMenu("Browser");
-        browser.getPopupMenu().setBackground(Color.black);
         JMenu actions = new JMenu("Actions");
         actions.getPopupMenu().setBackground(Color.black);
+        JMenu browser = new JMenu("Browser");
+        browser.getPopupMenu().setBackground(Color.black);
 
         JMenuItem refresh = new JMenuItem("Open start page");
         refresh.addActionListener(e -> getBrowser().loadURL(url));
@@ -180,7 +180,11 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         devBar.setOpaque(true);
 
         if(NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
-            add(devBar, BorderLayout.NORTH);
+            devBar.remove(actions);
+            devBar.remove(browser);
+            devBar.add(actions);
+            devBar.add(browser);
+            setJMenuBar(devBar);
         } else {
             getTitlebar().add(devBar, BorderLayout.SOUTH);
         }
