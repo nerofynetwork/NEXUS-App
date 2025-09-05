@@ -73,6 +73,7 @@ public class NexusConsoleHandler {
                 }
             }
         }
+        NexusApplication.getLogger().err("Command not found: "+input);
         return false;
     }
 

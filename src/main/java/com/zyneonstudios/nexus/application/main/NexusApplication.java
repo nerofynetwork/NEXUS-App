@@ -174,7 +174,7 @@ public class NexusApplication {
     private void initCommands() {
         consoleHandler.addCommand(new HelpCommand());
         consoleHandler.addCommand(new LaunchCommand());
-        consoleHandler.addCommand(new InstallCommand());
+        consoleHandler.addCommand(new GetCommand());
         consoleHandler.addCommand(new ExitCommand());
         consoleHandler.addCommand(new ConnectorCommand());
         consoleHandler.addCommand(new ConnectorCommand());
