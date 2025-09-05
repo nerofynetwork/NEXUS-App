@@ -59,37 +59,46 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         });
 
         JMenuBar devBar = new JMenuBar();
+        JPanel spacer = new JPanel();
+        spacer.setBackground(null);
+        devBar.add(spacer);
+
+        JMenu browser = new JMenu("Browser");
+        browser.getPopupMenu().setBackground(Color.black);
+        JMenu actions = new JMenu("Actions");
+        actions.getPopupMenu().setBackground(Color.black);
+
+        JMenuItem refresh = new JMenuItem("Open start page");
+        refresh.addActionListener(e -> getBrowser().loadURL(url));
+        actions.add(refresh);
+
+        JMenuItem goForward = new JMenuItem("Go forward");
+        goForward.addActionListener(e -> getBrowser().goForward());
+        browser.add(goForward);
+
+        JMenuItem goBack = new JMenuItem("Go back");
+        goBack.addActionListener(e -> getBrowser().goBack());
+        browser.add(goBack);
+
+        browser.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                goBack.setEnabled(getBrowser().canGoBack());
+                goForward.setEnabled(getBrowser().canGoForward());
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
+            }
+        });
 
         if(NexusApplication.getLogger().isDebugging()) {
-            JMenu browser = new JMenu("Browser");
-            browser.getPopupMenu().setBackground(Color.black);
-
-            JMenuItem goForward = new JMenuItem("Go forward");
-            goForward.addActionListener(e -> getBrowser().goForward());
-            browser.add(goForward);
-
-            JMenuItem goBack = new JMenuItem("Go back");
-            goBack.addActionListener(e -> getBrowser().goBack());
-            browser.add(goBack);
-
-            browser.addMenuListener(new MenuListener() {
-                @Override
-                public void menuSelected(MenuEvent e) {
-                    goBack.setEnabled(getBrowser().canGoBack());
-                    goForward.setEnabled(getBrowser().canGoForward());
-                }
-
-                @Override
-                public void menuDeselected(MenuEvent e) {
-
-                }
-
-                @Override
-                public void menuCanceled(MenuEvent e) {
-
-                }
-            });
-
             JMenuItem inputUrl = new JMenuItem("Input URL");
             inputUrl.addActionListener(e -> {
                 JDialog inputWindow = new JDialog(AppFrame.this, "Input url ("+windowId+", "+getTitle()+")", true);
@@ -107,13 +116,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             });
             browser.add(inputUrl);
 
-            JMenuItem reload = new JMenuItem("Reload");
-            reload.addActionListener(e -> getBrowser().reload());
-            browser.add(reload);
-
-            JMenu actions = new JMenu("Actions");
-            actions.getPopupMenu().setBackground(Color.black);
-
             JMenuItem openInBrowser = new JMenuItem("Open in default browser");
             openInBrowser.addActionListener(e -> {
                 try {
@@ -123,10 +125,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
                 } catch (Exception ignored) {}
             });
             actions.add(openInBrowser);
-
-            JMenuItem refresh = new JMenuItem("Open start page");
-            refresh.addActionListener(e -> getBrowser().loadURL(url));
-            actions.add(refresh);
 
             JMenuItem devTools = new JMenuItem("Show DevTools");
             devTools.addActionListener(e -> getBrowser().openDevTools());
@@ -152,35 +150,34 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             disableDevtools.addActionListener(e -> {
                 NexusApplication.getLogger().disableDebug();
                 setVisible(false);
-                devBar.removeAll();
-                devBar.add(smartBar);
+                browser.remove(inputUrl);
+                actions.remove(disableDevtools);
+                actions.remove(cloneWindow);
+                actions.remove(devTools);
+                actions.remove(openInBrowser);
                 setVisible(true);
                 executeJavaScript("enableDevTools(false);");
             });
             actions.add(disableDevtools);
-
-            JMenuItem exit = new JMenuItem("Exit");
-            exit.addActionListener(e -> NexusApplication.stop(0));
-            actions.add(exit);
-
-            devBar.add(browser);
-            devBar.add(actions);
-            setMinimumSize(minSize);
         }
+        JMenuItem reload = new JMenuItem("Reload");
+        reload.addActionListener(e -> getBrowser().reload());
+        browser.add(reload);
+
+        JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(e -> NexusApplication.stop(0));
+        actions.add(exit);
+
+        devBar.add(browser);
+        devBar.add(actions);
         devBar.setBorder(null);
-        JPanel spacer = new JPanel();
-        spacer.setBackground(null);
         smartBar = new SmartBar();
-        smartBar.setMargin(0,3,0,0);
+        smartBar.setMargin(0,3,0,6);
         smartBar.setMaximumSize(new Dimension(250,getSize().height));
-        devBar.add(spacer);
+
         devBar.add(smartBar);
         devBar.setBackground(Color.black);
         devBar.setOpaque(true);
-
-        setBackground(Color.black);
-        getRootPane().setBackground(Color.black);
-
 
         if(NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
             add(devBar, BorderLayout.NORTH);
@@ -217,6 +214,8 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
                 }
             }
         });
+
+        setMinimumSize(minSize);
 
         // Set the AsyncWebFrameConnectorEvent for the frame.
         setAsyncWebFrameConnectorEvent(new AsyncConnectorListener(this,null));

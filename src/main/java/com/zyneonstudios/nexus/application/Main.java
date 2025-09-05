@@ -41,7 +41,7 @@ public class Main {
         NexusDesktop.init();
         NexusUtilities.getLogger().setName("NEXUS",true);
         try {
-            UIManager.put("TitlePane.menuBarEmbedded", false);
+            UIManager.put("TitlePane.menuBarEmbedded", true);
         } catch (Exception e) {
             logger.err(e.getMessage());
         }
