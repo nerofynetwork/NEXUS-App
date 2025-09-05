@@ -40,7 +40,7 @@ public class LaunchCommand extends NexusConsoleCommand {
             String title = instance.getInstance().getName().toLowerCase();
             String id = instance.getInstance().getId().toLowerCase();
             String path = instance.getPath().toLowerCase();
-            if(title.contains(query) || id.contains(query) || path.contains(query)) {
+            if(title.contains(query) || id.equals(query) || path.equals(query)) {
                 return instance;
             }
         }
