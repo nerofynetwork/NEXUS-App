@@ -33,6 +33,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     // The minimum size of the application window.
     private final Dimension minSize = new Dimension(1024, 640);
     private final String windowId = StringGenerator.generateAlphanumericString(12);
+    private SmartBar smartBar;
 
     /**
      * Constructor for the ApplicationFrame.
@@ -59,8 +60,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
         JMenuBar devBar = new JMenuBar();
         devBar.setBackground(Color.black);
-        SmartBar smartBar = new SmartBar();
-        smartBar.setSpaceColor(Color.black);
+        smartBar = new SmartBar();
         devBar.add(smartBar);
 
         if(NexusApplication.getLogger().isDebugging()) {
@@ -236,7 +236,8 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     //@Override
     public void setTitleColors(Color background, Color foreground) {
-        setBackground(background);
+        setTitleBackground(background);
+        setTitleForeground(foreground);
     }
 
     /**
@@ -247,6 +248,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     public void setTitleBackground(Color color) {
         setBackground(color);
         getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
+        smartBar.setSpaceColor(color);
     }
 
     /**
@@ -315,5 +317,13 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     @Override
     public void componentHidden(ComponentEvent e) {
         // Not implemented.
+    }
+
+    public SmartBar getSmartBar() {
+        return smartBar;
+    }
+
+    public void setSmartBar(SmartBar smartBar) {
+        this.smartBar = smartBar;
     }
 }

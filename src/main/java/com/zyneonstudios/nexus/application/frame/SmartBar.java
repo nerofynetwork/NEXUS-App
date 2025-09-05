@@ -13,6 +13,11 @@ public class SmartBar extends JPanel {
     private Color backgroundColor = Color.decode("#1f1f1f");
     private Color spaceColor = null;
     private Color color = Color.lightGray;
+    private Color borderColor = Color.decode("#292929");
+    private Color errorColor = Color.decode("#e63c30");
+    private Color successColor = Color.decode("#34bf49");
+    private Color feedbackColor = Color.decode("#96e8ff");
+    private Color placeholderColor = Color.darkGray;
     private String placeholder = "Tell me what to do...";
 
     private final JPanel bar = new JPanel(new BorderLayout());
@@ -42,33 +47,23 @@ public class SmartBar extends JPanel {
 
         smartBarInput.setBorder(null);
         smartBarInput.setText(placeholder);
+        smartBarInput.setForeground(placeholderColor);
         smartBarInput.setPreferredSize(new Dimension(241, 24));
         smartBarInput.addActionListener(e -> {
-            smartBarInput.setForeground(Color.decode("#00ccff"));
             if(NexusApplication.getInstance().getConsoleHandler().runCommand(smartBarInput.getText()+" ")) {
-                smartBarInput.setForeground(Color.decode("#34bf49"));
+                smartBarInput.setForeground(successColor);
             } else {
-                smartBarInput.setForeground(Color.decode("#e63c30"));
+                smartBarInput.setForeground(errorColor);
             }
         });
         smartBarInput.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
-                smartBarInput.setForeground(color);
-
-                CompletableFuture.runAsync(()->{
-                    try {
-                        Thread.sleep(10);
-                        if (!smartBarInput.getText().isEmpty()) {
-                            if (NexusApplication.getInstance().getConsoleHandler().hasCommand(smartBarInput.getText().split(" ", 2)[0])) {
-                                smartBarInput.setForeground(Color.decode("#96e8ff"));
-                            } else if(smartBarInput.getText().contains(" ")) {
-                                smartBarInput.setForeground(Color.decode("#e63c30"));
-                            }
-                        }
-                    } catch (Exception ignore) {}
-                });
+                if(e.getKeyCode() != KeyEvent.VK_ENTER) {
+                    smartBarInput.setForeground(color);
+                    validateValue();
+                }
             }
         });
         smartBarInput.addMouseListener(new MouseAdapter() {
@@ -90,17 +85,66 @@ public class SmartBar extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                if(smartBarInput.getText().isEmpty()) {
+                if(smartBarInput.getText().isEmpty()||smartBarInput.getText().isBlank()) {
                     smartBarInput.setText(placeholder);
+                    smartBarInput.setForeground(placeholderColor);
                 }
             }
         });
         bar.add(smartBarInput, BorderLayout.CENTER);
-        bar.setBorder(new RoundedBorder(2));
+        bar.setBorder(new RoundedBorder(2,borderColor));
         add(bar, BorderLayout.CENTER);
 
         setColor(color);
         setBackgroundColor(backgroundColor);
+    }
+
+    public Color getPlaceholderColor() {
+        return placeholderColor;
+    }
+
+    public Color getBorderColor() {
+        return borderColor;
+    }
+
+    public Color getErrorColor() {
+        return errorColor;
+    }
+
+    public Color getFeedbackColor() {
+        return feedbackColor;
+    }
+
+    public Color getSuccessColor() {
+        return successColor;
+    }
+
+    public void setErrorColor(Color errorColor) {
+        if(smartBarInput.getForeground().equals(this.errorColor)) {
+            smartBarInput.setForeground(errorColor);
+        }
+        this.errorColor = errorColor;
+    }
+
+    public void setFeedbackColor(Color feedbackColor) {
+        if(smartBarInput.getForeground().equals(this.feedbackColor)) {
+            smartBarInput.setForeground(feedbackColor);
+        }
+        this.feedbackColor = feedbackColor;
+    }
+
+    public void setSuccessColor(Color successColor) {
+        if(smartBarInput.getForeground().equals(this.successColor)) {
+            smartBarInput.setForeground(successColor);
+        }
+        this.successColor = successColor;
+    }
+
+    public void setPlaceholderColor(Color placeholderColor) {
+        this.placeholderColor = placeholderColor;
+        if(smartBarInput.getText().equals(placeholder)) {
+            smartBarInput.setForeground(this.placeholderColor);
+        }
     }
 
     public void setBackgroundColor(Color backgroundColor) {
@@ -272,12 +316,34 @@ public class SmartBar extends JPanel {
         add(this.spacerBottom, BorderLayout.SOUTH);
     }
 
+    public void setBorderColor(Color borderColor) {
+        this.borderColor = borderColor;
+        bar.setBorder(new RoundedBorder(2,this.borderColor));
+    }
+
+    private void validateValue() {
+        CompletableFuture.runAsync(()->{
+            try {
+                Thread.sleep(10);
+                if (!smartBarInput.getText().isEmpty()) {
+                    if (NexusApplication.getInstance().getConsoleHandler().hasCommand(smartBarInput.getText().split(" ", 2)[0])) {
+                        smartBarInput.setForeground(feedbackColor);
+                    } else if(smartBarInput.getText().contains(" ")) {
+                        smartBarInput.setForeground(errorColor);
+                    }
+                }
+            } catch (Exception ignore) {}
+        });
+    }
+
     private static class RoundedBorder implements Border {
 
         private final int radius;
+        private final Color borderColor;
 
-        public RoundedBorder(int radius) {
+        public RoundedBorder(int radius,Color borderColor) {
             this.radius = radius;
+            this.borderColor = borderColor;
         }
 
         @Override
@@ -292,7 +358,7 @@ public class SmartBar extends JPanel {
 
         @Override
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.setColor(Color.decode("#292929"));
+            g.setColor(borderColor);
             g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
     }

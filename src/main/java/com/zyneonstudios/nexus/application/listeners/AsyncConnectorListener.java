@@ -48,9 +48,23 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             if (s.endsWith("dark")) {
                 frame.setTitleBackground(Color.black);
                 frame.setTitleForeground(Color.white);
+                frame.getSmartBar().getBar().setBackground(Color.decode("#1f1f1f"));
+                frame.getSmartBar().setBorderColor(Color.decode("#292929"));
+                frame.getSmartBar().setColor(Color.lightGray);
+                frame.getSmartBar().setFeedbackColor(Color.decode("#96e8ff"));
+                frame.getSmartBar().setSuccessColor(Color.decode("#34bf49"));
+                frame.getSmartBar().setErrorColor(Color.decode("#e63c30"));
+                frame.getSmartBar().setPlaceholderColor(Color.darkGray);
             } else {
                 frame.setTitleBackground(Color.white);
                 frame.setTitleForeground(Color.black);
+                frame.getSmartBar().setBackgroundColor(Color.decode("#f0f0f0"));
+                frame.getSmartBar().setBorderColor(Color.lightGray);
+                frame.getSmartBar().setColor(Color.decode("#292929"));
+                frame.getSmartBar().setFeedbackColor(Color.decode("#0a54ff"));
+                frame.getSmartBar().setSuccessColor(Color.decode("#009e18"));
+                frame.getSmartBar().setErrorColor(Color.decode("#e63c30"));
+                frame.getSmartBar().setPlaceholderColor(Color.lightGray);
             }
 
             // Handle page loaded events.
