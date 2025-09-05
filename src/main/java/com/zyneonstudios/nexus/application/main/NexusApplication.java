@@ -7,6 +7,11 @@ import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.application.downloads.DownloadManager;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
+import com.zyneonstudios.nexus.application.main.console.NexusConsoleHandler;
+import com.zyneonstudios.nexus.application.main.console.commands.ExitCommand;
+import com.zyneonstudios.nexus.application.main.console.commands.HelpCommand;
+import com.zyneonstudios.nexus.application.main.console.commands.InstallCommand;
+import com.zyneonstudios.nexus.application.main.console.commands.LaunchCommand;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstanceManager;
@@ -68,6 +73,7 @@ public class NexusApplication {
     private NexusWebSetup webSetup;
     private ModuleLoader moduleLoader;
     private AppFrame applicationFrame = null;
+    private final NexusConsoleHandler consoleHandler;
 
     // Configuration and State
     private final JsonStorage settings;
@@ -85,6 +91,9 @@ public class NexusApplication {
      */
     public NexusApplication(String path, String uiPath) {
         instance = this;
+        consoleHandler = new NexusConsoleHandler();
+        consoleHandler.startReading();
+        consoleHandler.addCommands(new HelpCommand(),new LaunchCommand(),new InstallCommand(), new ExitCommand());
 
         // Setup working directory
         File workingDirFile = new File(path);
@@ -283,29 +292,48 @@ public class NexusApplication {
      * Stops the application.
      *
      * @param exitCode The exit code to use.
+     * @param closeAsync Defines if the close action should run asynchronously.
+     */
+    public static void stop(int exitCode, boolean closeAsync) {
+        if(closeAsync) {
+            SwingUtilities.invokeLater(() -> {
+                end(exitCode);
+            });
+        } else {
+            end(exitCode);
+        }
+    }
+
+    /**
+     * Stops the application.
+     *
+     * @param exitCode The exit code to use.
      */
     public static void stop(int exitCode) {
-        SwingUtilities.invokeLater(() -> {
-            getInstance().getWebSetup().getWebApp().dispose();
-            try {
-                if (getInstance().getWebSetup() != null && getInstance().getWebSetup().getWebApp() != null) {
-                    getInstance().getWebSetup().getWebApp().dispose();
-                }
-            } catch (Exception ignore) {
-            }
-            try {
-                if (getInstance().getModuleLoader() != null) {
-                    getInstance().getModuleLoader().deactivateModules();
-                }
-            } catch (Exception ignore) {
-            }
-            System.gc();
-
-            FileActions.deleteFolder(new File((NexusApplication.getInstance().getWorkingPath()+"/temp/").replace("\\","/").replace("//","/")));
-
-            System.exit(exitCode);
-        });
+        stop(exitCode, true);
     }
+
+
+    private static void end(int exitCode) {
+        getInstance().getWebSetup().getWebApp().dispose();
+        try {
+            if (getInstance().getWebSetup() != null && getInstance().getWebSetup().getWebApp() != null) {
+                getInstance().getWebSetup().getWebApp().dispose();
+            }
+        } catch (Exception ignore) {
+        }
+        try {
+            if (getInstance().getModuleLoader() != null) {
+                getInstance().getModuleLoader().deactivateModules();
+            }
+        } catch (Exception ignore) {
+        }
+        System.gc();
+
+        FileActions.deleteFolder(new File((NexusApplication.getInstance().getWorkingPath()+"/temp/").replace("\\","/").replace("//","/")));
+        System.exit(exitCode);
+    }
+
 
     /**
      * Restarts the application.
@@ -558,5 +586,9 @@ public class NexusApplication {
 
     public LocalInstanceManager getInstanceManager() {
         return instanceManager;
+    }
+
+    public NexusConsoleHandler getConsoleHandler() {
+        return consoleHandler;
     }
 }

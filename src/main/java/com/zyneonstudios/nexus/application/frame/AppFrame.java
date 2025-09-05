@@ -7,16 +7,15 @@ import com.zyneonstudios.nexus.desktop.frame.web.NWebFrame;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.net.URI;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SuppressWarnings("unused")
 public class AppFrame extends NexusWebFrame implements ComponentListener, WebFrame {
 
+    private static final Logger log = LoggerFactory.getLogger(AppFrame.class);
     // The minimum size of the application window.
     private final Dimension minSize = new Dimension(1024, 640);
     private final String windowId = StringGenerator.generateAlphanumericString(12);
@@ -53,13 +53,17 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                getBrowser().doClose();
+                NexusApplication.stop(0);
             }
         });
 
         JMenuBar devBar = new JMenuBar();
-        if(NexusApplication.getLogger().isDebugging()) {
+        devBar.setBackground(Color.black);
+        SmartBar smartBar = new SmartBar();
+        smartBar.setSpaceColor(Color.black);
+        devBar.add(smartBar);
 
+        if(NexusApplication.getLogger().isDebugging()) {
             JMenu browser = new JMenu("Browser");
             browser.getPopupMenu().setBackground(Color.black);
 
@@ -150,10 +154,11 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             JMenuItem disableDevtools = new JMenuItem("Disable dev mode");
             disableDevtools.addActionListener(e -> {
                 NexusApplication.getLogger().disableDebug();
-                devBar.removeAll();
-                executeJavaScript("enableDevTools(false);");
                 setVisible(false);
+                devBar.removeAll();
+                devBar.add(smartBar);
                 setVisible(true);
+                executeJavaScript("enableDevTools(false);");
             });
             actions.add(disableDevtools);
 
@@ -166,6 +171,14 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             setMinimumSize(minSize);
         }
         setJMenuBar(devBar);
+
+        getBrowser().getUIComponent().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                getBrowser().getUIComponent().requestFocusInWindow();
+            }
+        });
 
         // Add a component listener to handle window resize and move events.
         addComponentListener(this);

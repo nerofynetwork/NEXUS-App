@@ -17,7 +17,7 @@ import java.util.Objects;
 public class LocalInstanceManager {
 
     private final JsonStorage instanceStorage;
-    public HashMap<String, LocalInstance> instances = new HashMap<>();
+    private HashMap<String, LocalInstance> instances = new HashMap<>();
 
     public LocalInstanceManager(JsonStorage instanceStorage) {
         this.instanceStorage = instanceStorage;
