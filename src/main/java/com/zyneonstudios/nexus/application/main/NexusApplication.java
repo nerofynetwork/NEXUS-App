@@ -8,10 +8,7 @@ import com.zyneonstudios.nexus.application.downloads.DownloadManager;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.listeners.PageLoadListener;
 import com.zyneonstudios.nexus.application.main.console.NexusConsoleHandler;
-import com.zyneonstudios.nexus.application.main.console.commands.ExitCommand;
-import com.zyneonstudios.nexus.application.main.console.commands.HelpCommand;
-import com.zyneonstudios.nexus.application.main.console.commands.InstallCommand;
-import com.zyneonstudios.nexus.application.main.console.commands.LaunchCommand;
+import com.zyneonstudios.nexus.application.main.console.commands.*;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstanceManager;
@@ -93,7 +90,7 @@ public class NexusApplication {
         instance = this;
         consoleHandler = new NexusConsoleHandler();
         consoleHandler.startReading();
-        consoleHandler.addCommands(new HelpCommand(),new LaunchCommand(),new InstallCommand(), new ExitCommand());
+        initCommands();
 
         // Setup working directory
         File workingDirFile = new File(path);
@@ -172,6 +169,14 @@ public class NexusApplication {
         });
 
         this.downloadManager = new DownloadManager(this);
+    }
+
+    private void initCommands() {
+        consoleHandler.addCommand(new HelpCommand());
+        consoleHandler.addCommand(new LaunchCommand());
+        consoleHandler.addCommand(new InstallCommand());
+        consoleHandler.addCommand(new ExitCommand());
+        consoleHandler.addCommand(new ConnectorCommand());
     }
 
     /**

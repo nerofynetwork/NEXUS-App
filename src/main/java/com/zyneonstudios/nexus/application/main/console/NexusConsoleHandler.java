@@ -76,6 +76,20 @@ public class NexusConsoleHandler {
         return false;
     }
 
+    public boolean hasCommand(String input) {
+        for(NexusConsoleCommand command : commands) {
+            if(input.equalsIgnoreCase(command.getName())) {
+                return true;
+            }
+            for (String alias : command.getAliases()) {
+                if (input.equalsIgnoreCase(alias)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void stop() {
         running = false;
         inputScanner.close();

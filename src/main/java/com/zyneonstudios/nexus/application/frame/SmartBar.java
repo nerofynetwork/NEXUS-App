@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.CompletableFuture;
 
 public class SmartBar extends JPanel {
 
@@ -55,6 +56,19 @@ public class SmartBar extends JPanel {
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
                 smartBarInput.setForeground(color);
+
+                CompletableFuture.runAsync(()->{
+                    try {
+                        Thread.sleep(10);
+                        if (!smartBarInput.getText().isEmpty()) {
+                            if (NexusApplication.getInstance().getConsoleHandler().hasCommand(smartBarInput.getText().split(" ", 2)[0])) {
+                                smartBarInput.setForeground(Color.decode("#96e8ff"));
+                            } else if(smartBarInput.getText().contains(" ")) {
+                                smartBarInput.setForeground(Color.decode("#e63c30"));
+                            }
+                        }
+                    } catch (Exception ignore) {}
+                });
             }
         });
         smartBarInput.addMouseListener(new MouseAdapter() {
