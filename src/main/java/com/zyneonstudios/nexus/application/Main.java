@@ -9,6 +9,7 @@ import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import javax.swing.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +40,11 @@ public class Main {
         // Initialize the Nexus desktop environment.
         NexusDesktop.init();
         NexusUtilities.getLogger().setName("NEXUS",true);
+        try {
+            UIManager.put("TitlePane.menuBarEmbedded", false);
+        } catch (Exception e) {
+            logger.err(e.getMessage());
+        }
 
         // Resolve command-line arguments.
         resolveArguments(args);

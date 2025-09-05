@@ -59,9 +59,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         });
 
         JMenuBar devBar = new JMenuBar();
-        devBar.setBackground(Color.black);
-        smartBar = new SmartBar();
-        devBar.add(smartBar);
 
         if(NexusApplication.getLogger().isDebugging()) {
             JMenu browser = new JMenu("Browser");
@@ -170,15 +167,25 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             devBar.add(actions);
             setMinimumSize(minSize);
         }
-        if(!NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
-            devBar.setBorder(null);
-            JPanel spacer = new JPanel();
-            spacer.setBackground(null);
-            devBar.add(spacer);
-            smartBar.setMaximumSize(new Dimension(250,getSize().height));
-            getTitlebar().add(devBar, BorderLayout.SOUTH);
+        devBar.setBorder(null);
+        JPanel spacer = new JPanel();
+        spacer.setBackground(null);
+        smartBar = new SmartBar();
+        smartBar.setMargin(0,3,0,0);
+        smartBar.setMaximumSize(new Dimension(250,getSize().height));
+        devBar.add(spacer);
+        devBar.add(smartBar);
+        devBar.setBackground(Color.black);
+        devBar.setOpaque(true);
+
+        setBackground(Color.black);
+        getRootPane().setBackground(Color.black);
+
+
+        if(NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
+            add(devBar, BorderLayout.NORTH);
         } else {
-            setJMenuBar(devBar);
+            getTitlebar().add(devBar, BorderLayout.SOUTH);
         }
 
         getBrowser().getUIComponent().addMouseListener(new MouseAdapter() {

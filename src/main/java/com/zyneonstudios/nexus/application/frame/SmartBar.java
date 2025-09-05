@@ -355,17 +355,17 @@ public class SmartBar extends JPanel {
     }
 
     public void setMargin(int margin) {
-        marginTop.setSize(marginTop.getWidth(), margin);
-        marginRight.setSize(margin, marginRight.getHeight());
-        marginBottom.setSize(marginBottom.getWidth(), margin);
-        marginLeft.setSize(margin, marginLeft.getHeight());
+        marginTop.setPreferredSize(new Dimension(marginTop.getWidth(), margin));
+        marginRight.setPreferredSize(new Dimension(margin, marginRight.getHeight()));
+        marginBottom.setPreferredSize(new Dimension(marginBottom.getWidth(), margin));
+        marginLeft.setPreferredSize(new Dimension(margin, marginLeft.getHeight()));
     }
 
     public void setMargin(int top, int right, int bottom, int left) {
-        marginTop.setSize(marginTop.getWidth(), top);
-        marginRight.setSize(right, marginRight.getHeight());
-        marginBottom.setSize(marginBottom.getWidth(), bottom);
-        marginLeft.setSize(left, marginLeft.getHeight());
+        marginTop.setPreferredSize(new Dimension(marginTop.getWidth(), top));
+        marginRight.setPreferredSize(new Dimension(right, marginRight.getHeight()));
+        marginBottom.setPreferredSize(new Dimension(marginBottom.getWidth(), bottom));
+        marginLeft.setPreferredSize(new Dimension(left, marginLeft.getHeight()));
     }
 
     private static class RoundedBorder implements Border {
