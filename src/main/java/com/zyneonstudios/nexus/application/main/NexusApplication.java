@@ -39,6 +39,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -176,6 +177,7 @@ public class NexusApplication {
         consoleHandler.addCommand(new LaunchCommand());
         consoleHandler.addCommand(new InstallCommand());
         consoleHandler.addCommand(new ExitCommand());
+        consoleHandler.addCommand(new ConnectorCommand());
         consoleHandler.addCommand(new ConnectorCommand());
     }
 
@@ -355,6 +357,7 @@ public class NexusApplication {
             command.add(java);
             command.add("-jar");
             command.add(currentJar.getPath());
+            Collections.addAll(command, Main.getArgs());
             ProcessBuilder builder = new ProcessBuilder(command);
             builder.start();
             System.exit(0);

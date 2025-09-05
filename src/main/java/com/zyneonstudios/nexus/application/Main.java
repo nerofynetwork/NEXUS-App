@@ -25,6 +25,7 @@ public class Main {
 
     // Application Logger
     private static final NexusLogger logger = NexusUtilities.getLogger();
+    private static String[] args;
 
     // Application Configuration
     private static String path = getDefaultPath();
@@ -37,6 +38,7 @@ public class Main {
      * @param args Command-line arguments passed to the application.
      */
     public static void main(String[] args) {
+        Main.args = args;
         // Initialize the Nexus desktop environment.
         NexusDesktop.init();
         NexusUtilities.getLogger().setName("NEXUS",true);
@@ -159,5 +161,9 @@ public class Main {
             throw new RuntimeException(e.getMessage());
         }
         return (folderPath + "/").replace("\\", "/");
+    }
+
+    public static String[] getArgs() {
+        return args;
     }
 }
