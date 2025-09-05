@@ -12,16 +12,15 @@ import com.zyneonstudios.nexus.application.main.console.commands.*;
 import com.zyneonstudios.nexus.application.modules.ModuleLoader;
 import com.zyneonstudios.nexus.application.search.curseforge.CurseForgeCategories;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstanceManager;
+import com.zyneonstudios.nexus.application.utilities.ApplicationLogger;
 import com.zyneonstudios.nexus.application.utilities.DiscordRichPresence;
 import com.zyneonstudios.nexus.application.utilities.MicrosoftAuthenticator;
 import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
-import com.zyneonstudios.nexus.utilities.NexusUtilities;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
 import com.zyneonstudios.nexus.utilities.file.FileGetter;
 import com.zyneonstudios.nexus.utilities.json.GsonUtility;
-import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
@@ -379,10 +378,10 @@ public class NexusApplication {
     /**
      * Gets the application's logger.
      *
-     * @return The NexusLogger instance.
+     * @return The ApplicationLogger instance.
      */
-    public static NexusLogger getLogger() {
-        return NexusUtilities.getLogger();
+    public static ApplicationLogger getLogger() {
+        return Main.getLogger();
     }
 
     /**

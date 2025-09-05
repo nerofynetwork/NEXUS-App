@@ -2,10 +2,9 @@ package com.zyneonstudios.nexus.application;
 
 import com.zyneonstudios.nexus.application.frame.ZyneonSplash;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
+import com.zyneonstudios.nexus.application.utilities.ApplicationLogger;
 import com.zyneonstudios.nexus.application.utilities.ApplicationMigrator;
 import com.zyneonstudios.nexus.desktop.NexusDesktop;
-import com.zyneonstudios.nexus.utilities.NexusUtilities;
-import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -24,7 +23,7 @@ import java.nio.file.Paths;
 public class Main {
 
     // Application Logger
-    private static final NexusLogger logger = NexusUtilities.getLogger();
+    private static final ApplicationLogger logger = new ApplicationLogger("NEXUS");
     private static String[] args;
 
     // Application Configuration
@@ -41,7 +40,7 @@ public class Main {
         Main.args = args;
         // Initialize the Nexus desktop environment.
         NexusDesktop.init();
-        NexusUtilities.getLogger().setName("NEXUS",true);
+        logger.setName("NEXUS",true);
         try {
             UIManager.put("TitlePane.menuBarEmbedded", true);
         } catch (Exception e) {
@@ -165,5 +164,9 @@ public class Main {
 
     public static String[] getArgs() {
         return args;
+    }
+
+    public static ApplicationLogger getLogger() {
+        return logger;
     }
 }

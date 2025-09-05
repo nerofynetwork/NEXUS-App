@@ -2,7 +2,7 @@ package com.zyneonstudios.nexus.application.main.console.commands;
 
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.main.console.NexusConsoleCommand;
-import com.zyneonstudios.nexus.utilities.logger.NexusLogger;
+import com.zyneonstudios.nexus.application.utilities.ApplicationLogger;
 
 public class HelpCommand extends NexusConsoleCommand {
 
@@ -13,7 +13,7 @@ public class HelpCommand extends NexusConsoleCommand {
 
     @Override
     public boolean run(String[] args) {
-        NexusLogger logger = NexusApplication.getLogger();
+        ApplicationLogger logger = NexusApplication.getLogger();
         String separator = "============================================";
 
         logger.log(" ");

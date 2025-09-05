@@ -1,6 +1,6 @@
 package com.zyneonstudios.nexus.application.utilities;
 
-import com.zyneonstudios.nexus.utilities.NexusUtilities;
+import com.zyneonstudios.nexus.application.Main;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 
@@ -63,7 +63,7 @@ public class ApplicationMigrator {
                 FileActions.deleteFolder(new File(getOldApplicationPath(false)+"modules/nexus-minecraft-module"));
             }
         } catch (Exception e) {
-            NexusUtilities.getLogger().printErr("NEXUS", "MIGRATOR", "Couldn't read old Minecraft instances.", e.getMessage(), e.getStackTrace());
+            Main.getLogger().printErr("NEXUS", "MIGRATOR", "Couldn't read old Minecraft instances.", e.getMessage(), e.getStackTrace());
         }
         return null;
     }
@@ -100,7 +100,7 @@ public class ApplicationMigrator {
                 }
             }
         } catch (Exception e) {
-            NexusUtilities.getLogger().printErr("NEXUS", "MIGRATOR", "Failed to migrate NEXUS Application 2.X to 3.X", e.getMessage(), e.getStackTrace());
+            Main.getLogger().printErr("NEXUS", "MIGRATOR", "Failed to migrate NEXUS Application 2.X to 3.X", e.getMessage(), e.getStackTrace());
         }
     }
 }
