@@ -3,14 +3,13 @@ package com.zyneonstudios.nexus.application.listeners;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.starxg.keytar.Keytar;
-import com.zyneonstudios.nexus.application.downloads.Download;
 import com.zyneonstudios.nexus.application.events.PageLoadedEvent;
 import com.zyneonstudios.nexus.application.frame.AppFrame;
 import com.zyneonstudios.nexus.application.launchprocess.GameHooks;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.CombinedSearch;
-import com.zyneonstudios.nexus.application.search.modrinth.ModrinthResource;
-import com.zyneonstudios.nexus.application.search.modrinth.ModrinthResourceVersion;
+import com.zyneonstudios.nexus.application.search.modrinth.ModrinthIntegration;
+import com.zyneonstudios.nexus.application.search.modrinth.resource.ModrinthProject;
 import com.zyneonstudios.nexus.application.search.modrinth.search.facets.categories.ModrinthCategory;
 import com.zyneonstudios.nexus.application.search.zyndex.ZyndexIntegration;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstance;
@@ -29,9 +28,9 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
-import java.net.URI;
 import java.nio.file.Path;
 import java.util.Base64;
+import java.util.UUID;
 
 public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
 
@@ -198,7 +197,9 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             if(source.equals("nex")) {
                 ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
             } else if(source.equals("modrinth")) {
-
+                ModrinthProject project = new ModrinthProject(id);
+                String version = project.getVersions()[project.getVersions().length-1];
+                ModrinthIntegration.installModpack(new File(NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath()+"/modrinth-"+ UUID.randomUUID()),project.getId(),version);
             } else if(source.equals("curseforge")) {
 
             }

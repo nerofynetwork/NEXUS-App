@@ -299,6 +299,10 @@ public class NexusApplication {
                 }
             } catch (Exception ignore) {
             }
+            System.gc();
+
+            FileActions.deleteFolder(new File((NexusApplication.getInstance().getWorkingPath()+"/temp/").replace("\\","/").replace("//","/")));
+
             System.exit(exitCode);
         });
     }
