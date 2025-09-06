@@ -663,6 +663,7 @@ function loadPage(page, menu, params = "") {
             params += "&";
         }
     }
+
     document.querySelector("#page-specific").innerHTML = "";
     window.history.pushState({}, document.title, window.location.pathname + "?page=" + page + params);
     fetch(page)

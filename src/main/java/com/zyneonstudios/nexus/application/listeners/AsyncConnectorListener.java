@@ -30,7 +30,6 @@ import java.awt.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.UUID;
 
 public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
 
@@ -213,7 +212,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             } else if(source.equals("modrinth")) {
                 ModrinthProject project = new ModrinthProject(id);
                 String version = project.getVersions()[project.getVersions().length-1];
-                ModrinthIntegration.installModpack(new File(NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath()+"/modrinth-"+ UUID.randomUUID()),project.getId(),version);
+                ModrinthIntegration.installModpack(new File(NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath()),project.getId(),version);
             } else if(source.equals("curseforge")) {
 
             }

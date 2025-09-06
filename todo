@@ -6,6 +6,8 @@
 - Library Content Management
 - Library Instance Icons and Logos
 - Library Instance Grouping
+- Library Instance Importing
+- Library Instance Creating
 - Discover Search categories
 - Discover Home
 
@@ -13,3 +15,10 @@
 - App Website
 - Check complete code
 - New Updater & Installer
+
+
+Code refactoring:
+Sort out methods etc. which doesn't fit in the class
+Merge methods and classes which doesn't need to be single
+Revisit and optimize code in all classes and methods
+So the same respective to the UI

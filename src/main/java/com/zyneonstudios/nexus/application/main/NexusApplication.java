@@ -19,8 +19,6 @@ import com.zyneonstudios.nexus.desktop.frame.web.NexusWebSetup;
 import com.zyneonstudios.nexus.index.ReadableZyndex;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.file.FileExtractor;
-import com.zyneonstudios.nexus.utilities.file.FileGetter;
-import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 import com.zyneonstudios.nexus.utilities.storage.JsonStorage;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import com.zyneonstudios.nexus.utilities.system.OperatingSystem;
@@ -177,18 +175,20 @@ public class NexusApplication {
         consoleHandler.addCommand(new GetCommand());
         consoleHandler.addCommand(new ExitCommand());
         consoleHandler.addCommand(new ConnectorCommand());
-        consoleHandler.addCommand(new ConnectorCommand());
     }
 
     /**
      * Loads the application version from the nexus.json file.
      */
     private void loadVersion() {
-        try {
-            JsonObject data = new Gson().fromJson(GsonUtility.getFromFile(FileGetter.getResourceFile("nexus.json", NexusApplication.class)), JsonObject.class);
-            version = data.get("version").getAsString();
-        } catch (Exception e) {
-            getLogger().deb("Couldn't fetch version from nexus.json: " + e.getMessage());
+        if(!getLogger().isDebugging()) {
+            try {
+                String data = new String(Thread.currentThread().getContextClassLoader().getResourceAsStream("nexus.json").readAllBytes());
+                JsonObject nexus = new Gson().fromJson(data, JsonObject.class);
+                version = nexus.get("version").getAsString();
+            } catch (Exception e) {
+                getLogger().err("Couldn't fetch version from nexus.json: " + e.getMessage());
+            }
         }
     }
 
