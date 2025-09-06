@@ -103,11 +103,24 @@ function showInstance(id,name,version,summary,description) {
     document.getElementById("instance-name").innerText = name;
     document.getElementById("instance-version").innerText = version;
     document.getElementById("instance-summary").innerText = summary;
-    document.getElementById("tab-about-content").innerText = description;
+    document.getElementById("tab-about-content").innerHTML = marked.parse(description);
+    openLinksInNewTab(document.getElementById("tab-about-content"));
 
     document.getElementById("launch-button").innerHTML = "<i class=\"bi bi-rocket-takeoff\"></i> LAUNCH";
     document.getElementById("launch-button").onclick = function () {
         console.log('[CONNECTOR] library.start.'+activeInstance); document.getElementById("launch-button").onclick = function () {}
         document.getElementById("launch-button").innerText = "LAUNCHED"; document.getElementById("launch-button").classList.add("disabled");
     }
+}
+
+function openLinksInNewTab(containerElement) {
+    if (!containerElement) {
+        return;
+    }
+
+    const links = containerElement.querySelectorAll('a');
+    links.forEach(link => {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+    });
 }

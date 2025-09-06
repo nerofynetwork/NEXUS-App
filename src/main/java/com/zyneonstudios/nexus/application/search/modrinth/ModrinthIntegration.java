@@ -7,8 +7,10 @@ import com.google.gson.JsonObject;
 import com.zyneonstudios.nexus.application.downloads.Download;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.modrinth.resource.ModrinthProject;
+import com.zyneonstudios.nexus.application.utilities.StringUtility;
+import com.zyneonstudios.nexus.instance.Zynstance;
+import com.zyneonstudios.nexus.instance.ZynstanceBuilder;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
-import com.zyneonstudios.nexus.utilities.file.FileGetter;
 import com.zyneonstudios.nexus.utilities.json.GsonUtility;
 import com.zyneonstudios.nexus.utilities.strings.StringGenerator;
 import org.apache.commons.io.FileUtils;
@@ -18,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -44,7 +47,16 @@ public class ModrinthIntegration {
                 for(JsonElement file : files) {
                     JsonObject f = file.getAsJsonObject();
                     if(f.has("primary") && f.get("primary").getAsBoolean()) {
-                        FileGetter.downloadFile(f.get("url").getAsString(), downloadName);
+                        try {
+                            Download metaDownload = new Download("Modrinth " + projectId + "-" + versionId + " metadata", new URL(f.get("url").getAsString()), download.toPath());
+                            NexusApplication.getInstance().getDownloadManager().addDownload(metaDownload);
+                            while (!metaDownload.isFinished()) {
+                                Thread.sleep(1000);
+                            }
+                        } catch (Exception e) {
+                            NexusApplication.getLogger().err(e.getMessage());
+                            throw new RuntimeException(e);
+                        }
                         break;
                     }
                 }
@@ -80,12 +92,10 @@ public class ModrinthIntegration {
 
             if(index.exists()) {
                 JsonObject indexJson = new Gson().fromJson(GsonUtility.getFromFile(index), JsonObject.class);
-
-                String version = indexJson.get("versionId").getAsString();
-                String title = indexJson.get("name").getAsString();
-
-
                 if(indexJson.has("files")) {
+                    final double[] progress = {0};
+                    final int[] finished = {0};
+                    ArrayList<Download> fileDownloads = new ArrayList<>();
                     JsonArray files = indexJson.getAsJsonArray("files");
                     for(JsonElement file_:files) {
                         JsonObject file = file_.getAsJsonObject();
@@ -93,16 +103,48 @@ public class ModrinthIntegration {
                             String url = downloads.getAsString();
                             try {
                                 File filePath = new File(installDir.getAbsolutePath()+"/"+file.get("path").getAsString());
-                                NexusApplication.getLogger().dbg("Created file path "+filePath+": "+filePath.getParentFile().mkdirs());
-                                NexusApplication.getInstance().getDownloadManager().addDownload(new Download(project.getTitle()+" "+file.get("path").getAsString(), new URL(url), filePath.toPath()));
+                                filePath.getParentFile().mkdirs();
+                                Download fileDownload = new Download(project.getTitle()+" "+file.get("path").getAsString(), new URL(url), filePath.toPath());
+                                fileDownloads.add(fileDownload);
                             } catch (Exception e) {
                                 NexusApplication.getLogger().err("Cannot download file \""+file.get("path").getAsString()+"\" for modrinth pack \""+project.getTitle()+"\": "+e.getMessage());
                             }
                         }
                     }
+                    try {
+                        ModrinthDownload packDownload = new ModrinthDownload(project, fileDownloads, installDir.toPath());
+                        NexusApplication.getInstance().getDownloadManager().addDownload(packDownload);
+                    } catch (Exception e) {
+                        NexusApplication.getLogger().err(e.getMessage());
+                        throw new RuntimeException(e);
+                    }
                 }
 
-                //TODO check if all downloads are finished or failed (not running) and then convert to zyndex instance with modrinth information, also download mrpack via DownloadManager, also wait before continuing
+                String version = indexJson.get("versionId").getAsString();
+                String title = indexJson.get("name").getAsString();
+                ZynstanceBuilder instanceConverter = new ZynstanceBuilder(installDir+"/zyneonInstance.json");
+                instanceConverter.setName(title);
+                instanceConverter.setVersion(version);
+                instanceConverter.setId("modrinth-"+projectId+"-"+versionId+"-"+ StringUtility.generateAlphanumericString(4));
+                instanceConverter.setSummary(project.getDescription());
+                instanceConverter.setDescription(project.getBody());
+                JsonObject dependencies = indexJson.get("dependencies").getAsJsonObject();
+                instanceConverter.setMinecraftVersion(dependencies.get("minecraft").getAsString());
+                if(dependencies.has("fabric-loader")) {
+                    instanceConverter.setMetaProperty("modloader","fabric");
+                    instanceConverter.setFabricVersion(dependencies.get("fabric-loader").getAsString());
+                } else if(dependencies.has("forge")) {
+                    instanceConverter.setMetaProperty("modloader","forge");
+                    instanceConverter.setForgeVersion(dependencies.get("forge").getAsString());
+                } else if(dependencies.has("neoforge")) {
+                    instanceConverter.setMetaProperty("modloader","neoforge");
+                    instanceConverter.setNeoForgeVersion(dependencies.get("neoforge").getAsString());
+                } else if(dependencies.has("quilt-loader")) {
+                    instanceConverter.setMetaProperty("modloader","quilt");
+                    instanceConverter.setQuiltVersion(dependencies.get("quilt-loader").getAsString());
+                }
+
+                Zynstance instance = instanceConverter.create();
             } else {
                 NexusApplication.getLogger().err("Couldn't find Modrinth index json file: "+index.getAbsolutePath());
             }

@@ -57,9 +57,13 @@ public class LocalInstanceManager {
                 if(file.isDirectory()) {
                     File instanceFile = new File(file.getAbsolutePath()+"/zyneonInstance.json");
                     if(instanceFile.exists()) {
-                        LocalInstance instance = new LocalInstance(instanceFile.getAbsolutePath());
-                        if (!instances.containsKey(instance.getPath())) {
-                            instances.put(instance.getPath(), instance);
+                        try {
+                            LocalInstance instance = new LocalInstance(instanceFile.getAbsolutePath());
+                            if (!instances.containsKey(instance.getPath())) {
+                                instances.put(instance.getPath(), instance);
+                            }
+                        } catch (Exception e) {
+                            NexusApplication.getLogger().err(e.getMessage());
                         }
                     }
                 }

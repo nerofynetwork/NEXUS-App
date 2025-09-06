@@ -39,8 +39,7 @@
     z-index: 100;
     position: absolute;
     top: 100%;
-    background: url("../img/bg/discover-home.png") no-repeat center;
-    background-size: cover;
+
     transition: all 0.25s ease;
 
     .title-menu {

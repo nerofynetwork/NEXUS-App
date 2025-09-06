@@ -229,7 +229,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 String showId = null;
                 for(LocalInstance lI:NexusApplication.getInstance().getInstanceManager().getInstances().values()) {
                     Zynstance i = lI.getInstance();
-                    frame.executeJavaScript("addInstance(\""+StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(i.getName())+"\",\""+StringUtility.encodeData(i.getIconUrl())+"\",\"\");");
+                    String iconUrl = "";
+                    if(i.getIconUrl()!=null) {
+                        iconUrl = i.getIconUrl();
+                    }
+                    frame.executeJavaScript("addInstance(\""+StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(i.getName())+"\",\""+StringUtility.encodeData(iconUrl)+"\",\"\");");
                     if(showId == null) {
                         showId = lI.getPath();
                     }

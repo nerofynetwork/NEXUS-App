@@ -129,4 +129,14 @@
             width: 100% !important;
         }
     }
+
+    #tab-about-content {
+        position: relative;
+        overflow: hidden;
+        overflow-y: auto;
+        img {
+            max-width: 100%;
+            object-fit: contain;
+        }
+    }
 }

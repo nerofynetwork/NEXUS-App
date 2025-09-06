@@ -61,7 +61,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         JMenuBar devBar = new JMenuBar();
         JPanel spacer = new JPanel();
         spacer.setBackground(null);
-        devBar.add(spacer);
 
         JMenu actions = new JMenu("Actions");
         actions.getPopupMenu().setBackground(Color.black);
@@ -170,6 +169,8 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
         devBar.add(browser);
         devBar.add(actions);
+
+        devBar.add(spacer);
         devBar.setBorder(null);
         smartBar = new SmartBar();
         smartBar.setMargin(0,3,0,6);

@@ -167,6 +167,9 @@ public class Download {
         }
         // Set the state to failed if the download failed.
         state = DownloadManager.DownloadState.FAILED;
+        if (event != null) {
+            event.execute();
+        }
         return false;
     }
 
@@ -332,7 +335,7 @@ public class Download {
         if (percent > 100) {
             setFinished();
         } else if (percent < 0) {
-            percent = 0;
+            this.percent = 0;
         }
     }
 
