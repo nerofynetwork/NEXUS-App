@@ -175,6 +175,7 @@ public class NexusApplication {
         consoleHandler.addCommand(new GetCommand());
         consoleHandler.addCommand(new ExitCommand());
         consoleHandler.addCommand(new ConnectorCommand());
+        consoleHandler.addCommand(new ModrinthCommand());
     }
 
     /**

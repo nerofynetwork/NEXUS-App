@@ -94,7 +94,7 @@ public class ModrinthIntegration {
                             try {
                                 File filePath = new File(installDir.getAbsolutePath()+"/"+file.get("path").getAsString());
                                 NexusApplication.getLogger().dbg("Created file path "+filePath+": "+filePath.getParentFile().mkdirs());
-                                NexusApplication.getInstance().getDownloadManager().addDownload(new Download(project.getTitle(), new URL(url), filePath.toPath()));
+                                NexusApplication.getInstance().getDownloadManager().addDownload(new Download(project.getTitle()+" "+file.get("path").getAsString(), new URL(url), filePath.toPath()));
                             } catch (Exception e) {
                                 NexusApplication.getLogger().err("Cannot download file \""+file.get("path").getAsString()+"\" for modrinth pack \""+project.getTitle()+"\": "+e.getMessage());
                             }
