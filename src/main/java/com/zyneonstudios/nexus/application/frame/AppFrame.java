@@ -379,7 +379,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     }
 
     /**
-     * Recursively updates the foreground color of a menu and all its sub-components.
+     * Recursively updates the foreground color of a menu and all its subcomponents.
      *
      * @param menu  The {@link JMenu} to update.
      * @param color The color to apply to the foreground.
