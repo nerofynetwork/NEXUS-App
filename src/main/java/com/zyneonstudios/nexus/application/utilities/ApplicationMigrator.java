@@ -70,7 +70,7 @@ public class ApplicationMigrator {
 
     public static void migrateFolder() {
         //Deleting ancient (very old) application 1.X folder, due to it being deprecated and migrating is over (> 2 years).
-        FileActions.deleteFolder(new File(getOldApplicationPath(true)));
+        //FileActions.deleteFolder(new File(getOldApplicationPath(true)));
 
         //Trying to migrate NEXUS Application 2.X to 3.X
         try {
