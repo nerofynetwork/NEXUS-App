@@ -26,10 +26,12 @@ import live.nerotv.aminecraftlauncher.launcher.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Base64;
+import java.util.Objects;
 
 public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
 
@@ -54,6 +56,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 frame.getSmartBar().setSuccessColor(Color.decode("#34bf49"));
                 frame.getSmartBar().setErrorColor(Color.decode("#e63c30"));
                 frame.getSmartBar().setPlaceholderColor(Color.darkGray);
+                try {
+                    frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+                } catch (Exception ignore) {
+                    throw new RuntimeException(ignore);
+                }
             } else {
                 frame.setTitleBackground(Color.white);
                 frame.setTitleForeground(Color.black);
@@ -64,6 +71,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 frame.getSmartBar().setSuccessColor(Color.decode("#009e18"));
                 frame.getSmartBar().setErrorColor(Color.decode("#e63c30"));
                 frame.getSmartBar().setPlaceholderColor(Color.lightGray);
+                try {
+                    frame.setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon-inverted.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+                } catch (Exception ignore) {
+                    throw new RuntimeException(ignore);
+                }
             }
 
             // Handle page loaded events.

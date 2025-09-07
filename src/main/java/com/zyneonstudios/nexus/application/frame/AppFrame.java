@@ -37,6 +37,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     private JMenu actions = new JMenu("Actions");
     private JMenu browser = new JMenu("Browser");
     private JMenuBar devBar = new JMenuBar();
+    private final boolean customFrame;
 
     /**
      * Constructor for the ApplicationFrame.
@@ -47,6 +48,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     public AppFrame(NexusWebSetup setup, String url, boolean decorated) {
         super(setup.getWebClient(), url, decorated, NexusApplication.getInstance().getLocalSettings().useNativeWindow());
+        customFrame = !NexusApplication.getInstance().getLocalSettings().useNativeWindow();
         try {
             // Set the application icon.
             setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
@@ -54,12 +56,16 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             // Ignore any exceptions that occur during icon loading.
         }
 
+        getRootPane().setBorder(BorderFactory.createLineBorder(Color.decode("#454545"), 1,true));
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 NexusApplication.stop(0);
             }
         });
+
+        getMaximizeButton().setVisible(false);
 
         JPanel spacer = new JPanel();
         spacer.setBackground(null);
@@ -265,12 +271,28 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      * @param color The background color.
      */
     public void setTitleBackground(Color color) {
+        getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
+        setCustomTitleBackground(color);
         setBackground(color);
         devBar.setBackground(color);
         actions.getPopupMenu().setBackground(color);
         browser.getPopupMenu().setBackground(color);
-        getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
         smartBar.setSpaceColor(color);
+    }
+
+    private void setCustomTitleBackground(Color color) {
+        try {
+            if(customFrame) {
+                getTitlebar().setBackground(color);
+                getCloseButton().setBackground(color);
+                getMinimizeButton().setBackground(color);
+                getMinimizeButton().getParent().setBackground(color);
+                getMaximizeButton().setBackground(color);
+                getLabel().setBackground(color);
+            }
+        } catch (Exception e) {
+            NexusApplication.getLogger().err(e.getMessage());
+        }
     }
 
     /**
@@ -280,6 +302,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     public void setTitleForeground(Color color) {
         getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
+        setCustomTitleForeground(color);
         devBar.setForeground(color);
         actions.setForeground(color);
         actions.getPopupMenu().setForeground(color);
@@ -291,6 +314,20 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             c.setForeground(color);
         }
         browser.getPopupMenu().setForeground(color);
+    }
+
+    private void setCustomTitleForeground(Color color) {
+        try {
+            if(customFrame) {
+                getTitlebar().setForeground(color);
+                getCloseButton().setForeground(color);
+                getMinimizeButton().setForeground(color);
+                getMaximizeButton().setForeground(color);
+                getLabel().setForeground(color);
+            }
+        } catch (Exception e) {
+            NexusApplication.getLogger().err(e.getMessage());
+        }
     }
 
     /**
