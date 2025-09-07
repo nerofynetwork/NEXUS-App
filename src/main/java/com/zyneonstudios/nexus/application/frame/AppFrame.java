@@ -34,6 +34,9 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     private final Dimension minSize = new Dimension(1024, 640);
     private final String windowId = StringGenerator.generateAlphanumericString(12);
     private SmartBar smartBar;
+    private JMenu actions = new JMenu("Actions");
+    private JMenu browser = new JMenu("Browser");
+    private JMenuBar devBar = new JMenuBar();
 
     /**
      * Constructor for the ApplicationFrame.
@@ -58,13 +61,10 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             }
         });
 
-        JMenuBar devBar = new JMenuBar();
         JPanel spacer = new JPanel();
         spacer.setBackground(null);
-
-        JMenu actions = new JMenu("Actions");
+        devBar.setBackground(Color.black);
         actions.getPopupMenu().setBackground(Color.black);
-        JMenu browser = new JMenu("Browser");
         browser.getPopupMenu().setBackground(Color.black);
 
         JMenuItem refresh = new JMenuItem("Open start page");
@@ -177,7 +177,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         smartBar.setMaximumSize(new Dimension(250,getSize().height));
 
         devBar.add(smartBar);
-        devBar.setBackground(Color.black);
         devBar.setOpaque(true);
 
         if(NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
@@ -267,6 +266,9 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     public void setTitleBackground(Color color) {
         setBackground(color);
+        devBar.setBackground(color);
+        actions.getPopupMenu().setBackground(color);
+        browser.getPopupMenu().setBackground(color);
         getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
         smartBar.setSpaceColor(color);
     }
@@ -278,6 +280,17 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     public void setTitleForeground(Color color) {
         getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
+        devBar.setForeground(color);
+        actions.setForeground(color);
+        actions.getPopupMenu().setForeground(color);
+        for(Component c:actions.getPopupMenu().getComponents()) {
+            c.setForeground(color);
+        }
+        browser.setForeground(color);
+        for(Component c:browser.getPopupMenu().getComponents()) {
+            c.setForeground(color);
+        }
+        browser.getPopupMenu().setForeground(color);
     }
 
     /**
