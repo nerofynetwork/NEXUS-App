@@ -24,7 +24,7 @@ public class SmartBar extends JPanel {
     private Color successColor = Color.decode("#34bf49");
     private Color feedbackColor = Color.decode("#96e8ff");
     private Color placeholderColor = Color.darkGray;
-    private String placeholder = "▶ Tell me what to do...";
+    private String placeholder = "▶ Input command...";
 
     private final JPanel bar = new JPanel(new BorderLayout());
     private JPanel smartBarLeft = new JPanel();
