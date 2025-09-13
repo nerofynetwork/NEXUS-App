@@ -84,7 +84,7 @@ function initLibrary() {
     console.log("[CONNECTOR] library.init");
 }
 
-function showInstance(id,name,version,summary,description) {
+function showInstance(id,name,version,summary,description,tagsString) {
     if(!document.getElementById("update-button").classList.contains("d-none")) {
         document.getElementById("update-button").classList.add("d-none");
     }
@@ -124,6 +124,25 @@ function showInstance(id,name,version,summary,description) {
     document.getElementById("launch-button").onclick = function () {
         console.log('[CONNECTOR] library.start.'+activeInstance); document.getElementById("launch-button").onclick = function () {}
         document.getElementById("launch-button").innerText = "LAUNCHED"; document.getElementById("launch-button").classList.add("disabled");
+    }
+
+    document.getElementById("library-tags").innerHTML = "";
+    const tags = tagsString.split(", ");
+    for(let i = 0; i < tags.length; i++) {
+        let tag = tags[i];
+        if(tag.startsWith("minecraft-")) {
+            document.getElementById("library-tags").innerHTML += "<span class='badge bg-black'>Minecraft " + tag.replaceAll("minecraft-", "") + "</span>";
+        } else if(tag.startsWith("fabric-")) {
+            document.getElementById("library-tags").innerHTML += "<span class='badge bg-info text-black'>Fabric " + tag.replaceAll("fabric-", "") + "</span>";
+        } else if(tag.startsWith("forge-")) {
+            document.getElementById("library-tags").innerHTML += "<span class='badge bg-info text-black'>Forge " + tag.replaceAll("forge-", "") + "</span>";
+        } else if(tag.startsWith("neoforge-")) {
+            document.getElementById("library-tags").innerHTML += "<span class='badge bg-info text-black'>NeoForge " + tag.replaceAll("neoforge-", "") + "</span>";
+        } else if(tag.startsWith("quilt-")) {
+            document.getElementById("library-tags").innerHTML += "<span class='badge bg-info text-black'>Quilt " + tag.replaceAll("quilt-", "") + "</span>";
+        } else if(!tag.startsWith("modloader-")&&!tag.startsWith("modloder-")) {
+            document.getElementById("library-tags").innerHTML += "<span class='badge bg-white text-black'>"+tag+"</span>";
+        }
     }
 
     document.getElementById("update-button").onclick = function () {

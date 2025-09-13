@@ -262,7 +262,22 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 String showId = s.replace("showInstance.", "");
                 LocalInstance lI = NexusApplication.getInstance().getInstanceManager().getInstance(showId);
                 ReadableZynstance show = lI.getInstance();
-                String cmd = "showInstance(\""+ StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(show.getName())+"\",\""+StringUtility.encodeData(show.getVersion())+"\",\""+StringUtility.encodeData(show.getSummary())+"\",\""+ StringUtility.encodeData(show.getDescription()) +"\");";
+                String tags = show.getTagString();
+                if(!tags.contains(show.getModloader().toLowerCase()+"-")) {
+                    if(show.getFabricVersion()!=null) {
+                        tags = show.getModloader().toLowerCase()+"-"+show.getFabricVersion() + ", " + tags;
+                    } else if(show.getForgeVersion()!=null) {
+                        tags = show.getModloader().toLowerCase()+"-"+show.getForgeVersion() + ", " + tags;
+                    } else if(show.getNeoForgeVersion()!=null) {
+                        tags = show.getModloader().toLowerCase()+"-"+show.getNeoForgeVersion() + ", " + tags;
+                    } else if(show.getQuiltVersion()!=null) {
+                        tags = show.getModloader().toLowerCase()+"-"+show.getQuiltVersion() + ", " + tags;
+                    }
+                }
+                if(!tags.contains("minecraft-"+show.getMinecraftVersion())) {
+                    tags = "minecraft-"+show.getMinecraftVersion() + ", " + tags;
+                }
+                String cmd = "showInstance(\""+ StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(show.getName())+"\",\""+StringUtility.encodeData(show.getVersion())+"\",\""+StringUtility.encodeData(show.getSummary())+"\",\""+ StringUtility.encodeData(show.getDescription()) +"\",\""+tags+"\");";
                 frame.executeJavaScript(cmd);
                 NexusApplication.getInstance().getLocalSettings().setLastInstanceId(showId);
             } else if(s.startsWith("start.")) {
