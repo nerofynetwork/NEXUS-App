@@ -12,6 +12,12 @@
     width: 100%;
     height: 100%;
 
+    #library-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .nav {
         container-type: inline-size;
         container-name: nav-container;
@@ -81,16 +87,10 @@
     }
 
     #launch-button, #microsoft-button {
-        position: absolute;
-        bottom: 0.6rem;
-        right: 0.6rem;
-        font-size: 2rem;
-        font-weight: bold;
-        width: calc(100% - 1.2rem) !important;
-        padding: 1rem 0;
-        box-shadow: 0 0 0.5rem black;
-        border: 2px solid var(--bs-border-color-translucent);
-        letter-spacing: 0.5rem;
+        position: relative;
+        padding: 1rem 2rem;
+        font-size: 1.3rem;
+        margin-top: auto;
     }
 
     #microsoft-button {

@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.Objects;
@@ -304,6 +305,16 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
                         launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
                         launcher.launch(mc, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
+                    }
+                }
+            } else if(s.startsWith("folder.")) {
+                String id = s.replace("folder.", "");
+                LocalInstance instance = NexusApplication.getInstance().getInstanceManager().getInstance(id);
+                if(instance != null) {
+                    try {
+                        Desktop.getDesktop().open(new File(instance.getPath()));
+                    } catch (IOException e) {
+                        NexusApplication.getLogger().err(e.getMessage());
                     }
                 }
             }

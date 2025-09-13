@@ -82,6 +82,9 @@ function initLibrary() {
 }
 
 function showInstance(id,name,version,summary,description) {
+    if(!document.getElementById("update-button").classList.contains("d-none")) {
+        document.getElementById("update-button").classList.add("d-none");
+    }
     id = decodeURIComponent(id);
     name = decodeURIComponent(name);
     version = decodeURIComponent(version);
@@ -110,6 +113,16 @@ function showInstance(id,name,version,summary,description) {
     document.getElementById("launch-button").onclick = function () {
         console.log('[CONNECTOR] library.start.'+activeInstance); document.getElementById("launch-button").onclick = function () {}
         document.getElementById("launch-button").innerText = "LAUNCHED"; document.getElementById("launch-button").classList.add("disabled");
+    }
+
+    document.getElementById("update-button").onclick = function () {
+        console.log('[CONNECTOR] library.update.'+activeInstance);
+    }
+    document.getElementById("folder-button").onclick = function () {
+        console.log('[CONNECTOR] library.folder.'+activeInstance);
+    }
+    document.getElementById("settings-button").onclick = function () {
+        console.log('[CONNECTOR] library.settings.'+activeInstance);
     }
 }
 
