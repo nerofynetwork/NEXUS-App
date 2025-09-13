@@ -6,7 +6,7 @@
 
     <groupId>net.nrfy.nexus</groupId>
     <artifactId>nexus-app</artifactId>
-    <version>2025.9-beta.6</version>
+    <version>2025.9-beta.7</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>live.nerotv</groupId>
             <artifactId>a-minecraft-launcher</artifactId>
-            <version>2025.8.2</version>
+            <version>2025.9</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -289,6 +289,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                     String modloaderVersion;
                     if(instance.getModloader().equalsIgnoreCase("fabric")) {
                         modloaderVersion = instance.getFabricVersion();
+                        MinecraftVersion version = new MinecraftVersion(NexusApplication.getInstance().getWorkingPath()+"/libs/");
+                        MinecraftVersion.Type type = version.getType(instance.getMinecraftVersion());
+                        if(type!=null) {
+                            version.setJava(type);
+                        }
                         FabricLauncher launcher = NexusApplication.getInstance().getFabricLauncher();
                         launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
                         launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
@@ -296,6 +301,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         launcher.launch(mc, modloaderVersion, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
                     } else if(instance.getModloader().equalsIgnoreCase("forge")) {
                         modloaderVersion = instance.getForgeVersion();
+                        MinecraftVersion version = new MinecraftVersion(NexusApplication.getInstance().getWorkingPath()+"/libs/");
+                        MinecraftVersion.Type type = version.getType(instance.getMinecraftVersion());
+                        if(type!=null) {
+                            version.setJava(type);
+                        }
                         ForgeLauncher launcher = NexusApplication.getInstance().getForgeLauncher();
                         launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
                         launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
@@ -303,6 +313,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         launcher.launch(mc,modloaderVersion,NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()),instance.getId());
                     } else if(instance.getModloader().equalsIgnoreCase("neoforge")) {
                         modloaderVersion = instance.getNeoForgeVersion();
+                        MinecraftVersion version = new MinecraftVersion(NexusApplication.getInstance().getWorkingPath()+"/libs/");
+                        MinecraftVersion.Type type = version.getType(instance.getMinecraftVersion());
+                        if(type!=null) {
+                            version.setJava(type);
+                        }
                         NeoForgeLauncher launcher = NexusApplication.getInstance().getNeoForgeLauncher();
                         launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
                         launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
@@ -310,6 +325,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         launcher.launch(mc, modloaderVersion, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
                     } else if(instance.getModloader().equalsIgnoreCase("quilt")) {
                         modloaderVersion = instance.getQuiltVersion();
+                        MinecraftVersion version = new MinecraftVersion(NexusApplication.getInstance().getWorkingPath()+"/libs/");
+                        MinecraftVersion.Type type = version.getType(instance.getMinecraftVersion());
+                        if(type!=null) {
+                            version.setJava(type);
+                        }
                         QuiltLauncher launcher = NexusApplication.getInstance().getQuiltLauncher();
                         launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
                         launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
@@ -317,6 +337,11 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         launcher.launch(mc, modloaderVersion, NexusApplication.getInstance().getLocalSettings().getDefaultMemory(), Path.of(NexusApplication.getInstance().getInstanceManager().getInstance(id).getPath()), instance.getId());
                     } else {
                         VanillaLauncher launcher = NexusApplication.getInstance().getVanillaLauncher();
+                        MinecraftVersion version = new MinecraftVersion(NexusApplication.getInstance().getWorkingPath()+"/libs/");
+                        MinecraftVersion.Type type = version.getType(instance.getMinecraftVersion());
+                        if(type!=null) {
+                            version.setJava(type);
+                        }
                         launcher.setPreLaunchHook(GameHooks.getPreLaunchHook(launcher));
                         launcher.setPostLaunchHook(GameHooks.getPostLaunchHook(launcher));
                         launcher.setGameCloseHook(GameHooks.getGameCloseHook(launcher));
