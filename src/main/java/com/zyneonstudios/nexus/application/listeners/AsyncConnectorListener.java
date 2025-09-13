@@ -220,14 +220,17 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             String[] cmd = s.replace("install.minecraft.", "").split("\\.",2);
             String source = cmd[0].toLowerCase();
             String id = cmd[1];
-            if(source.equals("nex")) {
-                ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
-            } else if(source.equals("modrinth")) {
-                ModrinthProject project = new ModrinthProject(id);
-                String version = project.getVersions()[project.getVersions().length-1];
-                ModrinthIntegration.installModpack(new File(NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath()),project.getId(),version);
-            } else if(source.equals("curseforge")) {
-
+            frame.executeJavaScript("document.getElementById(\""+id+"\").querySelector(\".result-install\").innerText = \"Installing...\";");
+            switch (source) {
+                case "nex" ->
+                        ZyndexIntegration.install(NexusApplication.getInstance().getNEX().getInstancesById().get(id), NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath());
+                case "modrinth" -> {
+                    ModrinthProject project = new ModrinthProject(id);
+                    String version = project.getVersions()[project.getVersions().length - 1];
+                    ModrinthIntegration.installModpack(new File(NexusApplication.getInstance().getLocalSettings().getDefaultMinecraftPath()), project.getId(), version);
+                }
+                case "curseforge" -> {
+                }
             }
 
         } else if(s.startsWith("nativeWindow.")) {
