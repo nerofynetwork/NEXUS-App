@@ -748,6 +748,11 @@ body {
                     padding: 0.25rem 0.5rem;
                     white-space: nowrap;
                     text-overflow: ellipsis;
+
+                    img {
+                        height: 1.05rem;
+                        margin: 0 0.5rem 0.25rem 0;
+                    }
                 }
 
                 button:hover, select:hover {

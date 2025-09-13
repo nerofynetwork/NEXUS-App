@@ -7,8 +7,6 @@ import com.google.gson.JsonObject;
 import com.zyneonstudios.nexus.application.downloads.Download;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.modrinth.resource.ModrinthProject;
-import com.zyneonstudios.nexus.application.utilities.StringUtility;
-import com.zyneonstudios.nexus.instance.Zynstance;
 import com.zyneonstudios.nexus.instance.ZynstanceBuilder;
 import com.zyneonstudios.nexus.utilities.file.FileActions;
 import com.zyneonstudios.nexus.utilities.json.GsonUtility;
@@ -21,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -31,6 +30,8 @@ public class ModrinthIntegration {
         JsonObject data = GsonUtility.getObject("https://api.modrinth.com/v2/version/"+versionId);
         ModrinthProject project = new ModrinthProject(projectId);
         installDir = getInstallDir(installDir,project.getSlug());
+
+        project.getTeam();
 
         String fileName = "modrinth-"+projectId+"-"+versionId+".mrpack";
         String downloadName = (NexusApplication.getInstance().getWorkingPath()+"/temp/"+fileName).replace("\\","/").replace("//","/");
@@ -125,7 +126,7 @@ public class ModrinthIntegration {
                 ZynstanceBuilder instanceConverter = new ZynstanceBuilder(installDir+"/zyneonInstance.json");
                 instanceConverter.setName(title);
                 instanceConverter.setVersion(version);
-                instanceConverter.setId("modrinth-"+projectId+"-"+versionId+"-"+ StringUtility.generateAlphanumericString(4));
+                instanceConverter.setId("modrinth-"+projectId);
                 instanceConverter.setSummary(project.getDescription());
                 instanceConverter.setDescription(project.getBody());
                 JsonObject dependencies = indexJson.get("dependencies").getAsJsonObject();
@@ -143,8 +144,19 @@ public class ModrinthIntegration {
                     instanceConverter.setMetaProperty("modloader","quilt");
                     instanceConverter.setQuiltVersion(dependencies.get("quilt-loader").getAsString());
                 }
+                instanceConverter.setDownloadUrl("modrinth");
+                instanceConverter.setOriginUrl("local");
+                instanceConverter.setTags(new ArrayList<>(Arrays.asList(project.getCategories())));
 
-                Zynstance instance = instanceConverter.create();
+                ArrayList<String> authors = new ArrayList<>();
+                JsonArray members = new Gson().fromJson(GsonUtility.getFromURL("https://api.modrinth.com/v2/project/"+projectId+"/members"), JsonArray.class);
+                for(JsonElement member : members) {
+                    authors.add(member.getAsJsonObject().get("user").getAsJsonObject().get("username").getAsString());
+                }
+                instanceConverter.setAuthors(authors);
+                instanceConverter.setIconUrl(project.getIconUrl());
+
+                instanceConverter.create();
             } else {
                 NexusApplication.getLogger().err("Couldn't find Modrinth index json file: "+index.getAbsolutePath());
             }

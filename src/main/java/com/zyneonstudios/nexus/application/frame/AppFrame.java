@@ -43,7 +43,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     private final JMenu browser = new JMenu("Browser");
 
     /** The developer menu bar containing debugging and advanced options. */
-    private final JMenuBar devBar = new JMenuBar();
+    private final JMenuBar menuBar = new JMenuBar();
 
     /** A flag indicating whether a custom frame (title bar) is being used instead of the native one. */
     private final boolean customFrame;
@@ -113,7 +113,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     private void setupMenus(String url, NexusWebSetup setup, boolean decorated) {
         JPanel spacer = new JPanel();
         spacer.setBackground(null);
-        devBar.setBackground(Color.black);
+        menuBar.setBackground(Color.black);
         actions.getPopupMenu().setBackground(Color.black);
         browser.getPopupMenu().setBackground(Color.black);
 
@@ -163,23 +163,23 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             setupDebugMenuItems(setup, decorated);
         }
 
-        devBar.add(browser);
-        devBar.add(actions);
-        devBar.add(spacer);
-        devBar.setBorder(null);
+        menuBar.add(browser);
+        menuBar.add(actions);
+        menuBar.add(spacer);
+        menuBar.setBorder(null);
         
         // Initialize and add the SmartBar.
         smartBar = new SmartBar();
         smartBar.setMargin(0, 3, 0, 6);
         smartBar.setMaximumSize(new Dimension(250, getSize().height));
-        devBar.add(smartBar);
-        devBar.setOpaque(true);
+        menuBar.add(smartBar);
+        menuBar.setOpaque(true);
 
         // Attach the menu bar to the native frame or custom title bar.
         if (NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
-            setJMenuBar(devBar);
+            setJMenuBar(menuBar);
         } else {
-            getTitlebar().add(devBar, BorderLayout.SOUTH);
+            getTitlebar().add(menuBar, BorderLayout.SOUTH);
         }
     }
 
@@ -337,7 +337,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             setCustomTitleBackground(color);
         }
         setBackground(color);
-        devBar.setBackground(color);
+        menuBar.setBackground(color);
         actions.getPopupMenu().setBackground(color);
         browser.getPopupMenu().setBackground(color);
         smartBar.setSpaceColor(color);
@@ -371,7 +371,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         if (customFrame) {
             setCustomTitleForeground(color);
         }
-        devBar.setForeground(color);
+        menuBar.setForeground(color);
         actions.setForeground(color);
         browser.setForeground(color);
         updateMenuColors(actions, color);

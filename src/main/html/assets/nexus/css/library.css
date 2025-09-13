@@ -13,9 +13,21 @@
     height: 100%;
 
     #library-title {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        span.icon {
+            margin-left: 2.5rem;
+        }
+
+        img {
+            position: absolute;
+            max-height: 2rem;
+            max-width: 2rem;
+        }
     }
 
     .nav {

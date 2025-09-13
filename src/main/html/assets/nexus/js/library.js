@@ -26,12 +26,15 @@ function addInstance(id,name,icon,group) {
                 button.querySelector("span").innerText = name;
 
                 if(icon) {
-
+                    button.querySelector("img").src = icon;
+                    button.querySelector("img").display = "";
+                    button.querySelector("i").remove();
                 } else {
                     button.querySelector("i").className = "bi bi-dice-"+(Math.floor(Math.random() * 6) + 1);
                     if(Math.random() < 0.5) {
                         button.querySelector("i").className = button.querySelector("i").className + "-fill";
                     }
+                    button.querySelector("img").remove();
                 }
 
                 template.parentElement.insertBefore(button, template);
@@ -85,6 +88,8 @@ function showInstance(id,name,version,summary,description) {
     if(!document.getElementById("update-button").classList.contains("d-none")) {
         document.getElementById("update-button").classList.add("d-none");
     }
+    document.getElementById("library-title").querySelector("span").classList.remove("icon");
+    document.getElementById("library-title").querySelector("img").src = "";
     id = decodeURIComponent(id);
     name = decodeURIComponent(name);
     version = decodeURIComponent(version);
@@ -101,7 +106,13 @@ function showInstance(id,name,version,summary,description) {
     if(document.getElementById(activeInstance)) {
         document.getElementById(activeInstance).classList.add("active");
     }
-    document.getElementById("library-title").innerText = name;
+    document.getElementById("library-title").querySelector("span").innerText = name;
+    if(document.getElementById(id)) {
+        if(document.getElementById(id).querySelector("img").src) {
+            document.getElementById("library-title").querySelector("img").src = document.getElementById(id).querySelector("img").src;
+            document.getElementById("library-title").querySelector("span").classList.add("icon");
+        }
+    }
     document.getElementById("instance-view").style.display = "flex";
     document.getElementById("instance-name").innerText = name;
     document.getElementById("instance-version").innerText = version;
