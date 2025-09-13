@@ -263,16 +263,14 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 LocalInstance lI = NexusApplication.getInstance().getInstanceManager().getInstance(showId);
                 ReadableZynstance show = lI.getInstance();
                 String tags = show.getTagString();
-                if(!tags.contains(show.getModloader().toLowerCase()+"-")) {
-                    if(show.getFabricVersion()!=null) {
-                        tags = show.getModloader().toLowerCase()+"-"+show.getFabricVersion() + ", " + tags;
-                    } else if(show.getForgeVersion()!=null) {
-                        tags = show.getModloader().toLowerCase()+"-"+show.getForgeVersion() + ", " + tags;
-                    } else if(show.getNeoForgeVersion()!=null) {
-                        tags = show.getModloader().toLowerCase()+"-"+show.getNeoForgeVersion() + ", " + tags;
-                    } else if(show.getQuiltVersion()!=null) {
-                        tags = show.getModloader().toLowerCase()+"-"+show.getQuiltVersion() + ", " + tags;
-                    }
+                if(show.getFabricVersion()!=null&&!tags.contains("fabric-"+show.getFabricVersion())) {
+                    tags = "fabric-"+show.getFabricVersion() + ", " + tags;
+                } else if(show.getForgeVersion()!=null&&!tags.contains("forge-"+show.getForgeVersion())) {
+                    tags = "forge-"+show.getForgeVersion() + ", " + tags;
+                } else if(show.getNeoForgeVersion()!=null&&!tags.contains("neoforge-"+show.getNeoForgeVersion())) {
+                    tags = "neoforge-"+show.getNeoForgeVersion() + ", " + tags;
+                } else if(show.getQuiltVersion()!=null&&!tags.contains("quilt-"+show.getQuiltVersion())) {
+                    tags = "quilt-"+show.getQuiltVersion() + ", " + tags;
                 }
                 if(!tags.contains("minecraft-"+show.getMinecraftVersion())) {
                     tags = "minecraft-"+show.getMinecraftVersion() + ", " + tags;
