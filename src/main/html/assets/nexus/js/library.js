@@ -107,12 +107,12 @@ function showInstance(id,name,version,summary,description,tagsString) {
         document.getElementById(activeInstance).classList.add("active");
     }
     document.getElementById("library-title").querySelector("span").innerText = name;
-    if(document.getElementById(id)) {
-        if(document.getElementById(id).querySelector("img").src) {
+
+        if(document.getElementById(id)&&document.getElementById(id).querySelector("img")&&document.getElementById(id).querySelector("img").src) {
             document.getElementById("library-title").querySelector("img").src = document.getElementById(id).querySelector("img").src;
             document.getElementById("library-title").querySelector("span").classList.add("icon");
         }
-    }
+
     document.getElementById("instance-view").style.display = "flex";
     document.getElementById("instance-name").innerText = name;
     document.getElementById("instance-version").innerText = version;
