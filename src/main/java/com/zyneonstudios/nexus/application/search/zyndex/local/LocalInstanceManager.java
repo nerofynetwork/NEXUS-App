@@ -18,6 +18,7 @@ public class LocalInstanceManager {
 
     private final JsonStorage instanceStorage;
     private HashMap<String, LocalInstance> instances = new HashMap<>();
+    private final HashMap<Process, String> runningInstances = new HashMap<>();
 
     public LocalInstanceManager(JsonStorage instanceStorage) {
         this.instanceStorage = instanceStorage;
@@ -170,5 +171,20 @@ public class LocalInstanceManager {
      */
     public JsonStorage getInstanceStorage() {
         return instanceStorage;
+    }
+
+    public void addRunningInstance(Process gameProcess, String identifier) {
+        runningInstances.put(gameProcess, identifier);
+    }
+
+    public void removeRunningInstance(Process gameProcess) {
+        runningInstances.remove(gameProcess);
+    }
+
+    public boolean hasRunningInstance(String identifier) {
+        for(String s:runningInstances.values()) {
+            System.out.println(s +"("+identifier+")");
+        }
+        return runningInstances.containsValue(identifier);
     }
 }

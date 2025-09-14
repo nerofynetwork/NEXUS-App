@@ -12,6 +12,38 @@
     width: 100%;
     height: 100%;
 
+    #instance-view {
+        div.glass {
+            width: 20rem;
+            min-width: 20rem;
+            max-width: 20rem;
+
+            .card {
+                min-width: 19rem;
+                width: 19rem;
+                max-width: 19rem;
+
+                min-height: 8rem;
+                height: fit-content;
+                max-height: 12rem;
+
+                .card-header {
+                    max-height: fit-content;
+                }
+            }
+        }
+
+        #launch-button {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            z-index: 10;
+            height: 4rem;
+            font-size: 1.2rem;
+            font-weight: 750;
+        }
+    }
+
     #library-title {
         span {
             white-space: nowrap;
@@ -98,14 +130,11 @@
         width: 100%;
     }
 
-    #launch-button, #microsoft-button {
+    #microsoft-button {
         position: relative;
         padding: 1rem 2rem;
         font-size: 1.3rem;
         margin-top: auto;
-    }
-
-    #microsoft-button {
         background: yellow;
         color: black;
         opacity: 0.80;

@@ -114,6 +114,7 @@ function showInstance(id,name,version,summary,description,tagsString) {
         }
 
     document.getElementById("instance-view").style.display = "flex";
+    document.getElementById("launch-button").style.display = "";
     document.getElementById("instance-name").innerText = name;
     document.getElementById("instance-version").innerText = version;
     document.getElementById("instance-summary").innerText = summary;
@@ -122,8 +123,8 @@ function showInstance(id,name,version,summary,description,tagsString) {
 
     document.getElementById("launch-button").innerHTML = "<i class=\"bi bi-rocket-takeoff\"></i> LAUNCH";
     document.getElementById("launch-button").onclick = function () {
-        console.log('[CONNECTOR] library.start.'+activeInstance); document.getElementById("launch-button").onclick = function () {}
-        document.getElementById("launch-button").innerText = "LAUNCHED"; document.getElementById("launch-button").classList.add("disabled");
+        console.log('[CONNECTOR] library.start.'+activeInstance);
+        document.getElementById("launch-button").innerText = "UPDATING..."
     }
 
     document.getElementById("library-tags").innerHTML = "";

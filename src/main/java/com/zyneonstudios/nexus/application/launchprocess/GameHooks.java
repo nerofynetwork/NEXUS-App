@@ -12,7 +12,7 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
-
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById(\"launch-button\").innerHTML = \"STARTING...\";");
             }
         };
     }
@@ -21,6 +21,7 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
+                NexusApplication.getInstance().getApplicationFrame().executeJavaScript("document.getElementById(\"launch-button\").innerHTML = \"<i class='bi bi-check-lg'></i> RUNNING\";");
                 if(NexusApplication.getInstance().getLocalSettings().minimizeApp()) {
                     NexusApplication.getInstance().getApplicationFrame().setState(Frame.ICONIFIED);
                 }
@@ -32,6 +33,10 @@ public class GameHooks {
         return new LauncherHook(launcher) {
             @Override
             public void run() {
+                NexusApplication.getInstance().getInstanceManager().removeRunningInstance(launcher.getGameProcess());
+                if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().contains("page=library")) {
+                    NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
+                }
                 if(NexusApplication.getInstance().getLocalSettings().minimizeApp()) {
                     NexusApplication.getInstance().getApplicationFrame().setState(Frame.NORMAL);
                 }
