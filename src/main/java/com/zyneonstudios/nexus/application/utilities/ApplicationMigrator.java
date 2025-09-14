@@ -84,15 +84,7 @@ public class ApplicationMigrator {
             }
             if(new File(appFolder.getAbsolutePath()+"/libraries/").exists()) {
                 FileActions.deleteFolder(new File(appFolder.getAbsolutePath()+"/libraries/"));
-                File modules = new File(appFolder.getAbsolutePath()+"/modules/");
                 File settings = new File(appFolder.getAbsolutePath()+"/config/");
-                if(modules.exists()) {
-                    for(File f:modules.listFiles()) {
-                        if(!f.isDirectory()) {
-                            f.delete();
-                        }
-                    }
-                }
                 if(settings.exists()) {
                     if(settings.isDirectory()) {
                         FileActions.deleteFolder(settings);
