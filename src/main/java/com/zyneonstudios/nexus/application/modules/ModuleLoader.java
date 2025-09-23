@@ -92,7 +92,7 @@ public class ModuleLoader {
                 id = array.get(0).getAsJsonObject().get("id").getAsString();
                 // Check if a module with the same ID is already loaded.
                 if (moduleJars.containsKey(id)) {
-                    NexusApplication.getLogger().err("Module with ID '" + id + "' is already loaded. Skipping duplicate.");
+                    NexusApplication.getLogger().deb("Module with ID '" + id + "' is already loaded. Skipping duplicate.");
                     return null;
                 }
             } catch (Exception e) {
