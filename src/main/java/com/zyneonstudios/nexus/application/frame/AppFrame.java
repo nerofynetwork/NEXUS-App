@@ -13,6 +13,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -114,6 +115,19 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         JPanel spacer = new JPanel();
         spacer.setBackground(null);
         menuBar.setBackground(Color.black);
+
+        if (!NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
+            try {
+                Image myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon.png"))).getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+                JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+
+                menuBar.add(spacer);
+                menuBar.add(picLabel);
+            } catch (Exception e) {
+                NexusApplication.getLogger().deb("Failed to load application icon: " + e.getMessage());
+            }
+        }
+
         actions.getPopupMenu().setBackground(Color.black);
         browser.getPopupMenu().setBackground(Color.black);
 
@@ -165,7 +179,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
         menuBar.add(browser);
         menuBar.add(actions);
-        menuBar.add(spacer);
         menuBar.setBorder(null);
         
         // Initialize and add the SmartBar.
@@ -179,7 +192,24 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         if (NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
             setJMenuBar(menuBar);
         } else {
-            getTitlebar().add(menuBar, BorderLayout.SOUTH);
+            JLabel title = getLabel();
+            title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+            title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            JButton minimize = getMinimizeButton();
+            JButton close = getCloseButton();
+            JPanel right = new JPanel(new BorderLayout());
+            right.setBackground(null);
+            right.setPreferredSize(menuBar.getPreferredSize());
+            JPanel buttons = new JPanel(new BorderLayout());
+            buttons.add(minimize, BorderLayout.WEST);
+            buttons.add(close, BorderLayout.EAST);
+            right.add(buttons, BorderLayout.EAST);
+            getTitlebar().removeAll();
+            getTitlebar().setLayout(new BorderLayout());
+            getTitlebar().add(menuBar, BorderLayout.WEST);
+            getTitlebar().add(title, BorderLayout.CENTER);
+            getTitlebar().add(right, BorderLayout.EAST);
+
         }
     }
 
