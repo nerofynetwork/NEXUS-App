@@ -14,7 +14,7 @@ public class LaunchCommand extends NexusConsoleCommand {
 
     public LaunchCommand() {
         super("launch");
-        addAliases("start","run");
+        addAliases("start","run","play","l","s","r","p");
     }
 
     @Override

@@ -181,3 +181,46 @@
         }
     }
 }
+
+.instance-creator {
+    .creator-header {
+        position: relative;
+        height: 8rem;
+        width: 100%;
+
+        .instance-image-container {
+            border-radius: var(--bs-border-radius-lg);
+            background: var(--nex-darker-400);
+            flex-shrink: 0;
+            width: 8rem;
+        }
+
+        .instance-main-information-container {
+            position: relative;
+            flex-grow: 1;
+            margin-left: 0.5rem;
+
+            label {
+                width: 100% !important;
+                margin: 0 0 0.5rem 0;
+
+                input, select {
+                    border: none;
+                    border-radius: var(--bs-border-radius-lg);
+                    background: var(--nex-darker-400);
+                    width: 100%;
+                    padding: 0.425rem 0.5rem;
+                }
+            }
+
+            option {
+                background: var(--nex-bg);
+                color: var(--nex-iv);
+            }
+
+            .d-flex {
+                gap: 0.5rem !important;
+            }
+        }
+    }
+}

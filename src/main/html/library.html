@@ -113,13 +113,34 @@
             <div class="modal-header" style="background: var(--nex-brighter-100);" id="addInstanceM-header">
                 <strong>Add an instance</strong>
             </div>
-            <div class="modal-body">
-                <strong>Information:</strong> Here you can add an instance to your library.<br>
-                Please choose how you would like to proceed.<br>
-                <br>
-                <strong>Create:</strong> Create a new Minecraft instance with or without a modloader of your choice.<br>
-                <strong>Discover modpacks:</strong> Explore modpacks online and download an instance of Modrinth, CurseForge, or a Zyndex instance like NEX.<br>
-                <strong>Import:</strong> Import an existing Minecraft instance from your computer, either as a folder or as a .zip archive.<br>
+            <div class="modal-body instance-creator">
+                <div class="d-flex creator-header">
+                    <div class="instance-image-container">
+
+                    </div>
+                    <div class="instance-main-information-container">
+                        <label>
+                            <input type="text" placeholder="* Instance name">
+                        </label>
+                        <div class="d-flex">
+                            <label>
+                                <select>
+                                    <option>Vanilla</option>
+                                    <option>Experimental</option>
+                                    <option>Fabric</option>
+                                    <option>Forge</option>
+                                    <option>NeoForge</option>
+                                    <option>Quilt</option>
+                                </select>
+                            </label>
+                            <label>
+                                <select>
+                                    <option>Latest ()</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background: var(--nex-brighter);">
                 <button type="button" data-bs-dismiss="modal" data-bs-target="#addInstance" class="btn btn-nex-secondary shadow"><i class="bi bi-file-earmark-arrow-down"></i> Import</button>
