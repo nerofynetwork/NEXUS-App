@@ -899,6 +899,11 @@ body {
     }
 }
 
+.card {
+    padding: 0;
+    text-shadow: none;
+}
+
 [data-bs-theme="light"] {
     --nex-bg: white;
     --nex-iv: black;
@@ -921,9 +926,4 @@ body {
             background: var(--nex-primary) !important;
         }
     }
-}
-
-.card {
-    padding: 0;
-    text-shadow: none;
 }
