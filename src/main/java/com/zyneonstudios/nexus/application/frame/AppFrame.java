@@ -54,14 +54,13 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      *
      * @param setup     The {@link NexusWebSetup} instance for configuring the web client.
      * @param url       The initial URL to load in the web browser component.
-     * @param decorated A boolean indicating whether the window should have a native title bar and borders.
      */
-    public AppFrame(NexusWebSetup setup, String url, boolean decorated) {
-        super(setup.getWebClient(), url, decorated, NexusApplication.getInstance().getLocalSettings().useNativeWindow());
+    public AppFrame(NexusWebSetup setup, String url) {
+        super(setup.getWebClient(), url);
         this.customFrame = !NexusApplication.getInstance().getLocalSettings().useNativeWindow();
         
-        initializeFrame(url, setup, decorated);
-        setupMenus(url, setup, decorated);
+        initializeFrame(url, setup);
+        setupMenus(url, setup);
         setupBrowserComponent();
     }
 
@@ -70,9 +69,8 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      *
      * @param url       The initial URL being loaded.
      * @param setup     The web setup configuration.
-     * @param decorated Whether the frame uses native decoration.
      */
-    private void initializeFrame(String url, NexusWebSetup setup, boolean decorated) {
+    private void initializeFrame(String url, NexusWebSetup setup) {
         try {
             // Set the application icon, scaled to 32x32 pixels.
             setIconImage(ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon.png"))).getScaledInstance(32, 32, Image.SCALE_SMOOTH));
@@ -98,7 +96,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             }
         });
 
-        getMaximizeButton().setVisible(false);
         setMinimumSize(minSize);
         addComponentListener(this);
         setAsyncWebFrameConnectorEvent(new AsyncConnectorListener(this, null));
@@ -109,24 +106,11 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      *
      * @param url       The initial URL.
      * @param setup     The web setup configuration.
-     * @param decorated Whether the frame is decorated.
      */
-    private void setupMenus(String url, NexusWebSetup setup, boolean decorated) {
+    private void setupMenus(String url, NexusWebSetup setup) {
         JPanel spacer = new JPanel();
         spacer.setBackground(null);
         menuBar.setBackground(Color.black);
-
-        if (!NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
-            try {
-                Image myPicture = ImageIO.read(Objects.requireNonNull(getClass().getResource("/icon.png"))).getScaledInstance(16, 16, Image.SCALE_SMOOTH);
-                JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-
-                menuBar.add(spacer);
-                menuBar.add(picLabel);
-            } catch (Exception e) {
-                NexusApplication.getLogger().deb("Failed to load application icon: " + e.getMessage());
-            }
-        }
 
         actions.getPopupMenu().setBackground(Color.black);
         browser.getPopupMenu().setBackground(Color.black);
@@ -174,7 +158,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
         // Add debug menu items if debugging is enabled.
         if (NexusApplication.getLogger().isDebugging()) {
-            setupDebugMenuItems(setup, decorated);
+            setupDebugMenuItems(setup);
         }
 
         menuBar.add(browser);
@@ -188,38 +172,15 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         menuBar.add(smartBar);
         menuBar.setOpaque(true);
 
-        // Attach the menu bar to the native frame or custom title bar.
-        if (NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
-            setJMenuBar(menuBar);
-        } else {
-            JLabel title = getLabel();
-            title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-            title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            JButton minimize = getMinimizeButton();
-            JButton close = getCloseButton();
-            JPanel right = new JPanel(new BorderLayout());
-            right.setBackground(null);
-            right.setPreferredSize(menuBar.getPreferredSize());
-            JPanel buttons = new JPanel(new BorderLayout());
-            buttons.add(minimize, BorderLayout.WEST);
-            buttons.add(close, BorderLayout.EAST);
-            right.add(buttons, BorderLayout.EAST);
-            getTitlebar().removeAll();
-            getTitlebar().setLayout(new BorderLayout());
-            getTitlebar().add(menuBar, BorderLayout.WEST);
-            getTitlebar().add(title, BorderLayout.CENTER);
-            getTitlebar().add(right, BorderLayout.EAST);
-
-        }
+        setJMenuBar(menuBar);
     }
 
     /**
      * Sets up menu items that are only available in debug mode.
      *
      * @param setup     The web setup configuration.
-     * @param decorated Whether the frame is decorated.
      */
-    private void setupDebugMenuItems(NexusWebSetup setup, boolean decorated) {
+    private void setupDebugMenuItems(NexusWebSetup setup) {
         JMenuItem inputUrl = new JMenuItem("Input URL");
         inputUrl.addActionListener(e -> showUrlInputDialog());
         browser.add(inputUrl);
@@ -234,7 +195,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
         AtomicInteger clones = new AtomicInteger(1);
         JMenuItem cloneWindow = new JMenuItem("Clone window");
-        cloneWindow.addActionListener(e -> cloneWindow(setup, decorated, clones));
+        cloneWindow.addActionListener(e -> cloneWindow(setup, clones));
         actions.add(cloneWindow);
 
         JMenuItem disableDevtools = new JMenuItem("Disable dev mode");
@@ -310,11 +271,10 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      * Creates a new {@code AppFrame} instance that is a clone of the current window.
      *
      * @param setup     The web setup configuration for the new window.
-     * @param decorated Whether the cloned window should be decorated.
      * @param clones    An atomic counter to number the cloned windows.
      */
-    private void cloneWindow(NexusWebSetup setup, boolean decorated, AtomicInteger clones) {
-        AppFrame clone = new AppFrame(setup, getBrowser().getURL(), decorated);
+    private void cloneWindow(NexusWebSetup setup, AtomicInteger clones) {
+        AppFrame clone = new AppFrame(setup, getBrowser().getURL());
         clone.setTitleColors(Color.decode("#333399"), Color.decode("#ffffff"));
         clone.setVisible(true);
         clone.setTitlebar(windowId + "-clone " + clones.getAndIncrement(), Color.decode("#333399"), Color.white);
@@ -363,32 +323,11 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     public void setTitleBackground(Color color) {
         getRootPane().putClientProperty("JRootPane.titleBarBackground", color);
-        if (customFrame) {
-            setCustomTitleBackground(color);
-        }
         setBackground(color);
         menuBar.setBackground(color);
         actions.getPopupMenu().setBackground(color);
         browser.getPopupMenu().setBackground(color);
         smartBar.setSpaceColor(color);
-    }
-
-    /**
-     * Sets the background color for the components of the custom title bar.
-     *
-     * @param color The color to set as the background.
-     */
-    private void setCustomTitleBackground(Color color) {
-        try {
-            getTitlebar().setBackground(color);
-            getCloseButton().setBackground(color);
-            getMinimizeButton().setBackground(color);
-            getMinimizeButton().getParent().setBackground(color);
-            getMaximizeButton().setBackground(color);
-            getLabel().setBackground(color);
-        } catch (Exception e) {
-            NexusApplication.getLogger().err(e.getMessage());
-        }
     }
 
     /**
@@ -398,9 +337,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
      */
     public void setTitleForeground(Color color) {
         getRootPane().putClientProperty("JRootPane.titleBarForeground", color);
-        if (customFrame) {
-            setCustomTitleForeground(color);
-        }
         menuBar.setForeground(color);
         actions.setForeground(color);
         browser.setForeground(color);
@@ -418,23 +354,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         menu.getPopupMenu().setForeground(color);
         for (Component c : menu.getPopupMenu().getComponents()) {
             c.setForeground(color);
-        }
-    }
-
-    /**
-     * Sets the foreground color for the components of the custom title bar.
-     *
-     * @param color The color to set as the foreground.
-     */
-    private void setCustomTitleForeground(Color color) {
-        try {
-            getTitlebar().setForeground(color);
-            getCloseButton().setForeground(color);
-            getMinimizeButton().setForeground(color);
-            getMaximizeButton().setForeground(color);
-            getLabel().setForeground(color);
-        } catch (Exception e) {
-            NexusApplication.getLogger().err(e.getMessage());
         }
     }
 

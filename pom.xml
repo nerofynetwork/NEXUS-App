@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>
             <artifactId>base-desktop</artifactId>
-            <version>2025.9</version>
+            <version>2025.10-beta.4</version>
         </dependency>
         <dependency>
             <groupId>com.zyneonstudios.nexus</groupId>

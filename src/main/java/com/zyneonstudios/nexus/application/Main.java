@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.swing.*;
+import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,6 +41,8 @@ public class Main {
         Main.args = args;
         // Initialize the Nexus desktop environment.
         NexusDesktop.init();
+        UIManager.put("RootPane.resizeBorderInsets", new Insets(0, 0, 0, 0));
+        UIManager.put("RootPane.shadow", false); // Optional
         logger.setName("NEXUS",true);
         try {
             UIManager.put("TitlePane.menuBarEmbedded", true);
