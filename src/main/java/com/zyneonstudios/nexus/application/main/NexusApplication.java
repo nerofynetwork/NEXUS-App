@@ -239,8 +239,8 @@ public class NexusApplication {
         webSetup.getWebClient().addLoadHandler(new CefLoadHandlerAdapter() {
             @Override
             public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {
-                if(!browser.getURL().startsWith("http://localhost:" + Main.getPort())) {
-                    browser.loadURL("http://localhost:"+Main.getPort());
+                if(!(browser.getURL().startsWith("http://localhost:" + Main.getPort()) || browser.getURL().isEmpty() || browser.getURL().startsWith("http://127.0.0.1:" + Main.getPort()))) {
+                    browser.loadURL("http://localhost:"+Main.getPort()+"/601?url="+browser.getURL());
                 }
             }
         });
@@ -282,7 +282,8 @@ public class NexusApplication {
         if (!launched) {
             try {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                String url = onlineUI ? "https://zyneonstudios.github.io/nexus-app/src/main/html?app=true" : "localhost:" + Main.getPort() + "/index.html?app=true";
+                String url = onlineUI ? "https://zyneonstudios.github.io/nexus-app/src/main/html?app=true" : "http://localhost:" + Main.getPort() + "/index.html?app=true";
+                System.out.println(url);
                 applicationFrame = new AppFrame(webSetup, url, true);
                 applicationFrame.setTitlebar(version, Color.black, Color.white);
                 applicationFrame.setSize((int)(screenSize.getWidth()/1.5), (int)(screenSize.getHeight()/1.5));
