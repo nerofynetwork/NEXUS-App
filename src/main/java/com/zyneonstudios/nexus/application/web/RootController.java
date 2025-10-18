@@ -19,6 +19,12 @@ import java.io.FileNotFoundException;
 @RestController
 public class RootController {
 
+    @GetMapping("/601*")
+    public ResponseEntity<Object> handleExternalRequest(HttpServletRequest request) {
+        return ResponseEntity.unprocessableEntity().body("<html><head><style>body { button { padding: 0.33rem 1.5rem; margin: 0.25rem; font-size: 1.25rem; } user-select: none; background: black; color: white; position: absolute; padding: 0; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif; flex-direction: column; text-align: center; }</style></head><body><p><strong>601: </strong>You've entered an external URL.<br>It is not save to browse the internet via the NEXUS App.<br><br>Do you want to open <span id='url'>the url</span> in your default browser?</p><br><div><button id='yes'>Yes</button><button id='no' onclick=\"location.href='..'\">No</button></div></body></html>");
+    }
+
+
     /**
      * Handles all GET requests to the root path ("/") and its subpaths ("/**").
      * It serves static content from the UI directory if the request is from a local address.

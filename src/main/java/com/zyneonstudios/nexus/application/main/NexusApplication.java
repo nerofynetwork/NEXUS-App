@@ -238,6 +238,14 @@ public class NexusApplication {
         webSetup.setup();
         webSetup.getWebClient().addLoadHandler(new CefLoadHandlerAdapter() {
             @Override
+            public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {
+                if(!browser.getURL().startsWith("http://localhost:" + Main.getPort())) {
+                    browser.loadURL("http://localhost:"+Main.getPort());
+                }
+            }
+        });
+        webSetup.getWebClient().addLoadHandler(new CefLoadHandlerAdapter() {
+            @Override
             public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
                 frame.executeJavaScript("version = \""+version+"\";", browser.getURL() ,0);
             }

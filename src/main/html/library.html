@@ -124,7 +124,7 @@
                         </label>
                         <div class="d-flex">
                             <label>
-                                <select id="creator-mc-type" onchange="document.getElementById('creator-mc-versions').innerHTML = ''; console.log('[CONNECTOR] library.creator.init.'+this.value);">
+                                <select id="creator-mc-type" onchange="document.getElementById('creator-mc-versions').innerHTML = ''; document.getElementById('creator-ml-versions').innerHTML = ''; console.log('[CONNECTOR] library.creator.init.'+this.value);">
                                     <option value="vanilla">Vanilla</option>
                                     <option value="experimental">Experimental</option>
                                     <option value="fabric">Fabric</option>
@@ -134,14 +134,14 @@
                                 </select>
                             </label>
                             <label>
-                                <select id="creator-mc-versions">
+                                <select id="creator-mc-versions" onchange="document.getElementById('creator-ml-versions').innerHTML = ''; console.log('[CONNECTOR] library.creator.init.version.'+document.getElementById('creator-mc-type').value+'.'+this.value);">
 
                                 </select>
                             </label>
                         </div>
                         <div class="d-flex">
                             <label>
-                                <select id="creator-ml-versions" onchange="document.getElementById('creator-mc-versions').innerHTML = ''; console.log('[CONNECTOR] library.creator.init.'+this.value);">
+                                <select id="creator-ml-versions" onchange="">
 
                                 </select>
                             </label>
@@ -155,7 +155,7 @@
             <div class="modal-footer" style="background: var(--nex-brighter);">
                 <button type="button" data-bs-dismiss="modal" data-bs-target="#addInstance" class="btn btn-nex-secondary shadow"><i class="bi bi-file-earmark-arrow-down"></i> Import</button>
                 <button type="button" data-bs-dismiss="modal" data-bs-target="#addInstance" onclick="loadPage('discover.html',false,'&dt=search');" class="btn btn-nex-primary shadow"><i class="bi bi-globe-europe-africa"></i> Discover modpacks</button>
-                <button type="button" data-bs-dismiss="modal" data-bs-target="#addInstance" class="btn btn-nex-primary shadow"><i class="bi bi-plus-lg"></i> Create</button>
+                <button type="button" class="btn btn-nex-primary shadow"><i class="bi bi-plus-lg"></i> Create</button>
             </div>
         </div>
     </div>

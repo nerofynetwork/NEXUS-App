@@ -58,7 +58,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
     public AppFrame(NexusWebSetup setup, String url, boolean decorated) {
         super(setup.getWebClient(), url, decorated, NexusApplication.getInstance().getLocalSettings().useNativeWindow());
         this.customFrame = !NexusApplication.getInstance().getLocalSettings().useNativeWindow();
-        
+
         initializeFrame(url, setup, decorated);
         setupMenus(url, setup, decorated);
         setupBrowserComponent();

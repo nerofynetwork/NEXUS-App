@@ -264,7 +264,23 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 resolveMessage("library.creator.init.vanilla");
             } else if(s.startsWith("creator.")) {
                 s = s.replaceFirst("creator.", "");
-                if(s.startsWith("init.")) {
+                if(s.startsWith("init.version.")) {
+                    s = s.replace("init.version.","");
+                    String[] query = s.split("\\.",2);
+                    String type = query[0];
+                    String ver = query[1];
+                    ArrayList<String> versions = new ArrayList<>();
+                    switch (type) {
+                        case "fabric" -> versions.addAll(Verget.getFabricVersions(true, ver));
+                        case "forge" -> versions.addAll(Verget.getForgeVersions(ver));
+                        case "neoforge" -> versions.addAll(Verget.getNeoForgeVersions(ver));
+                        case "quilt" -> versions.addAll(Verget.getQuiltVersions(ver));
+                    }
+                    String option = "<option value='%ver%'>%ver%</option>";
+                    for(String v:versions) {
+                        frame.executeJavaScript("document.getElementById('creator-ml-versions').innerHTML += \""+option.replace("%ver%",v)+"\";");
+                    }
+                } else if(s.startsWith("init.")) {
                     s = s.replace("init.","");
                     ArrayList<String> versions = new ArrayList<>();
                     switch (s) {
@@ -279,6 +295,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                     for(String v:versions) {
                         frame.executeJavaScript("document.getElementById('creator-mc-versions').innerHTML += \""+option.replace("%ver%",v)+"\";");
                     }
+                    resolveMessage("library.creator.init.version."+s+"."+versions.getFirst());
                 }
             } else if(s.startsWith("showInstance.")) {
                 String showId = s.replace("showInstance.", "");
