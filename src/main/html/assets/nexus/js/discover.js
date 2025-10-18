@@ -47,7 +47,7 @@ function addSearchResult(searchId_,id,iconUrl,name,downloads,followers,authors,s
         if (!document.getElementById(id)) {
             const template = document.querySelector(".search-result-template");
             const result = template.cloneNode(true);
-            result.id = id;
+            result.id = decodeURIComponent(id);
             result.classList.remove("search-result-template");
             result.style.display = "flex";
             result.querySelector("img").src = iconUrl;

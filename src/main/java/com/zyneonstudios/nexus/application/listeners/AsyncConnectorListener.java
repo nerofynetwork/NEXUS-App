@@ -20,23 +20,23 @@ import com.zyneonstudios.nexus.desktop.events.AsyncWebFrameConnectorEvent;
 import com.zyneonstudios.nexus.desktop.frame.web.WebFrame;
 import com.zyneonstudios.nexus.instance.ReadableZynstance;
 import com.zyneonstudios.nexus.instance.Zynstance;
+import com.zyneonstudios.verget.Verget;
 import com.zyneonstudios.verget.fabric.FabricVerget;
+import com.zyneonstudios.verget.minecraft.MinecraftVerget;
 import jnafilechooser.api.JnaFileChooser;
 import live.nerotv.aminecraftlauncher.launcher.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Objects;
 
 public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
 
-    private static final Logger log = LoggerFactory.getLogger(AsyncConnectorListener.class);
     private final AppFrame frame;
 
     public AsyncConnectorListener(WebFrame frame, String message) {
@@ -260,6 +260,25 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         showId = NexusApplication.getInstance().getLocalSettings().getLastInstanceId();
                     }
                     resolveMessage("library.showInstance." + showId);
+                }
+                resolveMessage("library.creator.init.vanilla");
+            } else if(s.startsWith("creator.")) {
+                s = s.replaceFirst("creator.", "");
+                if(s.startsWith("init.")) {
+                    s = s.replace("init.","");
+                    ArrayList<String> versions = new ArrayList<>();
+                    switch (s) {
+                        case "experimental" -> versions.addAll(Verget.getMinecraftVersions(MinecraftVerget.Filter.EXPERIMENTAL));
+                        case "fabric" -> versions.addAll(Verget.getFabricGameVersions(true));
+                        case "forge" -> versions.addAll(Verget.getForgeGameVersions());
+                        case "neoforge" -> versions.addAll(Verget.getNeoForgeGameVersions());
+                        case "quilt" -> versions.addAll(Verget.getQuiltGameVersions(true));
+                        default -> versions.addAll(Verget.getMinecraftVersions(MinecraftVerget.Filter.RELEASES));
+                    }
+                    String option = "<option value='%ver%'>%ver%</option>";
+                    for(String v:versions) {
+                        frame.executeJavaScript("document.getElementById('creator-mc-versions').innerHTML += \""+option.replace("%ver%",v)+"\";");
+                    }
                 }
             } else if(s.startsWith("showInstance.")) {
                 String showId = s.replace("showInstance.", "");

@@ -6,7 +6,7 @@
 
     <groupId>net.nrfy.nexus</groupId>
     <artifactId>nexus-app</artifactId>
-    <version>2025.10-beta.1</version>
+    <version>2025.10-beta.2</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

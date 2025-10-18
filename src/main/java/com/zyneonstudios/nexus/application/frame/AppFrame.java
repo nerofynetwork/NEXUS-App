@@ -13,7 +13,6 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -190,6 +189,7 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
 
         // Attach the menu bar to the native frame or custom title bar.
         if (NexusApplication.getInstance().getLocalSettings().useNativeWindow()) {
+            menuBar.setBorderPainted(false);
             setJMenuBar(menuBar);
         } else {
             JLabel title = getLabel();
@@ -209,7 +209,6 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
             getTitlebar().add(menuBar, BorderLayout.WEST);
             getTitlebar().add(title, BorderLayout.CENTER);
             getTitlebar().add(right, BorderLayout.EAST);
-
         }
     }
 

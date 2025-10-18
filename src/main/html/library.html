@@ -124,19 +124,29 @@
                         </label>
                         <div class="d-flex">
                             <label>
-                                <select>
-                                    <option>Vanilla</option>
-                                    <option>Experimental</option>
-                                    <option>Fabric</option>
-                                    <option>Forge</option>
-                                    <option>NeoForge</option>
-                                    <option>Quilt</option>
+                                <select id="creator-mc-type" onchange="document.getElementById('creator-mc-versions').innerHTML = ''; console.log('[CONNECTOR] library.creator.init.'+this.value);">
+                                    <option value="vanilla">Vanilla</option>
+                                    <option value="experimental">Experimental</option>
+                                    <option value="fabric">Fabric</option>
+                                    <option value="forge">Forge</option>
+                                    <option value="neoforge">NeoForge</option>
+                                    <option value="quilt">Quilt</option>
                                 </select>
                             </label>
                             <label>
-                                <select>
-                                    <option>Latest ()</option>
+                                <select id="creator-mc-versions">
+
                                 </select>
+                            </label>
+                        </div>
+                        <div class="d-flex">
+                            <label>
+                                <select id="creator-ml-versions" onchange="document.getElementById('creator-mc-versions').innerHTML = ''; console.log('[CONNECTOR] library.creator.init.'+this.value);">
+
+                                </select>
+                            </label>
+                            <label>
+                                <button type="button" class="btn btn-nex-secondary">Extended</button>
                             </label>
                         </div>
                     </div>

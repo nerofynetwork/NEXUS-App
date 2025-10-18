@@ -211,6 +211,18 @@
                     width: 100%;
                     padding: 0.425rem 0.5rem;
                 }
+
+                button {
+                    border-radius: var(--bs-border-radius-lg);
+                    padding: 0.375rem 0.5rem 0.475rem 0.5rem;
+                    width: 100%;
+                    height: calc(100% - 2px);
+                    opacity: 0.89;
+                }
+
+                button:hover {
+                    opacity: 1;
+                }
             }
 
             option {
