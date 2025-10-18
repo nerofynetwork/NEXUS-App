@@ -27,6 +27,9 @@ import live.nerotv.aminecraftlauncher.launcher.*;
 import org.cef.CefApp;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
+import org.cef.callback.CefBeforeDownloadCallback;
+import org.cef.callback.CefDownloadItem;
+import org.cef.handler.CefDownloadHandlerAdapter;
 import org.cef.handler.CefLoadHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -236,6 +239,12 @@ public class NexusApplication {
         webSetup.enableCache(true);
         webSetup.enableCookies(true);
         webSetup.setup();
+        webSetup.getWebClient().addDownloadHandler(new CefDownloadHandlerAdapter() {
+            @Override
+            public boolean onBeforeDownload(CefBrowser browser, CefDownloadItem downloadItem, String suggestedName, CefBeforeDownloadCallback callback) {
+                return true;
+            }
+        });
         webSetup.getWebClient().addLoadHandler(new CefLoadHandlerAdapter() {
             @Override
             public void onLoadingStateChange(CefBrowser browser, boolean isLoading, boolean canGoBack, boolean canGoForward) {
