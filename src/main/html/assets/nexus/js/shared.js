@@ -798,9 +798,14 @@ addEventListener("contextmenu", (event) => {
         let offsetWidth = 229;
         let offsetHeight = 184;
         contextMenu.className = "dropdown-menu shadow"
-        contextMenu.innerHTML = "<li><a class='dropdown-item' onclick='window.history.back()'><i class=\"bi bi-arrow-left\"></i> Back</a></li>";
-        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='window.history.forward()'><i class=\"bi bi-arrow-right\"></i> Forward</a></li>";
-        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='location.reload();'><i class=\"bi bi-arrow-clockwise\"></i> Reload</a></li>";
+        contextMenu.innerHTML = "";
+        let content = false;
+        if (getStorageItem("devtools") === "true") {
+            content = true;
+            contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='window.history.back()'><i class=\"bi bi-arrow-left\"></i> Back</a></li>";
+            contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='window.history.forward()'><i class=\"bi bi-arrow-right\"></i> Forward</a></li>";
+            contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='location.reload();'><i class=\"bi bi-arrow-clockwise\"></i> Reload</a></li>";
+        }
         if(target) {
             if(target.classList.contains("instance-button-comp")) {
                 let targetId = "";
@@ -811,13 +816,15 @@ addEventListener("contextmenu", (event) => {
                 }
                 offsetWidth = 272;
                 offsetHeight = 352;
-                contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
+                if(content) {
+                    contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
+                }
+                content = true;
                 contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"console.log('[CONNECTOR] library.start."+targetId+"');\"><i class=\"bi bi-rocket-takeoff-fill\"></i> Launch instance</a></li>";
                 contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"navigator.clipboard.writeText('"+targetId+"');\"><i class=\"bi bi-copy\"></i> Copy instance path</a></li>";
                 contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"console.log('[CONNECTOR] library.folder."+targetId+"');\"><i class=\"bi bi-box-arrow-up-right\"></i> Open instance folder</a></li>";
             }
         }
-        contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
 
         let y = event.clientY;
         let x = event.clientX;
@@ -835,7 +842,9 @@ addEventListener("contextmenu", (event) => {
         contextMenu.style.top = y+`px`;
         contextMenu.style.left = x+`px`;
 
-        contextMenu.classList.add("show");
+        if(content) {
+            contextMenu.classList.add("show");
+        }
     }
 
 });
