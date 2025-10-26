@@ -151,13 +151,6 @@ let enableCustomAccentColor = false;
 // --- Event Listeners ---
 
 /**
- * Prevents the default context menu from appearing.
- */
-document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-});
-
-/**
  * Prevents the default drag-and-drop behavior.
  */
 document.addEventListener('dragstart', function (e) {
@@ -795,4 +788,71 @@ function randomString(length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+}
+
+addEventListener("contextmenu", (event) => {
+    const contextMenu = document.getElementById("context-menu");
+    if(contextMenu) {
+        event.preventDefault();
+        const target = event.target;
+        let offsetWidth = 229;
+        let offsetHeight = 184;
+        contextMenu.className = "dropdown-menu shadow"
+        contextMenu.innerHTML = "<li><a class='dropdown-item' onclick='window.history.back()'><i class=\"bi bi-arrow-left\"></i> Zurück</a></li>";
+        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='window.history.forward()'><i class=\"bi bi-arrow-right\"></i> Vorwärts</a></li>";
+        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='location.reload();'><i class=\"bi bi-arrow-clockwise\"></i> Seite neu laden</a></li>";
+        if(target) {
+            contextTarget = target;
+            if(target.tagName === "IMG") {
+                offsetWidth = 272;
+                offsetHeight = 352;
+                contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"copyImage('"+target.src+"');\"><i class=\"bi bi-copy\"></i> Bild kopieren</a></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' href='"+target.src+"' download><i class=\"bi bi-box-arrow-down\"></i> Bild herunterladen</a></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' href='"+target.src+"' target='_blank'><i class=\"bi bi-box-arrow-up-right\"></i> Bild in neuem Tab öffnen</a></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"navigator.clipboard.writeText('"+target.src+"');\"><i class=\"bi bi-link-45deg\"></i> Bildadresse kopieren</a></li>";
+            }
+        }
+        contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
+
+        let y = event.clientY;
+        let x = event.clientX;
+        const yEnd = y + offsetHeight;
+        const xEnd = x + offsetWidth;
+
+        if(yEnd > window.innerHeight) {
+            y -= yEnd - window.innerHeight;
+        }
+
+        if(xEnd > window.innerWidth) {
+            x -= xEnd - window.innerWidth;
+        }
+
+        contextMenu.style.top = y+`px`;
+        contextMenu.style.left = x+`px`;
+
+        contextMenu.classList.add("show");
+    }
+
+});
+
+addEventListener("resize", () => {
+    closeContextMenu();
+})
+
+addEventListener("click", () => {
+    closeContextMenu();
+});
+
+addEventListener("scroll", () => {
+    closeContextMenu();
+});
+
+function closeContextMenu() {
+    const contextMenu = document.getElementById("context-menu");
+    if(contextMenu) {
+        if (contextMenu.classList.contains("show")) {
+            contextMenu.classList.remove("show");
+        }
+    }
 }
