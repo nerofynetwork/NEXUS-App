@@ -798,19 +798,23 @@ addEventListener("contextmenu", (event) => {
         let offsetWidth = 229;
         let offsetHeight = 184;
         contextMenu.className = "dropdown-menu shadow"
-        contextMenu.innerHTML = "<li><a class='dropdown-item' onclick='window.history.back()'><i class=\"bi bi-arrow-left\"></i> Zurück</a></li>";
-        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='window.history.forward()'><i class=\"bi bi-arrow-right\"></i> Vorwärts</a></li>";
-        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='location.reload();'><i class=\"bi bi-arrow-clockwise\"></i> Seite neu laden</a></li>";
+        contextMenu.innerHTML = "<li><a class='dropdown-item' onclick='window.history.back()'><i class=\"bi bi-arrow-left\"></i> Back</a></li>";
+        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='window.history.forward()'><i class=\"bi bi-arrow-right\"></i> Forward</a></li>";
+        contextMenu.innerHTML += "<li><a class='dropdown-item' onclick='location.reload();'><i class=\"bi bi-arrow-clockwise\"></i> Reload</a></li>";
         if(target) {
-            contextTarget = target;
-            if(target.tagName === "IMG") {
+            if(target.classList.contains("instance-button-comp")) {
+                let targetId = "";
+                if(target.tagName === "BUTTON") {
+                    targetId = target.id;
+                } else {
+                    targetId = target.parentElement.id;
+                }
                 offsetWidth = 272;
                 offsetHeight = 352;
                 contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
-                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"copyImage('"+target.src+"');\"><i class=\"bi bi-copy\"></i> Bild kopieren</a></li>";
-                contextMenu.innerHTML += "<li><a class='dropdown-item' href='"+target.src+"' download><i class=\"bi bi-box-arrow-down\"></i> Bild herunterladen</a></li>";
-                contextMenu.innerHTML += "<li><a class='dropdown-item' href='"+target.src+"' target='_blank'><i class=\"bi bi-box-arrow-up-right\"></i> Bild in neuem Tab öffnen</a></li>";
-                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"navigator.clipboard.writeText('"+target.src+"');\"><i class=\"bi bi-link-45deg\"></i> Bildadresse kopieren</a></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"console.log('[CONNECTOR] library.start."+targetId+"');\"><i class=\"bi bi-rocket-takeoff-fill\"></i> Launch instance</a></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"navigator.clipboard.writeText('"+targetId+"');\"><i class=\"bi bi-copy\"></i> Copy instance path</a></li>";
+                contextMenu.innerHTML += "<li><a class='dropdown-item' onclick=\"console.log('[CONNECTOR] library.folder."+targetId+"');\"><i class=\"bi bi-box-arrow-up-right\"></i> Open instance folder</a></li>";
             }
         }
         contextMenu.innerHTML += "<li><hr class=\"dropdown-divider\"></li>";
