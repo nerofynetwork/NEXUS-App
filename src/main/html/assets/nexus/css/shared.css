@@ -937,14 +937,15 @@ body {
     display: flex;
     flex-direction: column;
     gap: 3px;
-    background: #00000025;
+    background: rgba(0, 0, 0, 0.19);
     backdrop-filter: blur(12px);
     border: 1px solid var(--bs-border-color-translucent) !important;
     padding: 0.5rem 0.45rem 0.5rem 0;
+    border-radius: var(--bs-border-radius);
     a {
         transition: all 0.25s ease;
         width: calc(100% - 0.66rem);
-        border-radius: var(--bs-border-radius-sm);
+        border-radius: var(--bs-border-radius-lg);
         margin: 0 0.33rem;
         text-shadow: 0 0 0.3rem black;
         color: white;
@@ -957,7 +958,7 @@ body {
 
     a:hover {
         cursor: pointer;
-        background: linear-gradient(225deg, #ffffff25, rgba(139, 139, 139, 0.25));
+        background: linear-gradient(225deg, #ffffff25, rgba(35, 35, 35, 0.25));
         border: 1px var(--bs-border-color-translucent) solid;
         translate: 0.25rem;
         box-shadow: 0 0 0.4rem #00000050;
