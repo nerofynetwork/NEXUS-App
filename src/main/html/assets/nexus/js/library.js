@@ -168,3 +168,15 @@ function openLinksInNewTab(containerElement) {
         link.rel = 'noopener noreferrer';
     });
 }
+
+function requestInstanceCreation() {
+    const crname = encodeURIComponent(document.getElementById("creator–instance-name").value.replaceAll(".","#DOT%")).replaceAll("\\","").replaceAll("/","");
+    if(crname) {
+        const crtype = encodeURIComponent(document.getElementById("creator-mc-type").value.replaceAll(".","#DOT%"));
+        const crversion = encodeURIComponent(document.getElementById("creator-mc-versions").value.replaceAll(".","#DOT%"));
+        const crmlversion = encodeURIComponent(document.getElementById("creator-ml-versions").value.replaceAll(".","#DOT%"));
+        console.log("[CONNECTOR] library.creator.create."+crversion+"."+crtype+"."+crmlversion+"."+crname);
+    } else {
+        if(document.getElementById('creator-name-warning').classList.contains('d-none')) {document.getElementById('creator-name-warning').classList.remove('d-none');}
+    }
+}

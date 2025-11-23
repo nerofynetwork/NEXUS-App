@@ -171,6 +171,10 @@
         }
     }
 
+    .tab-pane {
+        padding: 0 0 2rem 0 !important;
+    }
+y
     #tab-about-content {
         position: relative;
         overflow: hidden;

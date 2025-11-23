@@ -56,7 +56,7 @@ public class ZyndexIntegration {
         return false;
     }
 
-    private static File getInstallDir(File installDir, String id) {
+    public static File getInstallDir(File installDir, String id) {
         File bak = installDir;
         if(!installDir.getName().equalsIgnoreCase(id)) {
             installDir = new File(installDir.getAbsolutePath() + "/" + id.replace("/","-")+"/");

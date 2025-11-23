@@ -6,12 +6,12 @@
 
     <groupId>net.nrfy.nexus</groupId>
     <artifactId>nexus-app</artifactId>
-    <version>2025.11-beta.1</version>
+    <version>2026.1-beta.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <nexus.name>Phoenix</nexus.name>
+        <nexus.name>Reformatio</nexus.name>
         <nexus.type>unstable</nexus.type>
     </properties>
 
