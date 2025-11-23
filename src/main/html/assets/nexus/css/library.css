@@ -12,6 +12,124 @@
     width: 100%;
     height: 100%;
 
+    #settings-pane {
+        z-index: -1;
+        scale: 0;
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        background: #00000075;
+
+        .instance-settings {
+            position: absolute;
+            z-index: 10;
+            left: 2rem;
+            top: 2rem;
+            right: 2rem;
+            bottom: 2rem;
+            background: var(--nex-brighter);
+            border: 1px solid var(--bs-border-color-translucent);
+            border-radius: var(--bs-border-radius-xl);
+            backdrop-filter: blur(48px);
+            margin: 2rem;
+            display: flex;
+            box-shadow: 0 0 4rem #000000;
+            overflow: hidden;
+
+            .settings-menu {
+                position: relative;
+                background: var(--nex-brighter);
+                border-right: 1px solid var(--bs-border-color-translucent);
+                padding: 0.75rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .settings-menu-actions {
+                    position: absolute;
+                    bottom: 0.75rem;
+                }
+
+                button, select {
+                    text-align: left;
+                    border-radius: var(--bs-border-radius-lg);
+                    overflow: hidden;
+                    font-size: 1.05rem;
+                    box-shadow: 0 0 0.4rem #00000050;
+                    border: 1px solid var(--bs-border-color-translucent);
+                    background: var(--nex-brighter);
+                    padding: 0.25rem 1rem;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    width: 12rem;
+                    max-height: fit-content !important;
+
+                    img {
+                        height: 1.05rem;
+                        width: 1.05rem;
+                        margin: 0 0.5rem 0.25rem 0;
+                    }
+                }
+
+                button.btn-nex-red, select.btn-nex-red {
+                    background: linear-gradient(35deg, rgba(255, 128, 128, 0.44), rgba(255, 206, 206, 0.24));
+                }
+
+                button.btn-nex-red:hover, select.btn-nex-red:hover {
+                    background: linear-gradient(35deg, rgba(255, 0, 0, 0.53), rgba(255, 54, 54, 0.67));
+                    animation: wiggle 0.1s infinite;
+                }
+
+                button:hover, select:hover {
+                    background: var(--nex-brighter-100);
+                    cursor: pointer;
+                }
+
+                button.top {
+                    border-top-left-radius: 1rem;
+                }
+
+                button.bottom {
+                    border-bottom-left-radius: 1rem;
+                }
+            }
+
+            .settings-content {
+                position: relative;
+                .close-button {
+                    position: absolute;
+                    background: transparent;
+                    padding: 0;
+                    margin: 0;
+                    font-size: 1.2rem;
+                    top: 0.5rem;
+                    right: 1rem;
+                    opacity: 0.5;
+                }
+
+                .close-button:hover {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+
+                .close-button:active {
+                    color: #ffd5d5;
+                }
+
+                flex: 1;
+            }
+        }
+    }
+
+    #settings-pane.show {
+        scale: 1;
+        opacity: 1;
+        z-index: 10;
+    }
+
     #instance-view {
         div.glass {
             width: 20rem;
@@ -108,7 +226,11 @@
         }
     }
 
-
+    .submenu {
+        margin: 1rem 0 1rem 1rem !important;
+        padding: 0;
+        transition: none;
+    }
 
     @container nav-container (max-width: 31rem) {
         .nav-link {
@@ -174,7 +296,7 @@
     .tab-pane {
         padding: 0 0 2rem 0 !important;
     }
-y
+
     #tab-about-content {
         position: relative;
         overflow: hidden;

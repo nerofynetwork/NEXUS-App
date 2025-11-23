@@ -180,3 +180,10 @@ function requestInstanceCreation() {
         if(document.getElementById('creator-name-warning').classList.contains('d-none')) {document.getElementById('creator-name-warning').classList.remove('d-none');}
     }
 }
+
+document.getElementById("settings-pane").addEventListener("click", function (event) {
+    const pane = document.getElementById("settings-pane").querySelector(".instance-settings");
+    if (pane && !pane.contains(event.target)) {
+        document.getElementById("settings-pane").classList.remove("show");
+    }
+})

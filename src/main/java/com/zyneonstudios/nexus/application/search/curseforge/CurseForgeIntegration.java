@@ -118,7 +118,7 @@ public class CurseForgeIntegration {
             connection.setInstanceFollowRedirects(true);
             connection.setUseCaches(false);
             connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("x-api-key", "$2a$10$DJiIWDCef9nkUl0fchY9eecGQunflMcS/TxFMn5Ng68cX5KpGOaEC");
+
             return IOUtils.getContent(connection.getInputStream());
         } catch (Exception e) {
             return null;

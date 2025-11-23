@@ -1,6 +1,6 @@
 <link href="assets/nexus/css/library.css" rel="stylesheet">
 <div id="library-bg"></div>
-<div id="library" class="nex-flex w-100 h-100">
+<div id="library" class="nex-flex w-100 h-100 p-0 m-0">
     <div class="card bg-dark-subtle submenu glass">
         <div class="card-header">
             <strong>Library</strong>
@@ -43,13 +43,13 @@
             </div>
         </div>
     </div>
-    <div class="position-relative w-100 m-2 card glass shadow overflow-hidden p-0">
+    <div class="position-relative w-100 m-2 card glass shadow overflow-hidden p-0 m-3">
         <div class="title-menu card-header shadow p-1 w-100 d-flex flex-row border-bottom-0">
             <h4 class="m-0 w-100" style="padding: 0.5rem 0.5rem 0.75rem 0.75rem;" id="library-title"><img alt="" src=""><span>Library</span></h4>
             <div class="buttons w-100 d-flex flex-row align-self-center justify-content-end">
                 <a id="update-button" class="update shadow d-none"><i class="bi bi-download"></i></a>
                 <a id="folder-button" class="folder shadow"><i class="bi bi-folder2"></i></a>
-                <a id="settings-button" class="settings shadow"><i class="bi bi-gear"></i></a>
+                <a id="settings-button" class="settings shadow" onclick="document.getElementById('settings-pane').classList.toggle('show');"><i class="bi bi-gear"></i></a>
             </div>
         </div>
 
@@ -102,6 +102,44 @@
 
                         </h5>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overflow-hidden" id="settings-pane">
+        <div class="instance-settings">
+            <div class="settings-menu">
+                <button type="button" class="btn btn-nex-secondary flex-grow-1 top">
+                    <i class="bi bi-wrench"></i>
+                    <span>General settings</span>
+                </button>
+                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                    <i class="bi bi-controller"></i>
+                    <span>Game settings</span>
+                </button>
+                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                    <i class="bi bi-display"></i>
+                    <span>Window settings</span>
+                </button>
+                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                    <i class="bi bi-cup-hot"></i>
+                    <span>Java settings</span>
+                </button>
+                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                    <i class="bi bi-code"></i>
+                    <span>Hook settings</span>
+                </button>
+                <div class="settings-menu-actions">
+                    <button type="button" class="btn btn-nex-red flex-grow-1 bottom">
+                        <i class="bi bi-trash"></i>
+                        <span>Delete instance</span>
+                    </button>
+                </div>
+            </div>
+            <div class="settings-content">
+                <i class="bi bi-x-lg close-button" onclick="document.getElementById('settings-pane').classList.remove('show');"></i>
+                <div class="general-settings p-2">
+                    <h5>General settings for <strong>Instance name</strong></h5>
                 </div>
             </div>
         </div>

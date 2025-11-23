@@ -299,21 +299,3 @@ table.table {
     background: var(--bs-danger) !important;
     animation: wiggle 0.1s linear infinite;
 }
-
-@keyframes wiggle {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    33% {
-        transform: rotate(-1deg);
-    }
-
-    66% {
-        transform: rotate(1deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
-    }
-}
