@@ -49,7 +49,7 @@
             <div class="buttons w-100 d-flex flex-row align-self-center justify-content-end">
                 <a id="update-button" class="update shadow d-none"><i class="bi bi-download"></i></a>
                 <a id="folder-button" class="folder shadow"><i class="bi bi-folder2"></i></a>
-                <a id="settings-button" class="settings shadow" onclick="document.getElementById('settings-pane').classList.toggle('show');"><i class="bi bi-gear"></i></a>
+                <a id="settings-button" class="settings shadow" onclick="showSettingsPane('general');"><i class="bi bi-gear"></i></a>
             </div>
         </div>
 
@@ -109,28 +109,24 @@
     <div class="overflow-hidden" id="settings-pane">
         <div class="instance-settings">
             <div class="settings-menu">
-                <button type="button" class="btn btn-nex-secondary flex-grow-1 top">
+                <button type="button" class="general-button btn btn-nex-secondary flex-grow-1 top" onclick="showSettingsPane('general');">
                     <i class="bi bi-wrench"></i>
                     <span>General settings</span>
                 </button>
-                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                <button type="button" class="game-button btn btn-nex-secondary flex-grow-1" onclick="showSettingsPane('game');">
                     <i class="bi bi-controller"></i>
                     <span>Game settings</span>
                 </button>
-                <button type="button" class="btn btn-nex-secondary flex-grow-1">
-                    <i class="bi bi-display"></i>
-                    <span>Window settings</span>
-                </button>
-                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                <button type="button" class="java-button btn btn-nex-secondary flex-grow-1" onclick="showSettingsPane('java');">
                     <i class="bi bi-cup-hot"></i>
                     <span>Java settings</span>
                 </button>
-                <button type="button" class="btn btn-nex-secondary flex-grow-1">
+                <button type="button" class="hook-button btn btn-nex-secondary flex-grow-1" onclick="showSettingsPane('hook');">
                     <i class="bi bi-code"></i>
                     <span>Hook settings</span>
                 </button>
                 <div class="settings-menu-actions">
-                    <button type="button" class="btn btn-nex-red flex-grow-1 bottom">
+                    <button type="button" class="delete-button btn btn-nex-red flex-grow-1 bottom" onclick="showSettingsPane('delete');">
                         <i class="bi bi-trash"></i>
                         <span>Delete instance</span>
                     </button>
@@ -138,8 +134,39 @@
             </div>
             <div class="settings-content">
                 <i class="bi bi-x-lg close-button" onclick="document.getElementById('settings-pane').classList.remove('show');"></i>
-                <div class="general-settings p-2">
+                <div class="general-settings settings-content-pane">
                     <h5>General settings for <strong>Instance name</strong></h5>
+                </div>
+                <div class="game-settings settings-content-pane">
+                    <h5>Game settings for <strong>Instance name</strong></h5>
+                </div>
+                <div class="java-settings settings-content-pane">
+                    <h5>Java settings for <strong>Instance name</strong></h5>
+                </div>
+                <div class="hook-settings settings-content-pane">
+                    <h5>Hook settings for <strong>Instance name</strong></h5>
+                </div>
+                <div class="delete-settings settings-content-pane">
+                    <h5>Deletion settings for <strong>Instance name</strong></h5>
+                    <div class="alert alert-danger shadow" role="alert">
+                        <strong>Do you really want to delete this instance?</strong><br><br>
+                        <div class="alert alert-warning shadow" role="alert">
+                            <strong>ID: </strong><br>
+                            <strong>Name: </strong><br>
+                            <strong>Version: </strong><br>
+                            <strong>Path: </strong><br>
+                        </div>
+                        If you continue, this instance will be permanently deleted - <strong>Forever</strong>.<br>
+                        Think carefully about whether you want to do that.<br><br>
+                        Do you want to take another look at the contents of this instance?<br>
+                        <button type="button" class="btn btn-nex-red shadow btn-of">Open instance folder</button>
+                    </div>
+                    <div class="d-flex flex-row gap-3">
+                        <button onclick="showSettingsPane('general');" type="button" class="btn btn-nex-secondary shadow"><strong>Don't delete instance</strong></button>
+                        <div>
+                            <button type="button" class="btn btn-df btn-nex-red shadow">Delete instance <strong>forever</strong></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

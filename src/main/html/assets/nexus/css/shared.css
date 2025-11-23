@@ -996,3 +996,55 @@ body {
         transform: rotate(0deg);
     }
 }
+
+@keyframes wait-fade-out {
+    0% {
+        display: block;
+        opacity: 1;
+    }
+
+    33% {
+        display: block;
+        opacity: 1;
+    }
+
+    66% {
+        display: block;
+        opacity: 1;
+    }
+
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes wait-fade-in {
+    0% {
+        display: none;
+        opacity: 0;
+        cursor: not-allowed;
+    }
+
+    33% {
+        display: none;
+        opacity: 0;
+        cursor: not-allowed;
+    }
+
+    66% {
+        display: unset;
+        opacity: 0;
+        cursor: not-allowed;
+    }
+
+    100% {
+        display: unset;
+        opacity: 1;
+        cursor: pointer;
+    }
+}
+
+.btn {
+    border-radius: var(--bs-border-radius-lg);
+}

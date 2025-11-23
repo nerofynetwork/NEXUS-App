@@ -2,16 +2,55 @@
     background: url("../img/bg/discover-home.png") no-repeat center;
     background-size: cover;
 
-    #header {
-        height: 90%;
-        width: 100%;
-        background: linear-gradient(to bottom, transparent, var(--bs-body-bg));
-    }
+    #home {
+        position: absolute;
+        top: 2rem;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 3.75rem 1rem 1rem 1rem;
+        overflow: hidden;
+        overflow-y: auto;
 
-    #news {
-        min-height: 10%;
-        width: 100%;
-        background: var(--bs-body-bg);
+        .accordion {
+            background: none;
+            border: 1px solid var(--bs-border-color-translucent);
+            border-radius: var(--bs-border-radius);
+            overflow: hidden;
+
+            .accordion-header {
+                button {
+                    background: var(--nex-brighter);
+                    text-align: left;
+                    font-size: 1.2rem;
+                    padding: 1rem;
+                    border: none;
+                    width: 100%;
+                    position: relative;
+
+                    i {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        font-size: 1.2rem;
+                        padding: 1rem;
+                        rotate: 180deg;
+                        transition: all 0.25s ease;
+                    }
+                }
+
+                button.collapsed {
+                    i {
+                        rotate: 0deg;
+                    }
+                }
+            }
+
+            .accordion-item {
+                background: var(--nex-brighter);
+                border: none;
+            }
+        }
     }
 
     .search-button {

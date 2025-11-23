@@ -181,6 +181,37 @@ function requestInstanceCreation() {
     }
 }
 
+function showSettingsPane(pageName) {
+    document.getElementById("settings-pane").classList.add('show');
+    let page = "general";
+    pageName = pageName.toLowerCase();
+    if(pageName === "game") {
+        page = "game";
+    } else if(pageName === "java") {
+        page = "java";
+    } else if(pageName === "hook") {
+        page = "hook";
+    } else if(pageName === "delete") {
+        page = "delete";
+    }
+    const settingsPane = document.getElementById("settings-pane").querySelector(".instance-settings");
+    const menuPane = settingsPane.querySelector(".settings-menu");
+    const contentPane = settingsPane.querySelector(".settings-content");
+    contentPane.querySelector(".general-settings").classList.remove('show');
+    menuPane.querySelector(".general-button").classList.remove('show');
+    contentPane.querySelector(".game-settings").classList.remove('show');
+    menuPane.querySelector(".game-button").classList.remove('show');
+    contentPane.querySelector(".java-settings").classList.remove('show');
+    menuPane.querySelector(".java-button").classList.remove('show');
+    contentPane.querySelector(".hook-settings").classList.remove('show');
+    menuPane.querySelector(".hook-button").classList.remove('show');
+    contentPane.querySelector(".delete-settings").classList.remove('show');
+    menuPane.querySelector(".delete-button").classList.remove('show');
+
+    menuPane.querySelector("."+page+"-button").classList.add('show');
+    contentPane.querySelector("."+page+"-settings").classList.add('show');
+}
+
 document.getElementById("settings-pane").addEventListener("click", function (event) {
     const pane = document.getElementById("settings-pane").querySelector(".instance-settings");
     if (pane && !pane.contains(event.target)) {

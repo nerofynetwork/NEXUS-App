@@ -149,7 +149,7 @@ public class NexusApplication {
             DiscordRichPresence.startRPC();
         }
 
-        CurseForgeCategories.init();
+        //CurseForgeCategories.init();
 
         CompletableFuture.runAsync(()->{
             getLogger().log("Checking if user is logged in...");

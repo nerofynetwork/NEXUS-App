@@ -74,15 +74,6 @@
                     }
                 }
 
-                button.btn-nex-red, select.btn-nex-red {
-                    background: linear-gradient(35deg, rgba(255, 128, 128, 0.44), rgba(255, 206, 206, 0.24));
-                }
-
-                button.btn-nex-red:hover, select.btn-nex-red:hover {
-                    background: linear-gradient(35deg, rgba(255, 0, 0, 0.53), rgba(255, 54, 54, 0.67));
-                    animation: wiggle 0.1s infinite;
-                }
-
                 button:hover, select:hover {
                     background: var(--nex-brighter-100);
                     cursor: pointer;
@@ -94,6 +85,23 @@
 
                 button.bottom {
                     border-bottom-left-radius: 1rem;
+                }
+
+                button.show {
+                    background: var(--nex-primary-darker);
+                    border: 1px solid var(--nex-primary-accent);
+                    box-shadow: 0 0 0.4rem var(--nex-primary);
+                }
+
+                button.btn-nex-red, select.btn-nex-red {
+                    background: linear-gradient(35deg, rgba(255, 128, 128, 0.44), rgba(255, 206, 206, 0.24));
+                }
+
+                button.btn-nex-red:hover, button.btn-nex-red.show, select.btn-nex-red:hover, select.btn-nex-red.show {
+                    background: linear-gradient(35deg, rgba(255, 0, 0, 0.53), rgba(255, 54, 54, 0.67));
+                    border: 1px solid var(--bs-border-color-translucent);
+                    box-shadow: 0 0 0.4rem  rgba(255, 0, 0, 0.53);
+                    animation: wiggle 0.1s infinite;
                 }
             }
 
@@ -120,6 +128,26 @@
                 }
 
                 flex: 1;
+
+                .settings-content-pane {
+                    display: none;
+                    padding: 0.5rem 0.75rem;
+
+                    .btn-of {
+                        margin-top: 0.25rem;
+                    }
+
+                    .btn-df:hover {
+                        animation: wiggle 0.075s infinite;
+                        background: linear-gradient(35deg, rgba(255, 0, 0, 0.53), rgba(255, 54, 54, 0.67));
+                        border: 1px solid var(--bs-border-color-translucent);
+                        box-shadow: 0 0 0.4rem  rgba(255, 0, 0, 0.53);
+                    }
+                }
+
+                .settings-content-pane.show {
+                    display: block;
+                }
             }
         }
     }
