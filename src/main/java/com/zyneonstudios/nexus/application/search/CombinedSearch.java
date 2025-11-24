@@ -21,7 +21,7 @@ import java.util.List;
 public class CombinedSearch {
 
     private final ZyndexSearch NEXSearch;
-    //private final CurseForgeSearch curseForgeSearch;
+    private final CurseForgeSearch curseForgeSearch;
     private final ModrinthSearch modrinthSearch;
 
     private int offset = 0;
@@ -29,10 +29,10 @@ public class CombinedSearch {
 
     public CombinedSearch(int[] curseForgeCategoryIds, ModrinthCategory[] modrinthCategories) {
         NEXSearch = new ZyndexSearch(NexusApplication.getInstance().getNEX());
-        //curseForgeSearch = new CurseForgeSearch();
+        curseForgeSearch = new CurseForgeSearch();
         modrinthSearch = new ModrinthSearch();
 
-        //curseForgeSearch.setFacets(new CurseForgeFacetsBuilder().withClassId(4471).withCategoryIds(curseForgeCategoryIds).build());
+        curseForgeSearch.setFacets(new CurseForgeFacetsBuilder().withClassId(4471).withCategoryIds(curseForgeCategoryIds).build());
         modrinthSearch.setFacets(new ModrinthFacetsBuilder().withProjectType(ModrinthProjectType.modpack).withCategories(modrinthCategories).build());
     }
 
@@ -44,9 +44,9 @@ public class CombinedSearch {
         this.offset = offset;
     }
 
-    /*public CurseForgeSearch getCurseForgeSearch() {
+    public CurseForgeSearch getCurseForgeSearch() {
         return curseForgeSearch;
-    }*/
+    }
 
     public ModrinthSearch getModrinthSearch() {
         return modrinthSearch;
@@ -65,13 +65,13 @@ public class CombinedSearch {
     }
 
     public JsonArray search(String query) {
-        //curseForgeSearch.setLimit(hits);
-        //curseForgeSearch.setOffset(offset * hits);
+        curseForgeSearch.setLimit(hits);
+        curseForgeSearch.setOffset(offset * hits);
         modrinthSearch.setLimit(hits);
         modrinthSearch.setOffset(offset * hits);
 
         JsonArray results = new JsonArray();
-        //curseForgeSearch.setQuery(StringUtility.encodeData(query));
+        curseForgeSearch.setQuery(StringUtility.encodeData(query));
         modrinthSearch.setQuery(StringUtility.encodeData(query));
         ArrayList<ReadableZynstance> nexResults;
         JsonObject modrinthResults;
@@ -84,7 +84,7 @@ public class CombinedSearch {
         }
 
         if (NexusApplication.getInstance().getLocalSettings().isDiscoverSearchCurseForge()) {
-            //curseForgeResults = curseForgeSearch.search();
+            curseForgeResults = curseForgeSearch.search();
         } else {
             curseForgeResults = null;
         }
@@ -117,7 +117,7 @@ public class CombinedSearch {
             }
 
             List<JsonObject> curseForgeJsonResults = new ArrayList<>();
-            /*if (curseForgeResults != null) {
+            if (curseForgeResults != null) {
                 for (JsonElement hit : curseForgeResults.getAsJsonArray("data")) {
                     JsonObject curseforgeResult = hit.getAsJsonObject();
                     JsonObject result = new JsonObject();
@@ -139,7 +139,7 @@ public class CombinedSearch {
                     result.addProperty("connector", StringUtility.encodeData("install.minecraft.curseforge." + curseforgeResult.get("id").getAsString()));
                     curseForgeJsonResults.add(result);
                 }
-            }*/
+            }
 
             List<JsonObject> modrinthJsonResults = new ArrayList<>();
             if (modrinthResults != null) {
@@ -155,7 +155,7 @@ public class CombinedSearch {
                     authors.add(StringUtility.encodeData(modrinthResult.get("author").getAsString()));
                     result.add("authors", authors);
                     result.addProperty("summary", StringUtility.encodeData(modrinthResult.get("description").getAsString()));
-                    result.addProperty("url", "https://modrinth.com/modpack/" + modrinthResult.get("slug").getAsString());
+                    result.addProperty("url", "https:modrinth.com/modpack/" + modrinthResult.get("slug").getAsString());
                     result.addProperty("source", "Modrinth");
                     result.addProperty("connector", StringUtility.encodeData("install.minecraft.modrinth." + modrinthResult.get("project_id").getAsString()));
                     modrinthJsonResults.add(result);

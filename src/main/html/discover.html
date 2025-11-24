@@ -45,16 +45,54 @@
             <div class="card glass p-3 shadow w-100">
                 <strong>Changelogs & News</strong>
                 <hr>
-
                 <div class="accordion shadow" id="changelognews">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="shadow" data-bs-toggle="collapse" data-bs-target="#changelog-2026.1-beta.3" aria-expanded="true" aria-controls="changelog-2026.1-beta.3">
+                            <button class="shadow" data-bs-toggle="collapse" data-bs-target="#changelog-2026.1-beta.4" aria-expanded="true" aria-controls="changelog-2026.1-beta.4">
+                                Changelog 2026.1-beta.4 <span class="badge text-bg-dark">2025/11/24</span>
+                                <i class="bi bi-caret-down"></i>
+                            </button>
+                        </h2>
+                        <div id="changelog-2026.1-beta.4" class="accordion-collapse collapse show" data-bs-parent="#changelognews">
+                            <div class="accordion-body">
+                                <strong>Added features</strong><br>
+                                <ul>
+                                    <li>
+                                        No added features.
+                                    </li>
+                                </ul>
+                                <hr>
+                                <strong>Changed features</strong><br>
+                                <ul>
+                                    <li>
+                                        Reactivated CurseForge search results
+                                    </li>
+                                </ul>
+                                <hr>
+                                <strong>Removed features</strong><br>
+                                <ul>
+                                    <li>
+                                        No removed features.
+                                    </li>
+                                </ul>
+                                <hr>
+                                <strong>Fixed bugs</strong><br>
+                                <ul>
+                                    <li>
+                                        No fixed bugs.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="shadow collapsed" data-bs-toggle="collapse" data-bs-target="#changelog-2026.1-beta.3" aria-expanded="true" aria-controls="changelog-2026.1-beta.3">
                                 Changelog 2026.1-beta.3 <span class="badge text-bg-dark">2025/11/24</span>
                                 <i class="bi bi-caret-down"></i>
                             </button>
                         </h2>
-                        <div id="changelog-2026.1-beta.3" class="accordion-collapse collapse show" data-bs-parent="#changelognews">
+                        <div id="changelog-2026.1-beta.3" class="accordion-collapse collapse" data-bs-parent="#changelognews">
                             <div class="accordion-body">
                                 <strong>Added features</strong><br>
                                 <ul>
@@ -71,8 +109,6 @@
                                     </li>
                                 </ul>
                                 <hr>
-
-
                                 <strong>Changed features</strong><br>
                                 <ul>
                                     <li>
@@ -80,8 +116,6 @@
                                     </li>
                                 </ul>
                                 <hr>
-
-
                                 <strong>Removed features</strong><br>
                                 <ul>
                                     <li>
@@ -89,8 +123,6 @@
                                     </li>
                                 </ul>
                                 <hr>
-
-
                                 <strong>Fixed bugs</strong><br>
                                 <ul>
                                     <li>
@@ -116,8 +148,6 @@
                                     </li>
                                 </ul>
                                 <hr>
-
-
                                 <strong>Changed features</strong><br>
                                 <ul>
                                     <li>
@@ -126,8 +156,6 @@
                                     </li>
                                 </ul>
                                 <hr>
-
-
                                 <strong>Removed features</strong><br>
                                 <ul>
                                     <li>
@@ -135,8 +163,6 @@
                                     </li>
                                 </ul>
                                 <hr>
-
-
                                 <strong>Fixed bugs</strong><br>
                                 <ul>
                                     <li>
@@ -207,17 +233,15 @@
                 <div class="accordion shadow" id="missingfeaturesandbugs">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
-                            <button class="shadow" data-bs-toggle="collapse" data-bs-target="#curseforgegone" aria-expanded="true" aria-controls="curseforgegone">
-                                CurseForge not available <span class="badge text-bg-warning">On hold (Update)</span>
+                            <button class="shadow" data-bs-toggle="collapse" data-bs-target="#curseforgeintegration" aria-expanded="true" aria-controls="curseforgeintegration">
+                                CurseForge integration <span class="badge text-bg-success">In progress</span>
                                 <i class="bi bi-caret-down"></i>
                             </button>
                         </h2>
-                        <div id="curseforgegone" class="accordion-collapse collapse show" data-bs-parent="#missingfeaturesandbugs">
+                        <div id="curseforgeintegration" class="accordion-collapse collapse show" data-bs-parent="#missingfeaturesandbugs">
                             <div class="accordion-body">
-                                Due to legal reasons we've removed the CurseForge integration from the CombinedSearch.<br>
-                                All plans to expand the integration to be able to download or manage CurseForge resources or instances/modpacks are currently on hold.<br>
-                                <br>
-                                <strong>Update: </strong>We have contacted CurseForge/Overwolf - awaiting response
+                                The CurseForge integration is not yet finished and is therefore incomplete.<br>
+                                Currently, you cannot install resources or modpacks from CurseForge.
                             </div>
                         </div>
                     </div>
@@ -396,12 +420,12 @@
                             <input disabled class="form-check-input switch" type="checkbox" role="switch" checked>
                         </label>
                     </div>
-                    <!--div onclick="console.log('[CONNECTOR] discover.search.enable.curseforge.'+!this.querySelector('input').checked); this.querySelector('input').checked = !this.querySelector('input').checked;" class="form-check form-switch d-flex category-row curseforge">
+                    <div onclick="console.log('[CONNECTOR] discover.search.enable.curseforge.'+!this.querySelector('input').checked); this.querySelector('input').checked = !this.querySelector('input').checked;" class="form-check form-switch d-flex category-row curseforge">
                         CurseForge
                         <label>
                             <input disabled class="form-check-input switch" type="checkbox" role="switch" checked>
                         </label>
-                    </div-->
+                    </div>
                     <div onclick="console.log('[CONNECTOR] discover.search.enable.modrinth.'+!this.querySelector('input').checked); this.querySelector('input').checked = !this.querySelector('input').checked;" class="form-check form-switch d-flex category-row modrinth">
                         Modrinth
                         <label>
