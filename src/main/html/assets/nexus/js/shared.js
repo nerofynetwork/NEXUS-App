@@ -42,7 +42,7 @@ let version = "Web app";
  * The current application default landing page.
  * @type {string}
  */
-let landing = "discover.html";
+let landing = "dashboard.html";
 
 /**
  * URL parameters from the current document's location.
@@ -248,7 +248,7 @@ let panelMode = "click";
  * Initializes the panel based on stored preferences or default values.
  */
 function initPanel() {
-    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<i onclick='window.open(`https://discord.gg/Awwh6JrJBS`,`_blank`);' class='bi bi-discord'></i><i onclick='window.open(`https://github.com/zyneonstudios/nexus-app`,`_blank`);' class='bi bi-github'></i><i onclick='window.open(`https://nexus.zyneonstudios.org/app`,`_blank`);' class='bi bi-globe'></i><i onclick='console.log(`[CONNECTOR] exit`)' class='bi bi-door-open'></i>";
+    document.querySelector(".menu-panel").querySelector(".card-body").innerHTML = "<i onclick='window.open(`https://discord.gg/hbHDrqUjJ8`,`_blank`);' class='bi bi-discord'></i><i onclick='window.open(`https://github.com/zyneonstudios/nexus-app`,`_blank`);' class='bi bi-github'></i><i onclick='window.open(`https://nexus.zyneonstudios.org/app`,`_blank`);' class='bi bi-globe'></i><i onclick='console.log(`[CONNECTOR] exit`)' class='bi bi-door-open'></i>";
     const panel = document.querySelector(".menu-panel");
     if (!panel) return; // Exit if panel doesn't exist
 

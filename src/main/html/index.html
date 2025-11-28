@@ -19,6 +19,19 @@
     </head>
     <!-- For sub-page specific scripts and more -->
     <div class="d-none" id="page-specific"></div>
+
+    <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="notifications" aria-labelledby="notificationsLabel">
+        <div class="offcanvas-header" style="background: var(--nex-bg);">
+            <h5 class="offcanvas-title" id="notificationsLabel">Notification center</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" style="background: var(--nex-bg);">
+            <div>
+                I will not close if you click outside of me.
+            </div>
+        </div>
+    </div>
+
     <div id="context-menu"></div>
     <!-- Body of the application -->
     <body data-bs-theme="dark" class="d-flex flex-column h-100 w-100 position-absolute">
@@ -46,7 +59,7 @@
                         <span>Toggle menu</span>
                     </li>
                     <!-- Discover page button -->
-                    <li id="discover-button" onclick="loadPage('discover.html',true); highlight(this);">
+                    <li id="discover-button" onclick="loadPage('discover.html',false); highlight(this);">
                         <i class="bi bi-globe-europe-africa"></i>
                         <span>Discover</span>
                     </li>

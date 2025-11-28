@@ -231,10 +231,24 @@ public class AppFrame extends NexusWebFrame implements ComponentListener, WebFra
         devTools.addActionListener(e -> getBrowser().openDevTools());
         actions.add(devTools);
 
+        JMenu frameMenu = new JMenu("Window actions");
+        frameMenu.getPopupMenu().setBackground(Color.black);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        JMenuItem resetWindowSize = new JMenuItem("Reset window size");
+        resetWindowSize.addActionListener(e -> setSize((int)(screenSize.getWidth()/1.5), (int)(screenSize.getHeight()/1.5)));
+        frameMenu.add(resetWindowSize);
+
+        JMenuItem resetWindowLocation = new JMenuItem("Reset window location");
+        resetWindowLocation.addActionListener(e -> setLocationRelativeTo(null));
+        frameMenu.add(resetWindowLocation);
+
         AtomicInteger clones = new AtomicInteger(1);
         JMenuItem cloneWindow = new JMenuItem("Clone window");
         cloneWindow.addActionListener(e -> cloneWindow(setup, decorated, clones));
-        actions.add(cloneWindow);
+        frameMenu.add(cloneWindow);
+
+        actions.add(frameMenu);
 
         JMenuItem disableDevtools = new JMenuItem("Disable dev mode");
         disableDevtools.addActionListener(e -> {

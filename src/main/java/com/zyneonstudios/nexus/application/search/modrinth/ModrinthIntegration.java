@@ -44,7 +44,7 @@ public class ModrinthIntegration {
 
         if(data.has("files")) {
             JsonArray files = data.getAsJsonArray("files");
-            if(files.size()>0) {
+            if(!files.isEmpty()) {
                 for(JsonElement file : files) {
                     JsonObject f = file.getAsJsonObject();
                     if(f.has("primary") && f.get("primary").getAsBoolean()) {
@@ -157,6 +157,9 @@ public class ModrinthIntegration {
                 instanceConverter.setIconUrl(project.getIconUrl());
 
                 instanceConverter.create();
+                if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().toLowerCase().contains("page=library")) {
+                    NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
+                }
             } else {
                 NexusApplication.getLogger().err("Couldn't find Modrinth index json file: "+index.getAbsolutePath());
             }

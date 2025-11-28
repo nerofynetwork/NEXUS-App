@@ -1,6 +1,7 @@
 package com.zyneonstudios.nexus.application.search.zyndex;
 
 import com.zyneonstudios.nexus.application.downloads.Download;
+import com.zyneonstudios.nexus.application.events.DownloadFinishEvent;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.zyndex.local.LocalInstance;
 import com.zyneonstudios.nexus.instance.Instance;
@@ -50,6 +51,9 @@ public class ZyndexIntegration {
                 return FileGetter.downloadFile(instance.getLocation(),installDir.getAbsolutePath()+"/zyneonInstance.json").exists();
             }
             zip.delete();
+            if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().toLowerCase().contains("page=library")) {
+                NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
+            }
         } catch (Exception e) {
             NexusApplication.getLogger().err("[Minecraft] (ZyndexIntegration) Couldn't install instance "+instance.getId()+" v"+instance.getVersion()+": "+e.getMessage());
         }
