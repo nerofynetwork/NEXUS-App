@@ -121,7 +121,7 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
             String search = query[2];
 
             CombinedSearch CS = new CombinedSearch(new int[0],new ModrinthCategory[0]);
-            CS.setLimit(25);
+            CS.setLimit(15);
             CS.setOffset(CS.getOffset()+offset);
 
             for(JsonElement e:CS.search(search)) {
@@ -357,7 +357,6 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                 String cmd = "showInstance(\""+ StringUtility.encodeData(lI.getPath())+"\",\""+StringUtility.encodeData(show.getName())+"\",\""+StringUtility.encodeData(show.getVersion())+"\",\""+StringUtility.encodeData(show.getSummary())+"\",\""+ StringUtility.encodeData(show.getDescription()) +"\",\""+tags+"\");";
                 String button = "";
                 if(NexusApplication.getInstance().getInstanceManager().hasRunningInstance(showId)) {
-                    System.out.println(showId);
                     button = "document.getElementById(\"launch-button\").innerHTML = \"<i class='bi bi-check-lg'></i> RUNNING\";";
                 }
                 frame.executeJavaScript(cmd,button);
@@ -434,6 +433,9 @@ public class AsyncConnectorListener extends AsyncWebFrameConnectorEvent {
                         NexusApplication.getInstance().getInstanceManager().addRunningInstance(launcher.getGameProcess(), id);
                     }
                 }
+            } else if(s.startsWith("settings.")) {
+                String id = s.replace("settings.", "");
+                frame.executeJavaScript("showSettingsPane('general');");
             } else if(s.startsWith("folder.")) {
                 String id = s.replace("folder.", "");
                 LocalInstance instance = NexusApplication.getInstance().getInstanceManager().getInstance(id);

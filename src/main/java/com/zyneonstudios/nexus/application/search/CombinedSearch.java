@@ -97,7 +97,8 @@ public class CombinedSearch {
 
         try {
             List<JsonObject> nexJsonResults = new ArrayList<>();
-            for (Instance instance : nexResults) {
+            for (int i = offset*hits; i < nexResults.size(); i++) {
+                ReadableZynstance instance = nexResults.get(i);
                 JsonObject result = new JsonObject();
                 result.addProperty("id", StringUtility.encodeData(instance.getId()));
                 result.addProperty("iconUrl", instance.getThumbnailUrl());

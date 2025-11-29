@@ -152,7 +152,7 @@ function showInstance(id,name,version,summary,description,tagsString) {
     document.getElementById("folder-button").onclick = function () {
         console.log('[CONNECTOR] library.folder.'+activeInstance);
     }
-    document.getElementById("settings-button").onclick = function () {
+    document.getElementById("library-settings-button").onclick = function () {
         console.log('[CONNECTOR] library.settings.'+activeInstance);
     }
 }

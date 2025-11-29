@@ -174,6 +174,7 @@ public class NexusApplication {
 
     private void initCommands() {
         consoleHandler.addCommand(new HelpCommand());
+        consoleHandler.addCommand(new JavascriptCommand());
         consoleHandler.addCommand(new LaunchCommand());
         consoleHandler.addCommand(new GetCommand());
         consoleHandler.addCommand(new ExitCommand());
@@ -292,7 +293,6 @@ public class NexusApplication {
             try {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 String url = onlineUI ? "https://zyneonstudios.github.io/nexus-app/src/main/html?app=true" : "http://localhost:" + Main.getPort() + "/index.html?app=true";
-                System.out.println(url);
                 applicationFrame = new AppFrame(webSetup, url, true);
                 applicationFrame.setTitlebar(version, Color.black, Color.white);
                 applicationFrame.setSize((int)(screenSize.getWidth()/1.5), (int)(screenSize.getHeight()/1.5));

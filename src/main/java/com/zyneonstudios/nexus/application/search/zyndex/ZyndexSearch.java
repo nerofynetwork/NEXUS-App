@@ -11,29 +11,13 @@ public class ZyndexSearch {
     private final ArrayList<ReadableZynstance> instances;
     private ArrayList<ReadableZynstance> cachedResults = null;
     private String cachedSearchTerm = null;
-    private final boolean officialSource;
 
     public ZyndexSearch(String zyndexUrl) {
         instances = new ReadableZyndex(zyndexUrl).getInstances();
-        officialSource = isOfficial(zyndexUrl);
     }
 
     public ZyndexSearch(Index zyndex) {
         instances = zyndex.getInstances();
-        officialSource = isOfficial(zyndex.getUrl());
-    }
-
-    private boolean isOfficial(String url) {
-        ArrayList<String> officialUrls = new ArrayList<>();
-        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index.json");
-        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex/index.json");
-        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/index");
-        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex/index");
-        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex/");
-        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex/");
-        officialUrls.add("https://raw.githubusercontent.com/zyneonstudios/nexus-nex/main/zyndex");
-        officialUrls.add("https://zyneonstudios.github.io/nexus-nex/main/zyndex");
-        return officialUrls.contains(url.toLowerCase());
     }
 
     @SuppressWarnings("all")
@@ -43,16 +27,11 @@ public class ZyndexSearch {
         }
 
         ArrayList<ReadableZynstance> results = new ArrayList<>();
-        String[] searchTerms = searchTerm.toLowerCase().replace(" ",",").replace(",,",",").split(",");
-
         if(!instances.isEmpty()) {
             for(ReadableZynstance instance : instances) {
                 boolean idMatching = false;
-                for(String s:searchTerms) {
-                    if (instance.getId().equalsIgnoreCase(s)) {
-                        idMatching = true;
-                        break;
-                    }
+                if (searchTerm.equals(instance.getId())) {
+                    idMatching = true;
                 }
 
                 if(instance.getName().toLowerCase().contains(searchTerm.toLowerCase())||instance.getAuthor().toLowerCase().contains(searchTerm.toLowerCase())||idMatching) {

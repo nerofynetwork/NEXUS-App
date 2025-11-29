@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.zyneonstudios.nexus.application.downloads.Download;
+import com.zyneonstudios.nexus.application.events.DownloadFinishEvent;
 import com.zyneonstudios.nexus.application.main.NexusApplication;
 import com.zyneonstudios.nexus.application.search.modrinth.resource.ModrinthProject;
 import com.zyneonstudios.nexus.instance.ZynstanceBuilder;
@@ -115,50 +116,56 @@ public class ModrinthIntegration {
                     try {
                         ModrinthDownload packDownload = new ModrinthDownload(project, fileDownloads, installDir.toPath());
                         NexusApplication.getInstance().getDownloadManager().addDownload(packDownload);
+                        File finalInstallDir = installDir;
+                        packDownload.setFinishEvent(new DownloadFinishEvent(packDownload) {
+                            @Override
+                            public boolean onFinish() {
+                                String version = indexJson.get("versionId").getAsString();
+                                String title = indexJson.get("name").getAsString();
+                                ZynstanceBuilder instanceConverter = new ZynstanceBuilder(finalInstallDir +"/zyneonInstance.json");
+                                instanceConverter.setName(title);
+                                instanceConverter.setVersion(version);
+                                instanceConverter.setId("modrinth-"+projectId);
+                                instanceConverter.setSummary(project.getDescription());
+                                instanceConverter.setDescription(project.getBody());
+                                JsonObject dependencies = indexJson.get("dependencies").getAsJsonObject();
+                                instanceConverter.setMinecraftVersion(dependencies.get("minecraft").getAsString());
+                                if(dependencies.has("fabric-loader")) {
+                                    instanceConverter.setMetaProperty("modloader","fabric");
+                                    instanceConverter.setFabricVersion(dependencies.get("fabric-loader").getAsString());
+                                } else if(dependencies.has("forge")) {
+                                    instanceConverter.setMetaProperty("modloader","forge");
+                                    instanceConverter.setForgeVersion(dependencies.get("forge").getAsString());
+                                } else if(dependencies.has("neoforge")) {
+                                    instanceConverter.setMetaProperty("modloader","neoforge");
+                                    instanceConverter.setNeoForgeVersion(dependencies.get("neoforge").getAsString());
+                                } else if(dependencies.has("quilt-loader")) {
+                                    instanceConverter.setMetaProperty("modloader","quilt");
+                                    instanceConverter.setQuiltVersion(dependencies.get("quilt-loader").getAsString());
+                                }
+                                instanceConverter.setDownloadUrl("modrinth");
+                                instanceConverter.setOriginUrl("local");
+                                instanceConverter.setTags(new ArrayList<>(Arrays.asList(project.getCategories())));
+
+                                ArrayList<String> authors = new ArrayList<>();
+                                JsonArray members = new Gson().fromJson(GsonUtility.getFromURL("https://api.modrinth.com/v2/project/"+projectId+"/members"), JsonArray.class);
+                                for(JsonElement member : members) {
+                                    authors.add(member.getAsJsonObject().get("user").getAsJsonObject().get("username").getAsString());
+                                }
+                                instanceConverter.setAuthors(authors);
+                                instanceConverter.setIconUrl(project.getIconUrl());
+
+                                instanceConverter.create();
+                                if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().toLowerCase().contains("page=library")) {
+                                    NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
+                                }
+                                return false;
+                            }
+                        });
                     } catch (Exception e) {
                         NexusApplication.getLogger().err(e.getMessage());
                         throw new RuntimeException(e);
                     }
-                }
-
-                String version = indexJson.get("versionId").getAsString();
-                String title = indexJson.get("name").getAsString();
-                ZynstanceBuilder instanceConverter = new ZynstanceBuilder(installDir+"/zyneonInstance.json");
-                instanceConverter.setName(title);
-                instanceConverter.setVersion(version);
-                instanceConverter.setId("modrinth-"+projectId);
-                instanceConverter.setSummary(project.getDescription());
-                instanceConverter.setDescription(project.getBody());
-                JsonObject dependencies = indexJson.get("dependencies").getAsJsonObject();
-                instanceConverter.setMinecraftVersion(dependencies.get("minecraft").getAsString());
-                if(dependencies.has("fabric-loader")) {
-                    instanceConverter.setMetaProperty("modloader","fabric");
-                    instanceConverter.setFabricVersion(dependencies.get("fabric-loader").getAsString());
-                } else if(dependencies.has("forge")) {
-                    instanceConverter.setMetaProperty("modloader","forge");
-                    instanceConverter.setForgeVersion(dependencies.get("forge").getAsString());
-                } else if(dependencies.has("neoforge")) {
-                    instanceConverter.setMetaProperty("modloader","neoforge");
-                    instanceConverter.setNeoForgeVersion(dependencies.get("neoforge").getAsString());
-                } else if(dependencies.has("quilt-loader")) {
-                    instanceConverter.setMetaProperty("modloader","quilt");
-                    instanceConverter.setQuiltVersion(dependencies.get("quilt-loader").getAsString());
-                }
-                instanceConverter.setDownloadUrl("modrinth");
-                instanceConverter.setOriginUrl("local");
-                instanceConverter.setTags(new ArrayList<>(Arrays.asList(project.getCategories())));
-
-                ArrayList<String> authors = new ArrayList<>();
-                JsonArray members = new Gson().fromJson(GsonUtility.getFromURL("https://api.modrinth.com/v2/project/"+projectId+"/members"), JsonArray.class);
-                for(JsonElement member : members) {
-                    authors.add(member.getAsJsonObject().get("user").getAsJsonObject().get("username").getAsString());
-                }
-                instanceConverter.setAuthors(authors);
-                instanceConverter.setIconUrl(project.getIconUrl());
-
-                instanceConverter.create();
-                if(NexusApplication.getInstance().getApplicationFrame().getBrowser().getURL().toLowerCase().contains("page=library")) {
-                    NexusApplication.getInstance().getApplicationFrame().getBrowser().reload();
                 }
             } else {
                 NexusApplication.getLogger().err("Couldn't find Modrinth index json file: "+index.getAbsolutePath());

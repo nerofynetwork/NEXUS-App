@@ -182,9 +182,6 @@ public class LocalInstanceManager {
     }
 
     public boolean hasRunningInstance(String identifier) {
-        for(String s:runningInstances.values()) {
-            System.out.println(s +"("+identifier+")");
-        }
         return runningInstances.containsValue(identifier);
     }
 }
